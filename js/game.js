@@ -1,12 +1,9 @@
 let canvas;
-let ctx;
-let world = new World();
+let world;
 
 function loadCanvas() {
   canvas = document.getElementById("canvas");
-  ctx = canvas.getContext("2d");
-
-  //ctx.drawImage(character, 20, 20, 50, 150);
+  world = new World(canvas);
 
   console.log("My character is ", world.character);
 }

@@ -1,7 +1,7 @@
 class Character extends MovableObject {
-  constructor(position_x, position_y, imagePath) {
-    super(position_x, position_y, imagePath);
-    super().loadImage(image);
+  constructor(path, position_x, position_y, width, height) {
+    super(path, position_x, position_y, width, height);
+    this.loadImage();
   }
 
   jump() {

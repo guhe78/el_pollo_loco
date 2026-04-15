@@ -2,17 +2,21 @@ class MovableObject {
   position_x;
   position_y;
   image;
-  imagePath;
+  height;
+  width;
+  path;
 
-  constructor(position_x, position_y, imagePath) {
+  constructor(path, position_x, position_y, width, height) {
+    this.path = path;
     this.position_x = position_x;
     this.position_y = position_y;
-    this.imagePath = imagePath;
+    this.width = width;
+    this.height = height;
   }
 
-  loadImage(path) {
+  loadImage() {
     this.image = new Image();
-    this.image.src = imagePath;
+    this.image.src = this.path;
   }
 
   moveLeft() {

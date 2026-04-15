@@ -1,6 +1,7 @@
 class Enemy extends MovableObject {
-  constructor(position_x, position_y, image) {
-    super(position_x, position_y, image);
+  constructor(path, position_x, position_y, width, height) {
+    super(path, position_x, position_y, width, height);
+    this.loadImage();
   }
 
   eat() {
