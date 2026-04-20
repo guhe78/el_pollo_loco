@@ -7,7 +7,9 @@ class Character extends MovableObject {
     "img/Sharkie/3.Swim/5.png",
     "img/Sharkie/3.Swim/6.png",
   ];
-  currentImage = 0;
+  width;
+  height;
+  world;
 
   constructor(path, position_x, position_y) {
     super(path, position_x, position_y);
@@ -15,18 +17,59 @@ class Character extends MovableObject {
     this.height = 200;
     this.loadImage();
     this.loadImages(this.IMAGES_SWIM);
-    this.animate();
+    // this.animate();
+    this.world;
   }
 
   animate() {
     setInterval(() => {
-      let path = this.IMAGES_SWIM[this.currentImage];
-      this.image = this.imageCache[path];
-      this.currentImage++;
-    });
+      if (this.world.keyboard.RIGHT && this.position_x < 2600) {
+        this.moveRight(this.IMAGES_SWIM);
+      }
+      if (this.world.keyboard.LEFT && this.position_x > 0) {
+        this.moveLeft(this.IMAGES_SWIM);
+      }
+      if (this.world.keyboard.UP) {
+        this.moveUp(this.IMAGES_SWIM);
+      }
+      if (this.world.keyboard.DOWN) {
+        this.moveDown(this.IMAGES_SWIM);
+      }
+      if (this.world.keyboard.SPACE) {
+        this.attack(this.IMAGES_SWIM);
+      }
+    }, 1000 / 60);
   }
 
-  jump() {
-    console.log("Jump jump");
+  moveRight(images) {
+    this.otherDirection = false;
+    this.position_x += 10;
+    this.playAnimation(images);
+    this.world.camera_x = -this.position_x;
+  }
+
+  moveLeft(images) {
+    this.otherDirection = true;
+    this.position_x -= 10;
+    this.playAnimation(images);
+    this.world.camera_x = -this.position_x;
+  }
+
+  moveUp(images) {
+    this.position_y -= 10;
+    this.playAnimation(images);
+  }
+
+  moveDown(images) {
+    this.position_y += 10;
+    this.playAnimation(images);
+  }
+
+  attack(images) {
+    this.position_x += 100;
+    this.playAnimation(images);
+    setTimeout(() => {
+      this.position_x -= 100;
+    }, 50);
   }
 }

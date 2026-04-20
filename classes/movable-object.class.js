@@ -6,6 +6,8 @@ class MovableObject {
   height;
   image;
   imageCache;
+  currentImage = 0;
+  otherDirection = false;
 
   constructor(path, position_x, position_y, width, height) {
     this.path = path;
@@ -29,22 +31,20 @@ class MovableObject {
     });
   }
 
-  moveLeft() {
-    console.log("Move left.");
+  playAnimation(images) {
+    let i = this.currentImage % images.length;
+    let path = images[i];
+    this.image = this.imageCache[path];
+    this.currentImage++;
   }
 
-  moveRight() {
-    console.log("Move right.");
-  }
-
-  moveObject(xReducer, objectWidth) {
+  moveObject(speed, objectWidth) {
     let positionStart = this.position_x;
     setInterval(() => {
-      if (this.position_x >= objectWidth) {
-        this.position_x = positionStart;
-      }
-      this.position_x -= xReducer;
-      console.log(this.position_x);
+      // if (this.position_x >= objectWidth) {
+      //   this.position_x = positionStart;
+      // }
+      //this.position_x -= speed;
     }, 1000 / 60);
   }
 }
