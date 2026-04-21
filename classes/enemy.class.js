@@ -22,26 +22,26 @@ class Enemy extends MovableObject {
       "img/Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim5.png",
     ],
   ];
+  width = 150;
+  height = 100;
+  randomImagesArray = this.randomImages();
 
   constructor(path, position_x, position_y) {
     super(path, position_x, position_y);
-    this.width = 150;
-    this.height = 100;
     this.loadImage();
-    this.randomImagesArray = this.randomImages();
     this.loadImages(this.randomImagesArray);
-    this.animate();
-  }
+    this.moveLeft(0.15 + Math.random() * 0.5);
 
-  animate() {
-    setInterval(() => {
-      this.moveLeft(0.15 + Math.random() * 0.5);
-      this.playAnimation(this.randomImagesArray);
-    }, 1000 / 60);
+    this.currentAnimation = this.randomImagesArray;
+    this.image = this.imageCache[this.randomImagesArray[0]];
+
+    this.startAnimation(() => this.currentAnimation, 1000 / 25);
   }
 
   moveLeft(speed) {
-    this.position_x -= speed;
+    setInterval(() => {
+      this.position_x -= speed;
+    }, 1000 / 60);
   }
 
   randomImages() {

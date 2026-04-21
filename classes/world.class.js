@@ -14,7 +14,6 @@ class World {
 
   setWorld() {
     this.character.world = this;
-    this.character.animate();
   }
 
   draw() {
@@ -40,7 +39,10 @@ class World {
 
   addToMap(movableObject) {
     if (movableObject.otherDirection) {
-      this.flipImage(movableObject);
+      this.ctx.save();
+      this.ctx.translate(movableObject.width, 0);
+      this.ctx.scale(-1, 1);
+      movableObject.position_x = movableObject.position_x * -1;
     }
     this.ctx.drawImage(
       movableObject.image,
@@ -50,17 +52,8 @@ class World {
       movableObject.height,
     );
     if (movableObject.otherDirection) {
-      this.flipImage(movableObject);
-
-      // movableObject.position_x = movableObject.position_x * -1;
-      // this.ctx.restore();
+      movableObject.position_x = movableObject.position_x * -1;
+      this.ctx.restore();
     }
-  }
-
-  flipImage(movableObject) {
-    this.ctx.save();
-    this.ctx.translate(movableObject.width, 0);
-    this.ctx.scale(-1, 1);
-    movableObject.position_x = movableObject.position_x * -1;
   }
 }

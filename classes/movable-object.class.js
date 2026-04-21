@@ -5,7 +5,7 @@ class MovableObject {
   width;
   height;
   image;
-  imageCache;
+  imageCache = {};
   currentImage = 0;
   otherDirection = false;
 
@@ -15,7 +15,6 @@ class MovableObject {
     this.position_y = position_y;
     this.width = width;
     this.height = height;
-    this.imageCache = {};
   }
 
   loadImage() {
@@ -32,10 +31,20 @@ class MovableObject {
   }
 
   playAnimation(images) {
-    let i = this.currentImage % images.length;
-    let path = images[i];
+    const i = this.currentImage % images.length;
+    const path = images[i];
     this.image = this.imageCache[path];
     this.currentImage++;
+  }
+
+  startAnimation(getImages, speed) {
+    this.animationInterval = setInterval(() => {
+      const images = getImages();
+      if (!images || images.length === 0) {
+        return;
+      }
+      this.playAnimation(images);
+    }, speed);
   }
 
   moveObject(speed, objectWidth) {

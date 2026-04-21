@@ -4,7 +4,6 @@ class Barrier extends MovableObject {
     this.position_y = 0;
     this.width = 600;
     this.height = 480;
-
     this.loadImage();
   }
 }
