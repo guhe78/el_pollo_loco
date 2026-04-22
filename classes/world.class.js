@@ -10,10 +10,21 @@ class World {
     this.ctx = canvas.getContext("2d");
     this.draw();
     this.setWorld();
+    this.checkCollision();
   }
 
   setWorld() {
     this.character.world = this;
+  }
+
+  checkCollision() {
+    setInterval(() => {
+      this.level.enemies.forEach((enemy) => {
+        if (this.character.isColliding(enemy)) {
+          console.log("Collision with character");
+        }
+      });
+    }, 200);
   }
 
   draw() {
@@ -22,9 +33,6 @@ class World {
     this.level.backgroundWater.forEach((water) => {
       this.addToMap(water);
     });
-    // this.level.barriers.forEach((barrier) => {
-    //   this.addToMap(barrier);
-    // });
     this.level.backgrounds.forEach((background) => {
       this.addToMap(background);
     });
@@ -39,21 +47,25 @@ class World {
 
   addToMap(movableObject) {
     if (movableObject.otherDirection) {
-      this.ctx.save();
-      this.ctx.translate(movableObject.width, 0);
-      this.ctx.scale(-1, 1);
-      movableObject.position_x = movableObject.position_x * -1;
+      this.flipImage(movableObject);
     }
-    this.ctx.drawImage(
-      movableObject.image,
-      movableObject.position_x,
-      movableObject.position_y,
-      movableObject.width,
-      movableObject.height,
-    );
+    movableObject.draw(this.ctx);
+    movableObject.drawFrame(this.ctx);
+    this.ctx.stroke();
     if (movableObject.otherDirection) {
-      movableObject.position_x = movableObject.position_x * -1;
-      this.ctx.restore();
+      this.flipImageBack(movableObject);
     }
+  }
+
+  flipImage(movableObject) {
+    this.ctx.save();
+    this.ctx.translate(movableObject.width, 0);
+    this.ctx.scale(-1, 1);
+    movableObject.position_x = movableObject.position_x * -1;
+  }
+
+  flipImageBack(movableObject) {
+    movableObject.position_x = movableObject.position_x * -1;
+    this.ctx.restore();
   }
 }

@@ -17,6 +17,31 @@ class MovableObject {
     this.height = height;
   }
 
+  draw(ctx) {
+    ctx.drawImage(
+      this.image,
+      this.position_x,
+      this.position_y,
+      this.width,
+      this.height,
+    );
+  }
+
+  drawFrame(ctx) {
+    if (this instanceof Character || this instanceof Enemy) {
+      ctx.beginPath();
+      ctx.lineWidth = "5";
+      ctx.strokeStyle = "blue";
+      ctx.roundRect(
+        this.position_x,
+        this.position_y,
+        this.width,
+        this.height,
+        [100],
+      );
+    }
+  }
+
   loadImage() {
     this.image = new Image();
     this.image.src = this.path;
@@ -49,11 +74,22 @@ class MovableObject {
 
   moveObject(speed, objectWidth) {
     let positionStart = this.position_x;
-    setInterval(() => {
-      // if (this.position_x >= objectWidth) {
-      //   this.position_x = positionStart;
-      // }
-      //this.position_x -= speed;
-    }, 1000 / 60);
+  }
+
+  isColliding(movableObject) {
+    return (
+      this.position_x + this.width - this.offset.right >
+        movableObject.position_x + movableObject.offset.left &&
+      this.position_y + this.height - this.offset.bottom >
+        movableObject.position_y + movableObject.offset.top &&
+      this.position_x + this.offset.left <
+        movableObject.position_x +
+          movableObject.width -
+          movableObject.offset.right &&
+      this.position_y + this.offset.top <
+        movableObject.position_y +
+          movableObject.height -
+          movableObject.offset.bottom
+    );
   }
 }

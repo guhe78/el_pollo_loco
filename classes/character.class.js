@@ -47,12 +47,24 @@ class Character extends MovableObject {
     "img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png",
     "img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png",
   ];
+  IMAGES_HURT_ELECTRO = [
+    "img/Sharkie/5.Hurt/2.Electric shock/1.png",
+    "img/Sharkie/5.Hurt/2.Electric shock/2.png",
+    "img/Sharkie/5.Hurt/2.Electric shock/3.png",
+  ];
   width;
   height;
   world;
   speed = 10;
-  attackSpeed = 0;
+  attackSpeed = 20;
   acceleration = 2.5;
+  isAttacking = false;
+  offset = {
+    top: 100,
+    bottom: 50,
+    right: 50,
+    left: 50,
+  };
 
   constructor(path, position_x, position_y) {
     super(path, position_x, position_y);
@@ -80,37 +92,30 @@ class Character extends MovableObject {
         this.position_x += this.speed;
         this.world.camera_x = -this.position_x;
         isMoving = true;
-        this.getPosition();
       }
       if (this.world.keyboard.LEFT && this.position_x > 0) {
         this.otherDirection = true;
         this.position_x -= this.speed;
         this.world.camera_x = -this.position_x;
         isMoving = true;
-        this.getPosition();
       }
       if (this.world.keyboard.UP) {
         this.position_y -= this.speed;
         isMoving = true;
-        this.getPosition();
       }
       if (this.world.keyboard.DOWN) {
         this.position_y += this.speed;
         isMoving = true;
-        this.getPosition();
       }
-      if (this.world.keyboard.SPACE) {
-        this.attackSpeed = 20;
+      if (this.world.keyboard.SPACE && this.isAttacking === false) {
         this.applyAttack();
-        this.getPosition();
       }
-      this.changeAnimation(isMoving);
       isMoving = false;
     }, 1000 / 60);
   }
 
   changeAnimation(isMoving) {
-    if (this.world.keyboard.SPACE) {
+    if (this.world.keyboard.SPACE && this.isAttacking === false) {
       this.setAnimation(this.IMAGES_ATTACK);
     } else if (isMoving) {
       this.setAnimation(this.IMAGES_SWIM);
@@ -127,14 +132,16 @@ class Character extends MovableObject {
   }
 
   applyAttack() {
+    this.isAttacking = true;
     const startPosition = this.position_x;
-    setInterval(() => {
-      if (this.position_x < startPosition) {
-        this.position_x -= this.attackSpeed;
-        this.attackSpeed -= this.acceleration;
-      }
+    console.log(startPosition);
+    this.position_x += this.attackSpeed;
+    setTimeout(() => {
+      this.position_x = startPosition;
     }, 1000);
-    this.position_x = startPosition;
+    console.log(this.position_x);
+    this.isAttacking = false;
+    console.log("-------------------");
   }
 
   getPosition() {

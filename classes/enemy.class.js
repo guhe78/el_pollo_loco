@@ -25,6 +25,12 @@ class Enemy extends MovableObject {
   width = 150;
   height = 100;
   randomImagesArray = this.randomImages();
+  offset = {
+    right: 50,
+    left: 50,
+    top: 100,
+    bottom: 50,
+  };
 
   constructor(path, position_x, position_y) {
     super(path, position_x, position_y);

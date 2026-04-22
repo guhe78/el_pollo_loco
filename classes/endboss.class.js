@@ -32,6 +32,12 @@ class Endboss extends MovableObject {
   width = 500;
   height = 450;
   world;
+  offset = {
+    right: 50,
+    left: 50,
+    top: 100,
+    bottom: 50,
+  };
 
   constructor(path, position_x, position_y) {
     super(path, position_x, position_y);
