@@ -8,6 +8,9 @@ class MovableObject {
   imageCache = {};
   currentImage = 0;
   otherDirection = false;
+  offset = {};
+  energy = 100;
+  lastHit = 0;
 
   constructor(path, position_x, position_y, width, height) {
     this.path = path;
@@ -28,7 +31,11 @@ class MovableObject {
   }
 
   drawFrame(ctx) {
-    if (this instanceof Character || this instanceof Enemy) {
+    if (
+      this instanceof Character ||
+      this instanceof Enemy ||
+      this instanceof Endboss
+    ) {
       ctx.beginPath();
       ctx.lineWidth = "5";
       ctx.strokeStyle = "blue";
@@ -91,5 +98,23 @@ class MovableObject {
           movableObject.height -
           movableObject.offset.bottom
     );
+  }
+
+  hit() {
+    this.energy -= 5;
+    if (this.isDead(this)) {
+      this.energy = 0;
+    } else {
+      this.lastHit = new Date().getTime();
+    }
+  }
+
+  isHurt() {
+    let timePassed = new Date().getTime() - this.lastHit;
+    return timePassed < 500;
+  }
+
+  isDead() {
+    return this.energy <= 0;
   }
 }

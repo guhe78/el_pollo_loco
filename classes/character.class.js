@@ -52,30 +52,45 @@ class Character extends MovableObject {
     "img/Sharkie/5.Hurt/2.Electric shock/2.png",
     "img/Sharkie/5.Hurt/2.Electric shock/3.png",
   ];
+  IMAGES_DEAD_ELECTRO = [
+    "img/Sharkie/6.dead/2.Electro_shock/1.png",
+    "img/Sharkie/6.dead/2.Electro_shock/2.png",
+    "img/Sharkie/6.dead/2.Electro_shock/3.png",
+    "img/Sharkie/6.dead/2.Electro_shock/4.png",
+    "img/Sharkie/6.dead/2.Electro_shock/5.png",
+    "img/Sharkie/6.dead/2.Electro_shock/6.png",
+    "img/Sharkie/6.dead/2.Electro_shock/7.png",
+    "img/Sharkie/6.dead/2.Electro_shock/8.png",
+    "img/Sharkie/6.dead/2.Electro_shock/9.png",
+    "img/Sharkie/6.dead/2.Electro_shock/10.png",
+  ];
   width;
   height;
   world;
   speed = 10;
-  attackSpeed = 20;
+  attackDistance = 50;
   acceleration = 2.5;
   isAttacking = false;
-  offset = {
-    top: 100,
-    bottom: 50,
-    right: 50,
-    left: 50,
-  };
+  offset = {};
 
   constructor(path, position_x, position_y) {
     super(path, position_x, position_y);
     this.width = 250;
     this.height = 200;
+    this.offset = {
+      top: 100,
+      bottom: 40,
+      right: 50,
+      left: 50,
+    };
 
     this.loadImage();
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_BUBBLE);
+    this.loadImages(this.IMAGES_HURT_ELECTRO);
+    this.loadImages(this.IMAGES_DEAD_ELECTRO);
 
     this.currentAnimation = this.IMAGES_IDLE;
     this.image = this.imageCache[this.IMAGES_IDLE[0]];
@@ -85,8 +100,8 @@ class Character extends MovableObject {
   }
 
   movementControl() {
-    let isMoving = false;
     setInterval(() => {
+      let isMoving = false;
       if (this.world.keyboard.RIGHT && this.position_x < 2600) {
         this.otherDirection = false;
         this.position_x += this.speed;
@@ -107,15 +122,19 @@ class Character extends MovableObject {
         this.position_y += this.speed;
         isMoving = true;
       }
-      if (this.world.keyboard.SPACE && this.isAttacking === false) {
+      if (this.world.keyboard.SPACE) {
         this.applyAttack();
       }
-      isMoving = false;
+      this.changeAnimation(isMoving);
     }, 1000 / 60);
   }
 
   changeAnimation(isMoving) {
-    if (this.world.keyboard.SPACE && this.isAttacking === false) {
+    if (this.isDead()) {
+      this.setAnimation(this.IMAGES_DEAD_ELECTRO);
+    } else if (this.isHurt()) {
+      this.setAnimation(this.IMAGES_HURT_ELECTRO);
+    } else if (this.isAttacking) {
       this.setAnimation(this.IMAGES_ATTACK);
     } else if (isMoving) {
       this.setAnimation(this.IMAGES_SWIM);
@@ -132,16 +151,14 @@ class Character extends MovableObject {
   }
 
   applyAttack() {
+    if (this.isAttacking) return;
     this.isAttacking = true;
     const startPosition = this.position_x;
-    console.log(startPosition);
-    this.position_x += this.attackSpeed;
+    this.position_x += this.attackDistance;
     setTimeout(() => {
       this.position_x = startPosition;
+      this.isAttacking = false;
     }, 1000);
-    console.log(this.position_x);
-    this.isAttacking = false;
-    console.log("-------------------");
   }
 
   getPosition() {

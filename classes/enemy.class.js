@@ -25,19 +25,19 @@ class Enemy extends MovableObject {
   width = 150;
   height = 100;
   randomImagesArray = this.randomImages();
-  offset = {
-    right: 50,
-    left: 50,
-    top: 100,
-    bottom: 50,
-  };
+  offset = {};
 
   constructor(path, position_x, position_y) {
     super(path, position_x, position_y);
     this.loadImage();
     this.loadImages(this.randomImagesArray);
-    this.moveLeft(0.15 + Math.random() * 0.5);
-
+    //this.moveLeft(0.15 + Math.random() * 0.5);
+    this.offset = {
+      top: 5,
+      bottom: 10,
+      right: 5,
+      left: 5,
+    };
     this.currentAnimation = this.randomImagesArray;
     this.image = this.imageCache[this.randomImagesArray[0]];
 

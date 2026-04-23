@@ -32,12 +32,7 @@ class Endboss extends MovableObject {
   width = 500;
   height = 450;
   world;
-  offset = {
-    right: 50,
-    left: 50,
-    top: 100,
-    bottom: 50,
-  };
+  offset = {};
 
   constructor(path, position_x, position_y) {
     super(path, position_x, position_y);
@@ -45,7 +40,12 @@ class Endboss extends MovableObject {
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_DEAD);
-
+    this.offset = {
+      top: 190,
+      bottom: 80,
+      right: 20,
+      left: 20,
+    };
     this.currentAnimation = this.IMAGES_SWIM;
     this.image = this.imageCache[this.IMAGES_SWIM[0]];
 
