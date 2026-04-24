@@ -34,4 +34,9 @@ const level1 = new Level(
     new BackgroundWater("img/Background/Layers/5. Water/D.png", 0),
     new BackgroundWater("img/Background/Layers/5. Water/D.png", 1703),
   ],
+  [
+    new LifeBar("img/Marcadores/Purple/100_ .png", 150, 150),
+    new CoinBar("img/Marcadores/Purple/0_ _1.png", 150, 250),
+    new PoisonBar("img/Marcadores/Purple/0_.png", 150, 350),
+  ],
 );

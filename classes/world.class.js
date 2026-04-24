@@ -45,6 +45,9 @@ class World {
     this.level.enemies.forEach((enemy) => {
       this.addToMap(enemy);
     });
+    this.level.statusBars.forEach((statusBar) => {
+      this.addToMap(statusBar);
+    });
     this.ctx.translate(-this.camera_x, 0);
 
     requestAnimationFrame(() => this.draw());
