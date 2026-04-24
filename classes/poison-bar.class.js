@@ -2,12 +2,12 @@ class PoisonBar extends StatusBar {
   position_x;
   position_y;
   IMAGES_POISONBAR = [
-    "img/Marcadores/Purple/0_.png",
-    "img/Marcadores/Purple/20_.png",
-    "img/Marcadores/Purple/40_.png",
-    "img/Marcadores/Purple/60_.png",
-    "img/Marcadores/Purple/80_.png",
     "img/Marcadores/Purple/100_.png",
+    "img/Marcadores/Purple/80_.png",
+    "img/Marcadores/Purple/60_.png",
+    "img/Marcadores/Purple/40_.png",
+    "img/Marcadores/Purple/20_.png",
+    "img/Marcadores/Purple/0_.png",
   ];
   poisonPercentage = 0;
 

@@ -1,5 +1,5 @@
 class World {
-  character = new Character("img/Sharkie/1.IDLE/1.png", 50, 0);
+  character = new Character("img/Sharkie/1.IDLE/1.png", 50, 100);
   level = level1;
   keyboard;
   camera_x = 0;
@@ -24,6 +24,7 @@ class World {
           console.log("Collision with character");
           this.character.hit();
           console.log("Collision with enemy: ", this.character.energy);
+          this.level.lifeBar.setLifePercentage(this.character.energy);
           if (this.character.isDead(this.character)) {
             console.log("Try again!");
           }
@@ -45,9 +46,9 @@ class World {
     this.level.enemies.forEach((enemy) => {
       this.addToMap(enemy);
     });
-    this.level.statusBars.forEach((statusBar) => {
-      this.addToMap(statusBar);
-    });
+    this.addToMap(this.level.lifeBar);
+    this.addToMap(this.level.poisonBar);
+    this.addToMap(this.level.coinBar);
     this.ctx.translate(-this.camera_x, 0);
 
     requestAnimationFrame(() => this.draw());

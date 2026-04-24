@@ -2,12 +2,12 @@ class CoinBar extends StatusBar {
   position_x;
   position_y;
   IMAGES_COINBAR = [
-    "img/Marcadores/Purple/0_ _1.png",
-    "img/Marcadores/Purple/20_ .png",
-    "img/Marcadores/Purple/40_ _1.png",
-    "img/Marcadores/Purple/60_ _1.png",
-    "img/Marcadores/Purple/80_ _1.png",
     "img/Marcadores/Purple/100__1.png",
+    "img/Marcadores/Purple/80_ _1.png",
+    "img/Marcadores/Purple/60_ _1.png",
+    "img/Marcadores/Purple/40_ _1.png",
+    "img/Marcadores/Purple/20_ .png",
+    "img/Marcadores/Purple/0_ _1.png",
   ];
   coinPercentage = 0;
 

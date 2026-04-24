@@ -9,25 +9,6 @@ class MovableObject extends DrawableObject {
     super(path, position_x, position_y, width, height);
   }
 
-  drawFrame(ctx) {
-    if (
-      this instanceof Character ||
-      this instanceof Enemy ||
-      this instanceof Endboss
-    ) {
-      ctx.beginPath();
-      ctx.lineWidth = "5";
-      ctx.strokeStyle = "blue";
-      ctx.roundRect(
-        this.position_x,
-        this.position_y,
-        this.width,
-        this.height,
-        [100],
-      );
-    }
-  }
-
   playAnimation(images) {
     const i = this.currentImage % images.length;
     const path = images[i];

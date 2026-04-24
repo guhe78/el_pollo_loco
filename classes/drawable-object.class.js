@@ -37,4 +37,23 @@ class DrawableObject {
       this.height,
     );
   }
+
+  drawFrame(ctx) {
+    if (
+      this instanceof Character ||
+      this instanceof Enemy ||
+      this instanceof Endboss
+    ) {
+      ctx.beginPath();
+      ctx.lineWidth = "5";
+      ctx.strokeStyle = "blue";
+      ctx.roundRect(
+        this.position_x,
+        this.position_y,
+        this.width,
+        this.height,
+        [100],
+      );
+    }
+  }
 }
