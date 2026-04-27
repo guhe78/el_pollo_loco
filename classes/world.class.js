@@ -1,5 +1,10 @@
 class World {
   character = new Character("img/Sharkie/1.IDLE/1.png", 50, 100);
+  statusBars = [
+    new LifeBar("img/Marcadores/Purple/100_ .png", 10, 0),
+    new PoisonBar("img/Marcadores/Purple/0_.png", 10, 80),
+    new CoinBar("img/Marcadores/Purple/0_ _1.png", 10, 40),
+  ];
   level = level1;
   keyboard;
   camera_x = 0;
@@ -21,10 +26,8 @@ class World {
     setInterval(() => {
       this.level.enemies.forEach((enemy) => {
         if (this.character.isColliding(enemy)) {
-          console.log("Collision with character");
           this.character.hit();
-          console.log("Collision with enemy: ", this.character.energy);
-          this.level.lifeBar.setLifePercentage(this.character.energy);
+          this.statusBars[0].setLifePercentage(this.character.energy);
           if (this.character.isDead(this.character)) {
             console.log("Try again!");
           }
@@ -36,33 +39,33 @@ class World {
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
-    this.level.backgroundWater.forEach((water) => {
-      this.addToMap(water);
-    });
-    this.level.backgrounds.forEach((background) => {
-      this.addToMap(background);
-    });
+    this.drawArrayToMap(this.level.backgroundWater);
+    this.drawArrayToMap(this.level.backgrounds);
+    this.ctx.translate(-this.camera_x, 0);
+    this.drawArrayToMap(this.statusBars);
+    this.ctx.translate(this.camera_x, 0);
+    this.drawArrayToMap(this.level.enemies);
     this.addToMap(this.character);
-    this.level.enemies.forEach((enemy) => {
-      this.addToMap(enemy);
-    });
-    this.addToMap(this.level.lifeBar);
-    this.addToMap(this.level.poisonBar);
-    this.addToMap(this.level.coinBar);
     this.ctx.translate(-this.camera_x, 0);
 
     requestAnimationFrame(() => this.draw());
   }
 
-  addToMap(movableObject) {
-    if (movableObject.otherDirection) {
-      this.flipImage(movableObject);
+  drawArrayToMap(array) {
+    array.forEach((element) => {
+      this.addToMap(element);
+    });
+  }
+
+  addToMap(object) {
+    if (object.otherDirection) {
+      this.flipImage(object);
     }
-    movableObject.draw(this.ctx);
-    movableObject.drawFrame(this.ctx);
+    object.draw(this.ctx);
+    //movableObject.drawFrame(this.ctx);
     this.ctx.stroke();
-    if (movableObject.otherDirection) {
-      this.flipImageBack(movableObject);
+    if (object.otherDirection) {
+      this.flipImageBack(object);
     }
   }
 

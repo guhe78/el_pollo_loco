@@ -160,8 +160,4 @@ class Character extends MovableObject {
       this.isAttacking = false;
     }, 1000);
   }
-
-  getPosition() {
-    console.log(`x: ${this.position_x} y: ${this.position_y}`);
-  }
 }

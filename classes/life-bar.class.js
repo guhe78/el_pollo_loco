@@ -23,4 +23,8 @@ class LifeBar extends StatusBar {
   setLifePercentage(lifePercentage) {
     this.setPercentage(lifePercentage, this.IMAGES_LIFEBAR);
   }
+
+  setPositionX(position_x) {
+    this.position_x = position_x;
+  }
 }
