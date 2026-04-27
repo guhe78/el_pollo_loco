@@ -71,7 +71,10 @@ class Character extends MovableObject {
   attackDistance = 50;
   acceleration = 2.5;
   isAttacking = false;
+  isThrowing = false;
   offset = {};
+  endYUp = -90;
+  endYDown = 320;
 
   constructor(path, position_x, position_y) {
     super(path, position_x, position_y);
@@ -114,16 +117,19 @@ class Character extends MovableObject {
         this.world.camera_x = -this.position_x;
         isMoving = true;
       }
-      if (this.world.keyboard.UP) {
+      if (this.world.keyboard.UP && this.position_y > this.endYUp) {
         this.position_y -= this.speed;
         isMoving = true;
       }
-      if (this.world.keyboard.DOWN) {
+      if (this.world.keyboard.DOWN && this.position_y < this.endYDown) {
         this.position_y += this.speed;
         isMoving = true;
       }
       if (this.world.keyboard.SPACE) {
         this.applyAttack();
+      }
+      if (this.world.keyboard.THROW) {
+        ThrowableObject.throw();
       }
       this.changeAnimation(isMoving);
     }, 1000 / 60);
@@ -136,6 +142,8 @@ class Character extends MovableObject {
       this.setAnimation(this.IMAGES_HURT_ELECTRO);
     } else if (this.isAttacking) {
       this.setAnimation(this.IMAGES_ATTACK);
+    } else if (this.isThrowing) {
+      this.setAnimation(this.IMAGES_BUBBLE);
     } else if (isMoving) {
       this.setAnimation(this.IMAGES_SWIM);
     } else {

@@ -4,6 +4,8 @@ class MovableObject extends DrawableObject {
   offset = {};
   energy = 100;
   lastHit = 0;
+  speedY = 0;
+  acceleration = 2.5;
 
   constructor(path, position_x, position_y, width, height) {
     super(path, position_x, position_y, width, height);
@@ -63,5 +65,22 @@ class MovableObject extends DrawableObject {
 
   isDead() {
     return this.energy <= 0;
+  }
+
+  applyGravitiy() {
+    setInterval(() => {
+      if (this.isBeneathWaterSurface() || this.speedY > -40) {
+        this.position_y += this.speedY;
+        this.speedY -= this.acceleration;
+      }
+    }, 25);
+  }
+
+  isBeneathWaterSurface() {
+    if (this instanceof ThrowableObject) {
+      return true;
+    } else {
+      return this.position_y > 0;
+    }
   }
 }

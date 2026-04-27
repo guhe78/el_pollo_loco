@@ -23,6 +23,9 @@ document.addEventListener("keydown", (event) => {
   if (event.code === "ArrowDown") {
     keyboard.DOWN = true;
   }
+  if (event.code === "KeyT") {
+    keyboard.THROW = true;
+  }
 });
 
 document.addEventListener("keyup", (event) => {
@@ -40,5 +43,8 @@ document.addEventListener("keyup", (event) => {
   }
   if (event.code === "ArrowDown") {
     keyboard.DOWN = false;
+  }
+  if (event.code === "KeyT") {
+    keyboard.THROW = false;
   }
 });
