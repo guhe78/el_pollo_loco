@@ -88,18 +88,22 @@ class Character extends MovableObject {
     };
 
     this.loadImage();
-    this.loadImages(this.IMAGES_IDLE);
-    this.loadImages(this.IMAGES_SWIM);
-    this.loadImages(this.IMAGES_ATTACK);
-    this.loadImages(this.IMAGES_BUBBLE);
-    this.loadImages(this.IMAGES_HURT_ELECTRO);
-    this.loadImages(this.IMAGES_DEAD_ELECTRO);
+    this.loadCharacterImages();
 
     this.currentAnimation = this.IMAGES_IDLE;
     this.image = this.imageCache[this.IMAGES_IDLE[0]];
 
     this.movementControl();
     this.startAnimation(() => this.currentAnimation, 1000 / 25);
+  }
+
+  loadCharacterImages() {
+    this.loadImages(this.IMAGES_IDLE);
+    this.loadImages(this.IMAGES_SWIM);
+    this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_BUBBLE);
+    this.loadImages(this.IMAGES_HURT_ELECTRO);
+    this.loadImages(this.IMAGES_DEAD_ELECTRO);
   }
 
   movementControl() {
@@ -129,7 +133,10 @@ class Character extends MovableObject {
         this.applyAttack();
       }
       if (this.world.keyboard.THROW) {
-        ThrowableObject.throw();
+        this.isThrowing = true;
+        setTimeout(() => {
+          this.isThrowing = false;
+        }, 300);
       }
       this.changeAnimation(isMoving);
     }, 1000 / 60);

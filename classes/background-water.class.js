@@ -5,6 +5,6 @@ class BackgroundWater extends MovableObject {
     this.width = 3840 / 2.25;
     this.height = 1080 / 2.25;
     this.loadImage();
-    this.moveObject(0.1);
+    //this.moveObject(0.1);
   }
 }

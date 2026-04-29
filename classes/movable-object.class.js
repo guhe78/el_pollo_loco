@@ -4,8 +4,9 @@ class MovableObject extends DrawableObject {
   offset = {};
   energy = 100;
   lastHit = 0;
-  speedY = 0;
-  acceleration = 2.5;
+  speedY = 20;
+  speedX = 40;
+  acceleration = 5;
 
   constructor(path, position_x, position_y, width, height) {
     super(path, position_x, position_y, width, height);
@@ -28,9 +29,9 @@ class MovableObject extends DrawableObject {
     }, speed);
   }
 
-  moveObject(speed, objectWidth) {
-    let positionStart = this.position_x;
-  }
+  // moveObject(speed, objectWidth) {
+  //   let positionStart = this.position_x;
+  // }
 
   isColliding(movableObject) {
     return (
@@ -71,9 +72,11 @@ class MovableObject extends DrawableObject {
     setInterval(() => {
       if (this.isBeneathWaterSurface() || this.speedY > -40) {
         this.position_y += this.speedY;
+        this.position_x += this.speedX;
+
         this.speedY -= this.acceleration;
       }
-    }, 25);
+    }, 1000 / 25);
   }
 
   isBeneathWaterSurface() {

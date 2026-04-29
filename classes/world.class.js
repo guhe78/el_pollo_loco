@@ -5,7 +5,7 @@ class World {
     new PoisonBar("img/Marcadores/Purple/0_.png", 10, 80),
     new CoinBar("img/Marcadores/Purple/0_ _1.png", 10, 40),
   ];
-  throwableObject = new ThrowableObject();
+  throwableObjects = [];
   level = level1;
   keyboard;
   camera_x = 0;
@@ -33,10 +33,10 @@ class World {
   checkThrowObjects() {
     if (this.keyboard.THROW) {
       let bubble = new ThrowableObject(
-        this.character.position_x,
-        this.character.position_y,
+        this.character.position_x + 220,
+        this.character.position_y + 100,
       );
-      this.throwableObject.push(bubble);
+      this.throwableObjects.push(bubble);
     }
   }
 
@@ -62,7 +62,7 @@ class World {
     this.ctx.translate(this.camera_x, 0);
     this.drawArrayToMap(this.level.enemies);
     this.addToMap(this.character);
-    this.addToMap(this.throwableObject);
+    this.drawArrayToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
 
     requestAnimationFrame(() => this.draw());
