@@ -158,13 +158,6 @@ class Character extends MovableObject {
     }
   }
 
-  setAnimation(images) {
-    if (this.currentAnimation !== images) {
-      this.currentAnimation = images;
-      this.currentImage = 0;
-    }
-  }
-
   applyAttack() {
     if (this.isAttacking) return;
     this.isAttacking = true;

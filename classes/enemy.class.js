@@ -22,6 +22,23 @@ class Enemy extends MovableObject {
       "img/Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim5.png",
     ],
   ];
+  IMAGES_DIE = [
+    [
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 1 (can animate by going up).png",
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 2 (can animate by going up).png",
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 3 (can animate by going up).png",
+    ],
+    [
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/2.png",
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/2.3.png",
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/2.2.png",
+    ],
+    [
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/3.png",
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/3.3.png",
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/3.2.png",
+    ],
+  ];
   width = 150;
   height = 100;
   randomImagesArray = this.randomImages();
@@ -52,9 +69,5 @@ class Enemy extends MovableObject {
 
   randomImages() {
     return this.IMAGES_SWIM[parseInt(Math.random() * 3)];
-  }
-
-  eat() {
-    console.log("Mjamm mjamm");
   }
 }

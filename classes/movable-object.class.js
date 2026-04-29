@@ -50,6 +50,13 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  setAnimation(images) {
+    if (this.currentAnimation !== images) {
+      this.currentAnimation = images;
+      this.currentImage = 0;
+    }
+  }
+
   hit() {
     this.energy -= 5;
     if (this.isDead(this)) {
