@@ -48,6 +48,8 @@ class Enemy extends MovableObject {
   randomImagesSwimArray = this.IMAGES_SWIM[this.randomElement];
   randomImagesDieArray = this.IMAGES_DIE[this.randomElement];
   offset = {};
+  deathStartedAt = null;
+  deathDuration = 500;
 
   constructor() {
     super();
@@ -74,12 +76,25 @@ class Enemy extends MovableObject {
     this.loadImages(this.randomImagesDieArray);
   }
 
-  changeAnimation(isMoving) {
+  changeAnimation() {
     if (this.isDead()) {
-      this.setAnimation(this.randomImagesDieArray);
-    } else if (isMoving) {
+      this.startDeath();
+    } else {
       this.setAnimation(this.randomImagesSwimArray);
     }
+  }
+
+  startDeath() {
+    if (this.deathStartedAt !== null) return;
+    this.deathStartedAt = Date.now();
+    this.setAnimation(this.randomImagesDieArray);
+  }
+
+  shouldBeRemoved() {
+    return (
+      this.deathStartedAt !== null &&
+      Date.now() - this.deathStartedAt >= this.deathDuration
+    );
   }
 
   moveLeft(speed) {

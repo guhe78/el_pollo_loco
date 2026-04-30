@@ -40,11 +40,9 @@ class World {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         if (this.character.isAttacking) {
-          console.log("Slap slap");
           enemy.hit(100);
-          console.log(enemy.energy);
-          if (enemy.isDead(enemy)) {
-            enemy.changeAnimation(false);
+          if (enemy.isDead()) {
+            enemy.startDeath();
           }
         } else {
           this.character.hit(5);
@@ -54,9 +52,12 @@ class World {
           }
         }
       }
+      enemy.changeAnimation();
     });
 
-    this.level.enemies = this.level.enemies.filter((enemy) => !enemy.isDead());
+    this.level.enemies = this.level.enemies.filter(
+      (enemy) => !enemy.shouldBeRemoved(),
+    );
   }
 
   draw() {
@@ -68,6 +69,7 @@ class World {
     this.drawArrayToMap(this.statusBars);
     this.ctx.translate(this.camera_x, 0);
     this.drawArrayToMap(this.level.enemies);
+    this.drawArrayToMap(this.level.endboss);
     this.addToMap(this.character);
     this.drawArrayToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);

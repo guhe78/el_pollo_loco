@@ -1,10 +1,6 @@
 const level1 = new Level(
-  [
-    new Enemy(),
-    new Enemy(),
-    new Enemy(),
-    new Endboss("img/Enemy/3 Final Enemy/2.floating/1.png", 2500, 0),
-  ],
+  [new Enemy(), new Enemy(), new Enemy()],
+  [new Endboss("img/Enemy/3 Final Enemy/2.floating/1.png", 2500, 0)],
   [
     new Barrier("img/Background/Barrier/1.png", 0, 0, 350, 300),
     new Barrier("img/Background/Barrier/2.png", 200, 0, 350, 300),
