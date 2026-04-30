@@ -1,20 +1,8 @@
 const level1 = new Level(
   [
-    new Enemy(
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png",
-      400 + Math.random() * 200,
-      Math.random() * 420,
-    ),
-    new Enemy(
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png",
-      400 + Math.random() * 200,
-      Math.random() * 420,
-    ),
-    new Enemy(
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim1.png",
-      400 + Math.random() * 200,
-      Math.random() * 420,
-    ),
+    new Enemy(),
+    new Enemy(),
+    new Enemy(),
     new Endboss("img/Enemy/3 Final Enemy/2.floating/1.png", 2500, 0),
   ],
   [

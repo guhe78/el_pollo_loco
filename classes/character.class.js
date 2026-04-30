@@ -64,11 +64,14 @@ class Character extends MovableObject {
     "img/Sharkie/6.dead/2.Electro_shock/9.png",
     "img/Sharkie/6.dead/2.Electro_shock/10.png",
   ];
+  path = "img/Sharkie/1.IDLE/1.png";
+  position_x = 50;
+  position_y = 150;
   width;
   height;
   world;
   speed = 10;
-  attackDistance = 50;
+  attackDistance = 100;
   acceleration = 2.5;
   isAttacking = false;
   isThrowing = false;
@@ -76,8 +79,8 @@ class Character extends MovableObject {
   endYUp = -90;
   endYDown = 320;
 
-  constructor(path, position_x, position_y) {
-    super(path, position_x, position_y);
+  constructor() {
+    super();
     this.width = 250;
     this.height = 200;
     this.offset = {

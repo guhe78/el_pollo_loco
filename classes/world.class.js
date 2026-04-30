@@ -1,5 +1,5 @@
 class World {
-  character = new Character("img/Sharkie/1.IDLE/1.png", 50, 150);
+  character = new Character();
   statusBars = [new LifeBar(), new PoisonBar(), new CoinBar()];
   throwableObjects = [];
   level = level1;
@@ -41,8 +41,13 @@ class World {
       if (this.character.isColliding(enemy)) {
         if (this.character.isAttacking) {
           console.log("Slap slap");
+          enemy.hit(100);
+          console.log(enemy.energy);
+          if (enemy.isDead(enemy)) {
+            enemy.changeAnimation(false);
+          }
         } else {
-          this.character.hit();
+          this.character.hit(5);
           this.statusBars[0].setLifePercentage(this.character.energy);
           if (this.character.isDead(this.character)) {
             console.log("Try again!");
@@ -50,6 +55,8 @@ class World {
         }
       }
     });
+
+    this.level.enemies = this.level.enemies.filter((enemy) => !enemy.isDead());
   }
 
   draw() {

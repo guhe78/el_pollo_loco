@@ -57,8 +57,8 @@ class MovableObject extends DrawableObject {
     }
   }
 
-  hit() {
-    this.energy -= 5;
+  hit(damagePoints) {
+    this.energy -= damagePoints;
     if (this.isDead(this)) {
       this.energy = 0;
     } else {
