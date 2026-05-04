@@ -9,12 +9,13 @@ class CoinBar extends StatusBar {
     "img/Marcadores/Purple/20_ .png",
     "img/Marcadores/Purple/0_ _1.png",
   ];
+  path = this.IMAGES_COINBAR[0];
+  position_x = 10;
+  position_y = 40;
   coinPercentage = 0;
 
-  constructor(path, position_x, position_y) {
-    super(path);
-    this.position_x = position_x;
-    this.position_y = position_y;
+  constructor() {
+    super();
     this.loadImage();
     this.loadImages(this.IMAGES_COINBAR);
     this.setPercentage(this.coinPercentage, this.IMAGES_COINBAR);

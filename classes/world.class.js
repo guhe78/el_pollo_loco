@@ -1,10 +1,6 @@
 class World {
-  character = new Character("img/Sharkie/1.IDLE/1.png", 50, 0);
-  statusBars = [
-    new LifeBar("img/Marcadores/Purple/100_ .png", 10, 0),
-    new PoisonBar("img/Marcadores/Purple/0_.png", 10, 80),
-    new CoinBar("img/Marcadores/Purple/0_ _1.png", 10, 40),
-  ];
+  character = new Character();
+  statusBars = [new LifeBar(), new PoisonBar(), new CoinBar()];
   throwableObjects = [];
   level = level1;
   keyboard;
@@ -43,13 +39,25 @@ class World {
   checkCollision() {
     this.level.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
-        this.character.hit();
-        this.statusBars[0].setLifePercentage(this.character.energy);
-        if (this.character.isDead(this.character)) {
-          console.log("Try again!");
+        if (this.character.isAttacking) {
+          enemy.hit(100);
+          if (enemy.isDead()) {
+            enemy.startDeath();
+          }
+        } else {
+          this.character.hit(5);
+          this.statusBars[0].setLifePercentage(this.character.energy);
+          if (this.character.isDead(this.character)) {
+            console.log("Try again!");
+          }
         }
       }
+      enemy.changeAnimation();
     });
+
+    this.level.enemies = this.level.enemies.filter(
+      (enemy) => !enemy.shouldBeRemoved(),
+    );
   }
 
   draw() {
@@ -61,6 +69,7 @@ class World {
     this.drawArrayToMap(this.statusBars);
     this.ctx.translate(this.camera_x, 0);
     this.drawArrayToMap(this.level.enemies);
+    this.drawArrayToMap(this.level.endboss);
     this.addToMap(this.character);
     this.drawArrayToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);

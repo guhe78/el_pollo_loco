@@ -50,8 +50,15 @@ class MovableObject extends DrawableObject {
     );
   }
 
-  hit() {
-    this.energy -= 5;
+  setAnimation(images) {
+    if (this.currentAnimation !== images) {
+      this.currentAnimation = images;
+      this.currentImage = 0;
+    }
+  }
+
+  hit(damagePoints) {
+    this.energy -= damagePoints;
     if (this.isDead(this)) {
       this.energy = 0;
     } else {

@@ -22,15 +22,42 @@ class Enemy extends MovableObject {
       "img/Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim5.png",
     ],
   ];
+  IMAGES_DIE = [
+    [
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 1 (can animate by going up).png",
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 2 (can animate by going down to the floor after the Fin Slap attack).png",
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 3 (can animate by going down to the floor after the Fin Slap attack).png",
+    ],
+    [
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/2.png",
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/2.3.png",
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/2.2.png",
+    ],
+    [
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/3.png",
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/3.3.png",
+      "img/Enemy/1.Puffer fish (3 color options)/4.DIE/3.2.png",
+    ],
+  ];
+  path;
+  position_x;
+  position_y;
   width = 150;
   height = 100;
-  randomImagesArray = this.randomImages();
+  randomElement = parseInt(Math.random() * this.IMAGES_SWIM.length);
+  randomImagesSwimArray = this.IMAGES_SWIM[this.randomElement];
+  randomImagesDieArray = this.IMAGES_DIE[this.randomElement];
   offset = {};
+  deathStartedAt = null;
+  deathDuration = 500;
 
-  constructor(path, position_x, position_y) {
-    super(path, position_x, position_y);
+  constructor() {
+    super();
+    this.path = this.IMAGES_SWIM[this.randomElement][0];
+    this.position_x = 400 + Math.random() * 200;
+    this.position_y = Math.random() * 420;
     this.loadImage();
-    this.loadImages(this.randomImagesArray);
+    this.loadEnemyImages();
     //this.moveLeft(0.15 + Math.random() * 0.5);
     this.offset = {
       top: 5,
@@ -38,23 +65,41 @@ class Enemy extends MovableObject {
       right: 5,
       left: 5,
     };
-    this.currentAnimation = this.randomImagesArray;
-    this.image = this.imageCache[this.randomImagesArray[0]];
+    this.currentAnimation = this.randomImagesSwimArray;
+    this.image = this.imageCache[this.randomImagesSwimArray[0]];
 
     this.startAnimation(() => this.currentAnimation, 1000 / 25);
+  }
+
+  loadEnemyImages() {
+    this.loadImages(this.randomImagesSwimArray);
+    this.loadImages(this.randomImagesDieArray);
+  }
+
+  changeAnimation() {
+    if (this.isDead()) {
+      this.startDeath();
+    } else {
+      this.setAnimation(this.randomImagesSwimArray);
+    }
+  }
+
+  startDeath() {
+    if (this.deathStartedAt !== null) return;
+    this.deathStartedAt = Date.now();
+    this.setAnimation(this.randomImagesDieArray);
+  }
+
+  shouldBeRemoved() {
+    return (
+      this.deathStartedAt !== null &&
+      Date.now() - this.deathStartedAt >= this.deathDuration
+    );
   }
 
   moveLeft(speed) {
     setInterval(() => {
       this.position_x -= speed;
     }, 1000 / 60);
-  }
-
-  randomImages() {
-    return this.IMAGES_SWIM[parseInt(Math.random() * 3)];
-  }
-
-  eat() {
-    console.log("Mjamm mjamm");
   }
 }
