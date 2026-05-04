@@ -76,27 +76,6 @@ class PufferFish extends Enemy {
     this.loadImages(this.randomImagesDieArray);
   }
 
-  changeAnimation() {
-    if (this.isDead()) {
-      this.startDeath();
-    } else {
-      this.setAnimation(this.randomImagesSwimArray);
-    }
-  }
-
-  startDeath() {
-    if (this.deathStartedAt !== null) return;
-    this.deathStartedAt = Date.now();
-    this.setAnimation(this.randomImagesDieArray);
-  }
-
-  shouldBeRemoved() {
-    return (
-      this.deathStartedAt !== null &&
-      Date.now() - this.deathStartedAt >= this.deathDuration
-    );
-  }
-
   moveLeft(speed) {
     setInterval(() => {
       this.position_x -= speed;
