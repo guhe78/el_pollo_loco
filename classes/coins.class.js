@@ -1,0 +1,1 @@
+class Coins extends DrawableObject {}
