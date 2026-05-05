@@ -2,6 +2,7 @@ class World {
   character = new Character();
   statusBars = [new LifeBar(), new PoisonBar(), new CoinBar()];
   throwableObjects = [];
+  lastThrowAt = 0;
   level = level1;
   keyboard;
   camera_x = 0;
@@ -22,18 +23,16 @@ class World {
   run() {
     setInterval(() => {
       this.checkCollision();
-      this.checkThrowObjects();
+      this.checkBubbleCollision();
     }, 200);
   }
 
-  checkThrowObjects() {
-    if (this.keyboard.THROW) {
-      let bubble = new ThrowableObject(
-        this.character.position_x + 220,
-        this.character.position_y + 100,
-      );
-      this.throwableObjects.push(bubble);
-    }
+  spawnBubble() {
+    let bubble = new ThrowableObject(
+      this.character.position_x + 220,
+      this.character.position_y + 100,
+    );
+    this.throwableObjects.push(bubble);
   }
 
   checkCollision() {
@@ -42,7 +41,7 @@ class World {
         if (this.character.isAttacking) {
           enemy.hit(100);
           if (enemy.isDead()) {
-            enemy.startDeath();
+            enemy.startDeath(enemy.randomImagesDieArray);
           }
         } else {
           this.character.hit(5);
@@ -52,12 +51,18 @@ class World {
           }
         }
       }
-      enemy.changeAnimation();
+      enemy.changeAnimation(enemy.randomImagesSwimArray);
     });
 
     this.level.enemies = this.level.enemies.filter(
       (enemy) => !enemy.shouldBeRemoved(),
     );
+  }
+
+  checkBubbleCollision() {
+    this.throwableObjects.forEach((object) => {
+      if (this.level.endboss.isColliding(object)) console.log("hit");
+    });
   }
 
   draw() {
@@ -69,7 +74,7 @@ class World {
     this.drawArrayToMap(this.statusBars);
     this.ctx.translate(this.camera_x, 0);
     this.drawArrayToMap(this.level.enemies);
-    this.drawArrayToMap(this.level.endboss);
+    this.addToMap(this.level.endboss);
     this.addToMap(this.character);
     this.drawArrayToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);

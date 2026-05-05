@@ -51,11 +51,11 @@ class PufferFish extends Enemy {
   deathStartedAt = null;
   deathDuration = 500;
 
-  constructor() {
+  constructor(position_x, position_y) {
     super();
     this.path = this.IMAGES_SWIM[this.randomElement][0];
-    this.position_x = 400 + Math.random() * 200;
-    this.position_y = Math.random() * 420;
+    this.position_x = position_x; //400 + Math.random() * 200;
+    this.position_y = position_y; //Math.random() * 420;
     this.loadImage();
     this.loadEnemyImages();
     //this.moveLeft(0.15 + Math.random() * 0.5);
@@ -68,7 +68,7 @@ class PufferFish extends Enemy {
     this.currentAnimation = this.randomImagesSwimArray;
     this.image = this.imageCache[this.randomImagesSwimArray[0]];
 
-    this.startAnimation(() => this.currentAnimation, 1000 / 25);
+    this.startAnimation(() => this.currentAnimation, 20);
   }
 
   loadEnemyImages() {

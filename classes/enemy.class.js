@@ -3,18 +3,18 @@ class Enemy extends MovableObject {
     super(path, position_x, position_y);
   }
 
-  changeAnimation() {
+  changeAnimation(imageArray) {
     if (this.isDead()) {
       this.startDeath();
     } else {
-      this.setAnimation(this.randomImagesSwimArray);
+      this.setAnimation(imageArray);
     }
   }
 
-  startDeath() {
+  startDeath(imageArray) {
     if (this.deathStartedAt !== null) return;
     this.deathStartedAt = Date.now();
-    this.setAnimation(this.randomImagesDieArray);
+    this.setAnimation(imageArray);
   }
 
   shouldBeRemoved() {

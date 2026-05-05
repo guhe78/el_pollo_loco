@@ -29,8 +29,8 @@ class Endboss extends Enemy {
     "img/Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 9.png",
     "img/Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png",
   ];
-  width = 500;
-  height = 450;
+  width = 300;
+  height = 250;
   world;
   offset = {};
 
@@ -49,6 +49,6 @@ class Endboss extends Enemy {
     this.currentAnimation = this.IMAGES_SWIM;
     this.image = this.imageCache[this.IMAGES_SWIM[0]];
 
-    this.startAnimation(() => this.currentAnimation, 1000 / 25);
+    this.startAnimation(() => this.currentAnimation, 200);
   }
 }

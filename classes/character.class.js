@@ -97,7 +97,7 @@ class Character extends MovableObject {
     this.image = this.imageCache[this.IMAGES_IDLE[0]];
 
     this.movementControl();
-    this.startAnimation(() => this.currentAnimation, 1000 / 25);
+    this.startAnimation(() => this.currentAnimation, 100);
   }
 
   loadCharacterImages() {
@@ -112,16 +112,12 @@ class Character extends MovableObject {
   movementControl() {
     setInterval(() => {
       let isMoving = false;
-      if (this.world.keyboard.RIGHT && this.position_x < 2600) {
-        this.otherDirection = false;
-        this.position_x += this.speed;
-        this.world.camera_x = -this.position_x;
+      if (this.world.keyboard.RIGHT && this.position_x < 3000) {
+        this.moveRight();
         isMoving = true;
       }
       if (this.world.keyboard.LEFT && this.position_x > 0) {
-        this.otherDirection = true;
-        this.position_x -= this.speed;
-        this.world.camera_x = -this.position_x;
+        this.moveLeft();
         isMoving = true;
       }
       if (this.world.keyboard.UP && this.position_y > this.endYUp) {
@@ -133,13 +129,10 @@ class Character extends MovableObject {
         isMoving = true;
       }
       if (this.world.keyboard.SPACE) {
-        this.applyAttack();
+        this.applySlapAttack();
       }
-      if (this.world.keyboard.THROW) {
-        this.isThrowing = true;
-        setTimeout(() => {
-          this.isThrowing = false;
-        }, 300);
+      if (this.world.keyboard.THROW && !this.isThrowing) {
+        this.applyBubbleAttack();
       }
       this.changeAnimation(isMoving);
     }, 1000 / 60);
@@ -161,14 +154,43 @@ class Character extends MovableObject {
     }
   }
 
-  applyAttack() {
+  moveRight() {
+    this.otherDirection = false;
+    this.position_x += this.speed;
+    this.world.camera_x = -this.position_x;
+  }
+
+  moveLeft() {
+    this.otherDirection = true;
+    this.position_x -= this.speed;
+    this.world.camera_x = -this.position_x;
+  }
+
+  applySlapAttack() {
     if (this.isAttacking) return;
     this.isAttacking = true;
-    const startPosition = this.position_x;
+    const animationDuration = this.calculateAnimationDuration(
+      this.IMAGES_ATTACK,
+    );
     this.position_x += this.attackDistance;
     setTimeout(() => {
-      this.position_x = startPosition;
+      this.position_x -= this.attackDistance;
       this.isAttacking = false;
-    }, 1000);
+    }, animationDuration);
+  }
+
+  applyBubbleAttack() {
+    this.isThrowing = true;
+    const throwAnimationDuration = this.calculateAnimationDuration(
+      this.IMAGES_BUBBLE,
+    );
+    setTimeout(() => {
+      this.world.spawnBubble();
+      this.isThrowing = false;
+    }, throwAnimationDuration);
+  }
+
+  calculateAnimationDuration(imageArray) {
+    return imageArray.length * (1000 / 25);
   }
 }
