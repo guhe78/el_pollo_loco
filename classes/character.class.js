@@ -78,6 +78,7 @@ class Character extends MovableObject {
   offset = {};
   endYUp = -90;
   endYDown = 320;
+  animationSpeed = 100;
 
   constructor() {
     super();
@@ -191,6 +192,6 @@ class Character extends MovableObject {
   }
 
   calculateAnimationDuration(imageArray) {
-    return imageArray.length * (1000 / 25);
+    return imageArray.length * this.animationSpeed;
   }
 }
