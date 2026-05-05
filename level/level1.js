@@ -1,6 +1,9 @@
+const enemiesCount = 10;
+const firstEnemyX = 500;
+const lastEnemyX = 2300;
 const level1 = new Level(
-  createNormalEnemies(10),
-  [new Endboss("img/Enemy/3 Final Enemy/2.floating/1.png", 2500, 0)],
+  createEnemies(10),
+  new Endboss("img/Enemy/3 Final Enemy/2.floating/1.png", 3000, 100),
   [
     new Barrier("img/Background/Barrier/1.png", 0, 0, 350, 300),
     new Barrier("img/Background/Barrier/2.png", 200, 0, 350, 300),
@@ -20,14 +23,16 @@ const level1 = new Level(
   ],
 );
 
-function createNormalEnemies(number) {
+function createEnemies(count) {
   let enemies = [];
-  for (i = 0; i < number; i++) {
-    let random = randomNumber(2);
-    if (random === 0) {
-      enemies.push(new PufferFish());
+  let spacing = (lastEnemyX - firstEnemyX) / count - 1;
+  for (i = 0; i < count; i++) {
+    const position_x = firstEnemyX + i * spacing + randomNumber(120) - 60;
+    const position_y = randomNumber(420);
+    if (randomNumber(2) === 0) {
+      enemies.push(new PufferFish(position_x, position_y));
     } else {
-      enemies.push(new JellyFish());
+      enemies.push(new JellyFish(position_x, position_y));
     }
   }
   return enemies;
