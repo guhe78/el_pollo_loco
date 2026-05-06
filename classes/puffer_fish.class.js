@@ -1,25 +1,25 @@
 class PufferFish extends Enemy {
   IMAGES_SWIM = [
     [
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png",
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim2.png",
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim3.png",
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim4.png",
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim5.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition1.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition2.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition3.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition4.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition5.png",
     ],
     [
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim1.png",
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim2.png",
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim3.png",
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim4.png",
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/2.swim5.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition1.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition2.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition3.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition4.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition5.png",
     ],
     [
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim1.png",
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim2.png",
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim3.png",
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim4.png",
-      "img/Enemy/1.Puffer fish (3 color options)/1.Swim/3.swim5.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition1.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition2.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition3.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition4.png",
+      "img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition5.png",
     ],
   ];
   IMAGES_DIE = [
@@ -50,15 +50,27 @@ class PufferFish extends Enemy {
   offset = {};
   deathStartedAt = null;
   deathDuration = 500;
+  centerX;
+  centerY;
+  radiusX;
+  radiusY;
+  angle;
+  angularSpeed;
 
   constructor(position_x, position_y) {
     super();
     this.path = this.IMAGES_SWIM[this.randomElement][0];
-    this.position_x = position_x; //400 + Math.random() * 200;
-    this.position_y = position_y; //Math.random() * 420;
+    this.position_x = position_x;
+    this.position_y = position_y;
+    this.centerX = position_x;
+    this.centerY = position_y;
+    this.radiusX = 80 + Math.random() * 100;
+    this.radiusY = 40 + Math.random() * 100;
+    this.angle = Math.random() * Math.PI * 2;
+    this.angularSpeed = Math.random() * 0.03;
     this.loadImage();
     this.loadEnemyImages();
-    this.moveLeft(0.15 + Math.random() * 0.5);
+    this.moveAround();
     this.offset = {
       top: 5,
       bottom: 10,
@@ -68,7 +80,7 @@ class PufferFish extends Enemy {
     this.currentAnimation = this.randomImagesSwimArray;
     this.image = this.imageCache[this.randomImagesSwimArray[0]];
 
-    this.startAnimation(() => this.currentAnimation, 20);
+    this.startAnimation(() => this.currentAnimation, 200);
   }
 
   loadEnemyImages() {
@@ -76,9 +88,11 @@ class PufferFish extends Enemy {
     this.loadImages(this.randomImagesDieArray);
   }
 
-  moveLeft(speed) {
+  moveAround() {
     setInterval(() => {
-      this.position_x -= speed;
+      this.angle += this.angularSpeed;
+      this.position_x = this.centerX + Math.cos(this.angle) * this.radiusX;
+      this.position_y = this.centerY + Math.sin(this.angle) * this.radiusY;
     }, 1000 / 60);
   }
 }
