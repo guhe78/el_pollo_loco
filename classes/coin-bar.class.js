@@ -18,6 +18,15 @@ class CoinBar extends StatusBar {
     super();
     this.loadImage();
     this.loadImages(this.IMAGES_COINBAR);
-    this.setPercentage(this.coinPercentage, this.IMAGES_COINBAR);
+    this.setCoinPercentage(this.coinPercentage);
+  }
+
+  setCoinPercentage(coinPercentage) {
+    this.coinPercentage += coinPercentage;
+    this.setPercentage(this.getCoinPercentage(), this.IMAGES_COINBAR);
+  }
+
+  getCoinPercentage() {
+    return this.coinPercentage;
   }
 }

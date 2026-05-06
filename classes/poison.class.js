@@ -1,9 +1,9 @@
-class Coins extends DrawableObject {
+class Poison extends DrawableObject {
   IMAGES = [
-    "img/Marcadores/1. Coins/1.png",
-    "img/Marcadores/1. Coins/2.png",
-    "img/Marcadores/1. Coins/3.png",
-    "img/Marcadores/1. Coins/4.png",
+    "img/Marcadores/Posión/Dark - Left.png",
+    "img/Marcadores/Posión/Dark - Right.png",
+    "img/Marcadores/Posión/Light - Left.png",
+    "img/Marcadores/Posión/Light - Right.png",
   ];
   path;
   position_x;

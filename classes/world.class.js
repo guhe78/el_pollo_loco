@@ -24,6 +24,7 @@ class World {
     setInterval(() => {
       this.checkCollision();
       this.checkBubbleCollision();
+      this.checkCollectItems();
     }, 200);
   }
 
@@ -65,6 +66,24 @@ class World {
     });
   }
 
+  checkCollectItems() {
+    this.level.collectibles.forEach((item) => {
+      if (this.character.isColliding(item)) {
+        if (item instanceof Coins) {
+          item.isCollected = true;
+          this.statusBars[2].setCoinPercentage(20);
+        } else if (item instanceof Poison) {
+          item.isCollected = true;
+          this.statusBars[1].setPoisonPercentage(20);
+        }
+      }
+    });
+
+    this.level.collectibles = this.level.collectibles.filter(
+      (item) => !item.isCollected,
+    );
+  }
+
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
@@ -76,6 +95,7 @@ class World {
     this.drawArrayToMap(this.level.enemies);
     this.addToMap(this.level.endboss);
     this.addToMap(this.character);
+    this.drawArrayToMap(this.level.collectibles);
     this.drawArrayToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
 
