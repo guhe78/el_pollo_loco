@@ -38,21 +38,31 @@ class JellyFish extends Enemy {
   offset = {};
   deathStartedAt = null;
   deathDuration = 500;
+  startX;
+  startY;
+  speedX = 2;
+  speedY = 2;
+  rangeX = 80;
+  rangeY = 80;
 
   constructor(position_x, position_y) {
     super();
     this.path = this.IMAGES_SWIM[this.randomElement][0];
     this.position_x = position_x;
     this.position_y = position_y;
-    this.loadImage();
-    this.loadEnemyImages();
-    this.moveUp(0.15 + Math.random() * 0.5);
+    this.startX = position_x;
+    this.startY = position_y;
+    this.speedX = Math.random() > 0.5 ? 2 : -2;
+    this.speedY = Math.random() > 0.5 ? 2 : -2;
     this.offset = {
       top: 5,
       bottom: 10,
       right: 5,
       left: 5,
     };
+    this.loadImage();
+    this.loadEnemyImages();
+    this.moveInXPattern();
     this.currentAnimation = this.randomImagesSwimArray;
     this.image = this.imageCache[this.randomImagesSwimArray[0]];
 
@@ -64,9 +74,24 @@ class JellyFish extends Enemy {
     this.loadImages(this.randomImagesDieArray);
   }
 
-  moveUp(speed) {
+  moveInXPattern() {
     setInterval(() => {
-      this.position_y -= speed;
+      this.position_x += this.speedX;
+      this.position_y += this.speedY;
+
+      if (
+        this.position_x >= this.startX + this.rangeX ||
+        this.position_x <= this.startX - this.rangeX
+      ) {
+        this.speedX *= -1;
+      }
+
+      if (
+        this.position_y >= this.startY + this.rangeY ||
+        this.position_y <= this.startY - this.rangeY
+      ) {
+        this.speedY *= -1;
+      }
     }, 1000 / 60);
   }
 }

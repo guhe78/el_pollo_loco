@@ -16,6 +16,24 @@ class World {
     this.run();
   }
 
+  draw() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.translate(this.camera_x, 0);
+    this.drawArrayToMap(this.level.backgroundWater);
+    this.drawArrayToMap(this.level.backgrounds);
+    this.ctx.translate(-this.camera_x, 0);
+    this.drawArrayToMap(this.statusBars);
+    this.ctx.translate(this.camera_x, 0);
+    this.drawArrayToMap(this.level.enemies);
+    this.addToMap(this.level.endboss);
+    this.addToMap(this.character);
+    this.drawArrayToMap(this.level.collectibles);
+    this.drawArrayToMap(this.throwableObjects);
+    this.ctx.translate(-this.camera_x, 0);
+
+    requestAnimationFrame(() => this.draw());
+  }
+
   setWorld() {
     this.character.world = this;
   }
@@ -82,24 +100,6 @@ class World {
     this.level.collectibles = this.level.collectibles.filter(
       (item) => !item.isCollected,
     );
-  }
-
-  draw() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.ctx.translate(this.camera_x, 0);
-    this.drawArrayToMap(this.level.backgroundWater);
-    this.drawArrayToMap(this.level.backgrounds);
-    this.ctx.translate(-this.camera_x, 0);
-    this.drawArrayToMap(this.statusBars);
-    this.ctx.translate(this.camera_x, 0);
-    this.drawArrayToMap(this.level.enemies);
-    this.addToMap(this.level.endboss);
-    this.addToMap(this.character);
-    this.drawArrayToMap(this.level.collectibles);
-    this.drawArrayToMap(this.throwableObjects);
-    this.ctx.translate(-this.camera_x, 0);
-
-    requestAnimationFrame(() => this.draw());
   }
 
   drawArrayToMap(array) {
