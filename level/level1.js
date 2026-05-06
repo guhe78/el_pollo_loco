@@ -21,6 +21,7 @@ const level1 = new Level(
     new BackgroundWater("img/Background/Layers/5. Water/D.png", 0),
     new BackgroundWater("img/Background/Layers/5. Water/D.png", 1703),
   ],
+  createCollectibles(10),
 );
 
 function createEnemies(count) {
@@ -36,6 +37,21 @@ function createEnemies(count) {
     }
   }
   return enemies;
+}
+
+function createCollectibles(count) {
+  let collectibles = [];
+  let half = count / 2;
+  for (i = 0; i < count; i++) {
+    const position_x = randomNumber(2500);
+    const position_y = randomNumber(400);
+    if (i < half) {
+      collectibles.push(new Coins(position_x, position_y));
+    } else {
+      collectibles.push(new Poison(position_x, position_y));
+    }
+  }
+  return collectibles;
 }
 
 function randomNumber(range) {

@@ -58,7 +58,7 @@ class PufferFish extends Enemy {
     this.position_y = position_y; //Math.random() * 420;
     this.loadImage();
     this.loadEnemyImages();
-    //this.moveLeft(0.15 + Math.random() * 0.5);
+    this.moveLeft(0.15 + Math.random() * 0.5);
     this.offset = {
       top: 5,
       bottom: 10,

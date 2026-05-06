@@ -20,4 +20,13 @@ class PoisonBar extends StatusBar {
     this.loadImages(this.IMAGES_POISONBAR);
     this.setPercentage(this.poisonPercentage, this.IMAGES_POISONBAR);
   }
+
+  setPoisonPercentage(poisonPercentage) {
+    this.poisonPercentage += poisonPercentage;
+    this.setPercentage(this.getPoisonPercentage(), this.IMAGES_POISONBAR);
+  }
+
+  getPoisonPercentage() {
+    return this.poisonPercentage;
+  }
 }
