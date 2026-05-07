@@ -86,9 +86,12 @@ class World {
     const rightEdge = -this.camera_x + this.canvas.width;
     this.throwableObjects.forEach((object) => {
       if (this.level.endboss.isColliding(object)) {
-        console.log();
         console.log("hit");
         object.startRemove();
+        this.level.endboss.hit(20);
+        if (this.level.endboss.isDead(this.level.endboss)) {
+          this.level.endboss.startDeath(this.level.endboss.IMAGES_DEAD);
+        }
       } else if (
         object.position_y < 0 ||
         object.position_x + object.width < leftEdge ||
