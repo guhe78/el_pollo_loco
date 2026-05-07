@@ -48,8 +48,6 @@ class PufferFish extends Enemy {
   randomImagesSwimArray = this.IMAGES_SWIM[this.randomElement];
   randomImagesDieArray = this.IMAGES_DIE[this.randomElement];
   offset = {};
-  deathStartedAt = null;
-  deathDuration = 500;
   centerX;
   centerY;
   radiusX;

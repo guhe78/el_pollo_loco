@@ -79,6 +79,8 @@ class Character extends MovableObject {
   endYUp = -90;
   endYDown = 320;
   animationSpeed = 100;
+  cameraOffsetX = 100;
+  cameraOffsetY = 100;
 
   constructor() {
     super();
@@ -158,24 +160,26 @@ class Character extends MovableObject {
   moveRight() {
     this.otherDirection = false;
     this.position_x += this.speed;
-    this.world.camera_x = -this.position_x;
+    this.world.camera_x = Math.min(0, -this.position_x + this.cameraOffsetX);
   }
 
   moveLeft() {
     this.otherDirection = true;
     this.position_x -= this.speed;
-    this.world.camera_x = -this.position_x;
+    this.world.camera_x = Math.min(0, -this.position_x + this.cameraOffsetX);
   }
 
   applySlapAttack() {
     if (this.isAttacking) return;
     this.isAttacking = true;
+    const direction = this.otherDirection ? -1 : 1;
+    const delta = this.attackDistance * direction;
     const animationDuration = this.calculateAnimationDuration(
       this.IMAGES_ATTACK,
     );
-    this.position_x += this.attackDistance;
+    this.position_x += delta;
     setTimeout(() => {
-      this.position_x -= this.attackDistance;
+      this.position_x -= delta;
       this.isAttacking = false;
     }, animationDuration);
   }
@@ -186,7 +190,7 @@ class Character extends MovableObject {
       this.IMAGES_BUBBLE,
     );
     setTimeout(() => {
-      this.world.spawnBubble();
+      this.world.spawnBubble(this.otherDirection);
       this.isThrowing = false;
     }, throwAnimationDuration);
   }

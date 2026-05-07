@@ -46,10 +46,13 @@ class World {
     }, 200);
   }
 
-  spawnBubble() {
+  spawnBubble(isFacingLeft) {
+    const direction = isFacingLeft ? -1 : 1;
+    const startOffsetX = direction !== 1 ? 0 : 220;
     let bubble = new ThrowableObject(
-      this.character.position_x + 220,
+      this.character.position_x + startOffsetX,
       this.character.position_y + 100,
+      direction,
     );
     this.throwableObjects.push(bubble);
   }
@@ -79,9 +82,24 @@ class World {
   }
 
   checkBubbleCollision() {
+    const leftEdge = -this.camera_x;
+    const rightEdge = -this.camera_x + this.canvas.width;
     this.throwableObjects.forEach((object) => {
-      if (this.level.endboss.isColliding(object)) console.log("hit");
+      if (this.level.endboss.isColliding(object)) {
+        console.log();
+        console.log("hit");
+        object.startRemove();
+      } else if (
+        object.position_y < 0 ||
+        object.position_x + object.width < leftEdge ||
+        object.position_x + object.width > rightEdge
+      ) {
+        object.startRemove();
+      }
     });
+    this.throwableObjects = this.throwableObjects.filter(
+      (object) => !object.shouldBeRemoved(),
+    );
   }
 
   checkCollectItems() {
