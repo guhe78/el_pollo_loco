@@ -36,8 +36,6 @@ class JellyFish extends Enemy {
   randomImagesSwimArray = this.IMAGES_SWIM[this.randomElement];
   randomImagesDieArray = this.IMAGES_DIE[this.randomElement];
   offset = {};
-  deathStartedAt = null;
-  deathDuration = 500;
   startX;
   startY;
   speedX = 2;

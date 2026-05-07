@@ -5,22 +5,15 @@ class Enemy extends MovableObject {
 
   changeAnimation(imageArray) {
     if (this.isDead()) {
-      this.startDeath();
+      this.startDeath(imageArray);
     } else {
       this.setAnimation(imageArray);
     }
   }
 
   startDeath(imageArray) {
-    if (this.deathStartedAt !== null) return;
-    this.deathStartedAt = Date.now();
+    if (this.removeStartedAt !== null) return;
+    this.startRemove();
     this.setAnimation(imageArray);
-  }
-
-  shouldBeRemoved() {
-    return (
-      this.deathStartedAt !== null &&
-      Date.now() - this.deathStartedAt >= this.deathDuration
-    );
   }
 }

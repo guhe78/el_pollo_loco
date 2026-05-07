@@ -7,6 +7,9 @@ class MovableObject extends DrawableObject {
   speedY = 20;
   speedX = 40;
   acceleration = 5;
+  removeStartedAt = null;
+  removeDuration = 500;
+  interval = null;
 
   constructor(path, position_x, position_y, width, height) {
     super(path, position_x, position_y, width, height);
@@ -28,10 +31,6 @@ class MovableObject extends DrawableObject {
       this.playAnimation(images);
     }, speed);
   }
-
-  // moveObject(speed, objectWidth) {
-  //   let positionStart = this.position_x;
-  // }
 
   isColliding(movableObject) {
     return (
@@ -76,21 +75,32 @@ class MovableObject extends DrawableObject {
   }
 
   applyGravitiy() {
-    setInterval(() => {
-      if (this.isBeneathWaterSurface() || this.speedY > -40) {
+    this.interval = setInterval(() => {
+      this.position_x += this.speedX;
+      if (this.speedY > -40) {
         this.position_y += this.speedY;
-        this.position_x += this.speedX;
-
+        console.log(this.position_x);
         this.speedY -= this.acceleration;
       }
     }, 1000 / 25);
   }
 
-  isBeneathWaterSurface() {
-    if (this instanceof ThrowableObject) {
-      return true;
-    } else {
-      return this.position_y > 0;
-    }
+  stopIntervall() {
+    if (!this.interval) return;
+    clearInterval(this.interval);
+    this.interval = null;
+  }
+
+  startRemove() {
+    if (this.removeStartedAt !== null) return;
+    this.removeStartedAt = Date.now();
+    this.stopIntervall();
+  }
+
+  shouldBeRemoved() {
+    return (
+      this.removeStartedAt !== null &&
+      Date.now() - this.removeStartedAt >= this.removeDuration
+    );
   }
 }
