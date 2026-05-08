@@ -4,6 +4,7 @@ class World {
   throwableObjects = [];
   lastThrowAt = 0;
   level = level1;
+  currentSection = null;
   keyboard;
   camera_x = 0;
 
@@ -11,6 +12,7 @@ class World {
     this.keyboard = keyboard;
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
+    this.currentSection = this.level.sections[0];
     this.draw();
     this.setWorld();
     this.run();
@@ -18,18 +20,20 @@ class World {
 
   draw() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.updateSection();
     this.ctx.translate(this.camera_x, 0);
-    this.drawArrayToMap(this.level.backgroundWater);
-    this.drawArrayToMap(this.level.backgrounds);
-    this.ctx.translate(-this.camera_x, 0);
-    this.drawArrayToMap(this.statusBars);
-    this.ctx.translate(this.camera_x, 0);
-    this.drawArrayToMap(this.level.enemies);
-    this.addToMap(this.level.endboss);
+
+    this.drawArrayToMap(this.currentSection.backgrounds);
+    this.drawArrayToMap(this.currentSection.enemies);
+    this.drawArrayToMap(this.currentSection.collectibles);
+
     this.addToMap(this.character);
-    this.drawArrayToMap(this.level.collectibles);
+
     this.drawArrayToMap(this.throwableObjects);
+
     this.ctx.translate(-this.camera_x, 0);
+
+    this.drawArrayToMap(this.statusBars);
 
     requestAnimationFrame(() => this.draw());
   }
@@ -46,6 +50,14 @@ class World {
     }, 200);
   }
 
+  updateSection() {
+    this.level.sections.forEach((section) => {
+      if (this.character.position_x >= section.startX) {
+        this.currentSection = section;
+      }
+    });
+  }
+
   spawnBubble(isFacingLeft) {
     const direction = isFacingLeft ? -1 : 1;
     const startOffsetX = direction !== 1 ? 0 : 220;
@@ -58,7 +70,7 @@ class World {
   }
 
   checkCollision() {
-    this.level.enemies.forEach((enemy) => {
+    this.currentSection.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
         if (this.character.isAttacking) {
           enemy.hit(100);
@@ -76,7 +88,7 @@ class World {
       enemy.changeAnimation(enemy.randomImagesSwimArray);
     });
 
-    this.level.enemies = this.level.enemies.filter(
+    this.currentSection.enemies = this.currentSection.enemies.filter(
       (enemy) => !enemy.shouldBeRemoved(),
     );
   }
@@ -85,12 +97,17 @@ class World {
     const leftEdge = -this.camera_x;
     const rightEdge = -this.camera_x + this.canvas.width;
     this.throwableObjects.forEach((object) => {
-      if (this.level.endboss.isColliding(object)) {
+      if (
+        this.currentSection.endboss &&
+        this.currentSection.endboss.isColliding(object)
+      ) {
         console.log("hit");
         object.startRemove();
-        this.level.endboss.hit(20);
-        if (this.level.endboss.isDead(this.level.endboss)) {
-          this.level.endboss.startDeath(this.level.endboss.IMAGES_DEAD);
+        this.currentSection.endboss.hit(20);
+        if (this.currentSection.endboss.isDead(this.currentSection.endboss)) {
+          this.currentSection.endboss.startDeath(
+            this.currentSection.endboss.IMAGES_DEAD,
+          );
         }
       } else if (
         object.position_y < 0 ||
@@ -106,7 +123,7 @@ class World {
   }
 
   checkCollectItems() {
-    this.level.collectibles.forEach((item) => {
+    this.currentSection.collectibles.forEach((item) => {
       if (this.character.isColliding(item)) {
         if (item instanceof Coins) {
           item.isCollected = true;
@@ -118,7 +135,7 @@ class World {
       }
     });
 
-    this.level.collectibles = this.level.collectibles.filter(
+    this.currentSection.collectibles = this.currentSection.collectibles.filter(
       (item) => !item.isCollected,
     );
   }
