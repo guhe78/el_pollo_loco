@@ -1,15 +1,23 @@
 const enemiesCount = 10;
 const firstEnemyX = 500;
 const lastEnemyX = 2300;
-const level1 = new Level([
-  new Section(
-    0,
-    createBackgrounds(6000),
-    createEnemies(10),
-    createCollectibles(10),
-  ),
-  6000,
-]);
+const level1 = new Level(
+  [
+    new Section(
+      0,
+      createBackgrounds(3000),
+      createEnemies(10),
+      createCollectibles(10),
+    ),
+    new Section(
+      3000,
+      createBackgrounds2(3000),
+      createEnemies(10),
+      createCollectibles(10),
+    ),
+  ],
+  8000,
+);
 
 function createBackgrounds(levelLength) {
   let backgrounds = [];
@@ -27,6 +35,28 @@ function createBackgrounds(levelLength) {
     );
     backgrounds.push(
       new BackgroundObject("img/Background/Layers/2. Floor/L.png", x),
+    );
+  }
+
+  return backgrounds;
+}
+
+function createBackgrounds2(levelLength) {
+  let backgrounds = [];
+  const width = 1705;
+
+  for (let x = 0; x < levelLength; x += width) {
+    backgrounds.push(
+      new BackgroundWater("img/Background/Layers/5. Water/D.png", x),
+    );
+    backgrounds.push(
+      new BackgroundObject("img/Background/Layers/3.Fondo 1/D.png", x),
+    );
+    backgrounds.push(
+      new BackgroundObject("img/Background/Layers/4.Fondo 2/D.png", x),
+    );
+    backgrounds.push(
+      new BackgroundObject("img/Background/Layers/2. Floor/D.png", x),
     );
   }
 

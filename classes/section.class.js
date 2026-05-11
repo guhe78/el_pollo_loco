@@ -7,19 +7,3 @@ class Section {
     this.endboss = endboss;
   }
 }
-
-// constructor(
-//     enemies,
-//     endboss,
-//     barriers,
-//     backgrounds,
-//     backgroundWater,
-//     collectibles,
-//   ) {
-//     this.enemies = enemies;
-//     this.endboss = endboss;
-//     this.barriers = barriers;
-//     this.backgrounds = backgrounds;
-//     this.backgroundWater = backgroundWater;
-//     this.collectibles = collectibles;
-//   }
