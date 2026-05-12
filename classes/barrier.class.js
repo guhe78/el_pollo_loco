@@ -1,9 +1,9 @@
 class Barrier extends MovableObject {
-  constructor(path, position_x) {
+  constructor(path, position_x, width, height) {
     super(path, position_x);
     this.position_y = 0;
-    this.width = 600;
-    this.height = 480;
+    this.width = width;
+    this.height = height;
     this.loadImage();
   }
 }

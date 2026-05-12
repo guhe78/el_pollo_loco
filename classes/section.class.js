@@ -1,5 +1,11 @@
 class Section {
-  constructor(startX, backgrounds, enemies, collectibles, endboss = null) {
+  constructor(
+    startX,
+    backgrounds,
+    enemies = [],
+    collectibles = [],
+    endboss = null,
+  ) {
     this.startX = startX;
     this.backgrounds = backgrounds;
     this.enemies = enemies;

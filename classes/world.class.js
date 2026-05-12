@@ -23,7 +23,17 @@ class World {
     this.updateSection();
     this.ctx.translate(this.camera_x, 0);
 
-    this.drawArrayToMap(this.currentSection.backgrounds);
+    this.level.sections.forEach((section) =>
+      this.drawArrayToMap(
+        section.backgrounds.filter((b) => !(b instanceof Barrier)),
+      ),
+    );
+    this.level.sections.forEach((section) =>
+      this.drawArrayToMap(
+        section.backgrounds.filter((b) => b instanceof Barrier),
+      ),
+    );
+
     this.drawArrayToMap(this.currentSection.enemies);
     this.drawArrayToMap(this.currentSection.collectibles);
 
