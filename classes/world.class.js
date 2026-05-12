@@ -37,6 +37,10 @@ class World {
     this.drawArrayToMap(this.currentSection.enemies);
     this.drawArrayToMap(this.currentSection.collectibles);
 
+    if (this.currentSection.endboss) {
+      this.addToMap(this.currentSection.endboss);
+    }
+
     this.addToMap(this.character);
 
     this.drawArrayToMap(this.throwableObjects);
@@ -61,11 +65,18 @@ class World {
   }
 
   updateSection() {
+    const x = this.character.position_x;
+    const lastSection = this.level.sections[this.level.sections.length - 1];
+
     this.level.sections.forEach((section) => {
-      if (this.character.position_x >= section.startX) {
+      if (x >= section.startX && x < section.endX) {
         this.currentSection = section;
       }
     });
+
+    if (x >= lastSection.startX) {
+      this.currentSection = lastSection;
+    }
   }
 
   spawnBubble(isFacingLeft) {

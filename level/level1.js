@@ -1,7 +1,12 @@
-const BG_TILE_WIDTH = 3840 / 2.25; // 1706.67
-const SECTION_LENGTH = BG_TILE_WIDTH * 2; // 3413
-const ENDBOSS_SECTION_LENGTH = BG_TILE_WIDTH; // 1706
-const LEVEL_LENGTH = SECTION_LENGTH * 2 + ENDBOSS_SECTION_LENGTH;
+const BG_TILE_WIDTH = 3840 / 2.25;
+
+const SECTION_ONE_LENGTH = BG_TILE_WIDTH * 2;
+const SECTION_TWO_LENGTH = BG_TILE_WIDTH * 2;
+const ENDBOSS_SECTION_LENGTH = BG_TILE_WIDTH;
+
+const sectionOneStartX = 0;
+const sectionTwoStartX = sectionOneStartX + SECTION_ONE_LENGTH;
+const endbossSectionStartX = sectionTwoStartX + SECTION_TWO_LENGTH;
 
 const backgroundsLightSection = [
   "img/Background/Layers/5. Water/L.png",
@@ -17,62 +22,89 @@ const backgroundsDarkSection = [
   "img/Background/Layers/2. Floor/D.png",
 ];
 
-const backgroundsEndbossSection = "img/Background/Layers/5. Water/D.png";
 const separatorPath = "img/Background/Barrier/3.png";
 
-const endboss = new Endboss(7400, 120);
-
-const level1 = new Level(
-  [
-    new Section(
-      0,
-      [
-        ...createBackgrounds(SECTION_LENGTH, 0, backgroundsLightSection),
-        new Barrier(separatorPath, SECTION_LENGTH - 300, 500, 480),
-      ],
-      createEnemies(10, 0, SECTION_LENGTH),
-      createCollectibles(10, 0, SECTION_LENGTH),
-    ),
-    new Section(
-      SECTION_LENGTH,
-      [
-        ...createBackgrounds(
-          SECTION_LENGTH,
-          SECTION_LENGTH,
-          backgroundsDarkSection,
-        ),
-        new Barrier(separatorPath, SECTION_LENGTH * 2 - 300, 500, 480),
-      ],
-      createEnemies(10, SECTION_LENGTH, SECTION_LENGTH),
-      createCollectibles(10, SECTION_LENGTH, SECTION_LENGTH),
-    ),
-    new Section(
-      SECTION_LENGTH * 2,
-      [createEndbossBackground()],
-      [],
-      [],
-      endboss,
-    ),
-  ],
-  LEVEL_LENGTH,
+const endboss = new Endboss(
+  endbossSectionStartX + ENDBOSS_SECTION_LENGTH - 500,
+  120,
 );
+
+const level1 = new Level([
+  new Section(
+    sectionOneStartX,
+    SECTION_ONE_LENGTH,
+    [
+      ...createBackgrounds(
+        SECTION_ONE_LENGTH,
+        sectionOneStartX,
+        backgroundsLightSection,
+      ),
+      new Barrier(
+        separatorPath,
+        sectionOneStartX + SECTION_ONE_LENGTH - 300,
+        500,
+        480,
+      ),
+    ],
+    createEnemies(10, sectionOneStartX, SECTION_ONE_LENGTH),
+    createCollectibles(10, sectionOneStartX, SECTION_ONE_LENGTH),
+  ),
+  new Section(
+    sectionTwoStartX,
+    SECTION_TWO_LENGTH,
+    [
+      ...createBackgrounds(
+        SECTION_TWO_LENGTH,
+        sectionTwoStartX,
+        backgroundsDarkSection,
+      ),
+      new Barrier(
+        separatorPath,
+        sectionTwoStartX + SECTION_TWO_LENGTH - 300,
+        500,
+        480,
+      ),
+    ],
+    createEnemies(10, sectionTwoStartX, SECTION_TWO_LENGTH),
+    createCollectibles(10, sectionTwoStartX, SECTION_TWO_LENGTH),
+  ),
+  new Section(
+    endbossSectionStartX,
+    ENDBOSS_SECTION_LENGTH,
+    createBackgrounds(
+      ENDBOSS_SECTION_LENGTH,
+      endbossSectionStartX,
+      backgroundsDarkSection,
+    ),
+    [],
+    [],
+    endboss,
+  ),
+]);
 
 function createBackgrounds(sectionLength, startX, backgroundsArray) {
   const backgrounds = [];
-  const width = BG_TILE_WIDTH;
+  const tileCount = Math.ceil(sectionLength / BG_TILE_WIDTH);
 
-  for (let x = startX; x < startX + sectionLength; x += width) {
-    backgrounds.push(new BackgroundWater(backgroundsArray[0], x));
-    backgrounds.push(new BackgroundObject(backgroundsArray[1], x));
-    backgrounds.push(new BackgroundObject(backgroundsArray[2], x));
-    backgrounds.push(new BackgroundObject(backgroundsArray[3], x));
+  for (let i = 0; i < tileCount; i++) {
+    const x = startX + i * BG_TILE_WIDTH;
+    const remainingWidth = sectionLength - i * BG_TILE_WIDTH;
+    const tileWidth = Math.min(BG_TILE_WIDTH, remainingWidth);
+
+    const water = new BackgroundWater(backgroundsArray[0], x);
+    const fondo1 = new BackgroundObject(backgroundsArray[1], x);
+    const fondo2 = new BackgroundObject(backgroundsArray[2], x);
+    const floor = new BackgroundObject(backgroundsArray[3], x);
+
+    water.width = tileWidth;
+    fondo1.width = tileWidth;
+    fondo2.width = tileWidth;
+    floor.width = tileWidth;
+
+    backgrounds.push(water, fondo1, fondo2, floor);
   }
 
   return backgrounds;
-}
-
-function createEndbossBackground() {
-  return new BackgroundWater(backgroundsEndbossSection, SECTION_LENGTH * 2);
 }
 
 function createEnemies(count, startX, sectionLength) {

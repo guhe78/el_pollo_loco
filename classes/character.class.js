@@ -115,10 +115,12 @@ class Character extends MovableObject {
   movementControl() {
     setInterval(() => {
       let isMoving = false;
-      if (
-        this.world.keyboard.RIGHT &&
-        this.position_x < this.world.level.levelEndX
-      ) {
+      const maxCharacterX =
+        this.world.level.levelEndX +
+        this.cameraOffsetX -
+        this.world.canvas.width;
+
+      if (this.world.keyboard.RIGHT && this.position_x < maxCharacterX) {
         this.moveRight();
         isMoving = true;
       }
@@ -162,7 +164,9 @@ class Character extends MovableObject {
 
   moveRight() {
     this.otherDirection = false;
-    this.position_x += this.speed;
+    const maxCharacterX =
+      this.world.level.levelEndX + this.cameraOffsetX - this.world.canvas.width;
+    this.position_x = Math.min(this.position_x + this.speed, maxCharacterX);
     this.world.camera_x = Math.min(0, -this.position_x + this.cameraOffsetX);
   }
 
