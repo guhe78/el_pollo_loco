@@ -81,6 +81,8 @@ class Character extends MovableObject {
   animationSpeed = 100;
   cameraOffsetX = 100;
   cameraOffsetY = 100;
+  blubSound = new Audio("audio/blubb.mp3");
+  slapSound = new Audio("audio/slap.mp3");
 
   constructor() {
     super();
@@ -211,6 +213,7 @@ class Character extends MovableObject {
       this.IMAGES_ATTACK,
     );
     this.position_x += delta;
+    this.slapSound.play();
     setTimeout(() => {
       this.position_x -= delta;
       this.isAttacking = false;
@@ -222,6 +225,7 @@ class Character extends MovableObject {
     const throwAnimationDuration = this.calculateAnimationDuration(
       this.IMAGES_BUBBLE,
     );
+    this.blubSound.play();
     setTimeout(() => {
       this.world.spawnBubble(this.otherDirection);
       this.isThrowing = false;
