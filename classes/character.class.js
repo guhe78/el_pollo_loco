@@ -120,26 +120,52 @@ class Character extends MovableObject {
         this.cameraOffsetX -
         this.world.canvas.width;
 
-      if (this.world.keyboard.RIGHT && this.position_x < maxCharacterX) {
+      if (
+        this.world.keyboard.RIGHT &&
+        this.position_x < maxCharacterX &&
+        !this.isAttacking &&
+        !this.isDead()
+      ) {
         this.moveRight();
         isMoving = true;
       }
-      if (this.world.keyboard.LEFT && this.position_x > 0) {
+      if (
+        this.world.keyboard.LEFT &&
+        this.position_x > 0 &&
+        !this.isAttacking &&
+        !this.isDead()
+      ) {
         this.moveLeft();
         isMoving = true;
       }
-      if (this.world.keyboard.UP && this.position_y > this.endYUp) {
+      if (
+        this.world.keyboard.UP &&
+        this.position_y > this.endYUp &&
+        !this.isAttacking &&
+        !this.isDead()
+      ) {
         this.position_y -= this.speed;
         isMoving = true;
       }
-      if (this.world.keyboard.DOWN && this.position_y < this.endYDown) {
+      if (
+        this.world.keyboard.DOWN &&
+        this.position_y < this.endYDown &&
+        !this.isAttacking &&
+        !this.isDead()
+      ) {
         this.position_y += this.speed;
         isMoving = true;
       }
-      if (this.world.keyboard.SPACE) {
+      if (this.world.keyboard.SPACE && !this.isAttacking && !this.isDead()) {
         this.applySlapAttack();
+        this.world.keyboard.SPACE = false;
       }
-      if (this.world.keyboard.THROW && !this.isThrowing) {
+      if (
+        this.world.keyboard.THROW &&
+        !this.isThrowing &&
+        !this.isAttacking &&
+        !this.isDead()
+      ) {
         this.applyBubbleAttack();
       }
       this.changeAnimation(isMoving);
