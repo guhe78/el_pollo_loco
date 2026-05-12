@@ -46,8 +46,8 @@ const level1 = new Level([
         480,
       ),
     ],
-    createEnemies(10, sectionOneStartX, SECTION_ONE_LENGTH),
-    createCollectibles(10, sectionOneStartX, SECTION_ONE_LENGTH),
+    createEnemies("puffer", 10, sectionOneStartX, SECTION_ONE_LENGTH),
+    createCollectibles("coins", 10, sectionOneStartX, SECTION_ONE_LENGTH),
   ),
   new Section(
     sectionTwoStartX,
@@ -65,8 +65,8 @@ const level1 = new Level([
         480,
       ),
     ],
-    createEnemies(10, sectionTwoStartX, SECTION_TWO_LENGTH),
-    createCollectibles(10, sectionTwoStartX, SECTION_TWO_LENGTH),
+    createEnemies("jelly", 10, sectionTwoStartX, SECTION_TWO_LENGTH),
+    createCollectibles("poison", 10, sectionTwoStartX, SECTION_TWO_LENGTH),
   ),
   new Section(
     endbossSectionStartX,
@@ -107,7 +107,7 @@ function createBackgrounds(sectionLength, startX, backgroundsArray) {
   return backgrounds;
 }
 
-function createEnemies(count, startX, sectionLength) {
+function createEnemies(sort, count, startX, sectionLength) {
   const enemies = [];
   const minX = startX + 300;
   const maxX = startX + sectionLength - 300;
@@ -117,9 +117,9 @@ function createEnemies(count, startX, sectionLength) {
     const position_x = minX + i * spacing + randomNumber(120) - 60;
     const position_y = randomNumber(420);
 
-    if (randomNumber(2) === 0) {
+    if (sort === "puffer") {
       enemies.push(new PufferFish(position_x, position_y));
-    } else {
+    } else if (sort === "jelly") {
       enemies.push(new JellyFish(position_x, position_y));
     }
   }
@@ -127,7 +127,7 @@ function createEnemies(count, startX, sectionLength) {
   return enemies;
 }
 
-function createCollectibles(count, startX, sectionLength) {
+function createCollectibles(sort, count, startX, sectionLength) {
   const collectibles = [];
   const half = count / 2;
   const minX = startX + 120;
@@ -137,9 +137,9 @@ function createCollectibles(count, startX, sectionLength) {
     const position_x = minX + randomNumber(usableWidth);
     const position_y = randomNumber(400);
 
-    if (i < half) {
+    if (sort === "coins") {
       collectibles.push(new Coins(position_x, position_y));
-    } else {
+    } else if (sort === "poison") {
       collectibles.push(new Poison(position_x, position_y));
     }
   }
