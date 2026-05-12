@@ -29,13 +29,19 @@ class Endboss extends Enemy {
     "img/Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 9.png",
     "img/Enemy/3 Final Enemy/Dead/Mesa de trabajo 2 copia 10.png",
   ];
+  path;
+  position_x;
+  position_y;
   width = 300;
   height = 250;
   world;
   offset = {};
 
-  constructor(path, position_x, position_y) {
-    super(path, position_x, position_y);
+  constructor(position_x, position_y) {
+    super();
+    this.path = this.IMAGES_SWIM[0];
+    this.position_x = position_x;
+    this.position_y = position_y;
     this.loadImage();
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_ATTACK);

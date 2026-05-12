@@ -115,7 +115,10 @@ class Character extends MovableObject {
   movementControl() {
     setInterval(() => {
       let isMoving = false;
-      if (this.world.keyboard.RIGHT && this.position_x < 3000) {
+      if (
+        this.world.keyboard.RIGHT &&
+        this.position_x < this.world.level.levelEndX
+      ) {
         this.moveRight();
         isMoving = true;
       }
