@@ -95,10 +95,12 @@ class World {
       if (this.character.isColliding(enemy)) {
         if (this.character.isAttacking) {
           enemy.hit(100);
+          this.character.hitSound.play();
           if (enemy.isDead()) {
             enemy.startDeath(enemy.randomImagesDieArray);
           }
         } else {
+          this.character.ausSound.play();
           this.character.hit(5);
           this.statusBars[0].setLifePercentage(this.character.energy);
           if (this.character.isDead(this.character)) {
@@ -122,9 +124,10 @@ class World {
         this.currentSection.endboss &&
         this.currentSection.endboss.isColliding(object)
       ) {
-        console.log("hit");
+        this.character.hitSound.play();
         object.startRemove();
         this.currentSection.endboss.hit(20);
+        this.character.hitSound.play();
         if (this.currentSection.endboss.isDead(this.currentSection.endboss)) {
           this.currentSection.endboss.startDeath(
             this.currentSection.endboss.IMAGES_DEAD,
@@ -153,6 +156,7 @@ class World {
           item.isCollected = true;
           this.statusBars[1].setPoisonPercentage(20);
         }
+        this.character.blingSound.play();
       }
     });
 
