@@ -100,7 +100,7 @@ class World {
             enemy.startDeath(enemy.randomImagesDieArray);
           }
         } else {
-          this.character.ausSound.play();
+          this.character.auaSound.play();
           this.character.hit(5);
           this.statusBars[0].setLifePercentage(this.character.energy);
           if (this.character.isDead(this.character)) {
