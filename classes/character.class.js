@@ -83,7 +83,7 @@ class Character extends MovableObject {
   cameraOffsetY = 100;
   blubSound = new Audio("audio/blubb.mp3");
   slapSound = new Audio("audio/slap.mp3");
-  ausSound = new Audio("audio/aua.mp3");
+  auaSound = new Audio("audio/aua.mp3");
   blingSound = new Audio("audio/bling.mp3");
   hitSound = new Audio("audio/hit.mp3");
 
