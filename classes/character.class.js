@@ -119,6 +119,7 @@ class Character extends MovableObject {
 
   movementControl() {
     setInterval(() => {
+      if (!this.world || this.world.gameState !== "running") return;
       let isMoving = false;
       const maxCharacterX =
         this.world.level.levelEndX +

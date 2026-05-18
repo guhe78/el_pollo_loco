@@ -7,6 +7,10 @@ function loadCanvas() {
   world = new World(canvas, keyboard);
 }
 
+document.getElementById("start-btn").addEventListener("click", () => {
+  world.startGame();
+});
+
 document.addEventListener("keydown", (event) => {
   if (event.code === "Space") {
     keyboard.SPACE = true;
@@ -25,6 +29,9 @@ document.addEventListener("keydown", (event) => {
   }
   if (event.code === "KeyT") {
     keyboard.THROW = true;
+  }
+  if (event.code === "Escape") {
+    world.togglePause();
   }
 });
 

@@ -32,16 +32,22 @@
     <script src="./classes/level.class.js"></script>
     <script src="./classes/section.class.js"></script>
     <script src="./level/level1.js"></script>
-    <script src="./js/game.js"></script>
+    <script src="./js/game.js" defer></script>
     <script type="" src="script.js"></script>
   </head>
   <body onload="init()">
     <h1>Sharkie the shark</h1>
     <div id="game-container">
       <canvas id="canvas" width="720" height="480"></canvas>
-      <div id="overlay" class="hidden">
+      <div id="startgame-overlay" class="overlay">
         <div class="menu">
-          <h1>Pause</h1>
+          <h2>Start Menu</h2>
+          <button id="start-btn">Spiel starten</button>
+        </div>
+      </div>
+      <div id="pause-overlay" class="overlay hidden">
+        <div class="menu">
+          <h2>Pause</h2>
 
           <button onclick="restartGame()">Neustart</button>
 
@@ -49,6 +55,17 @@
 
           <button onclick="quitGame()">Ende</button>
         </div>
+      </div>
+      <div id="gameover-overlay" class="overlay hidden">
+        <div class="menu">
+          <h2>GAMEOVER</h2>
+          <button onclick="restartGame()">Nochmal</button>
+          <button onclick="startMenu()">Hauptmenu</button>
+          <button onclick="quitGame()">Exit</button>
+        </div>
+      </div>
+      <div id="victory-overlay" class="overlay hidden">
+        <div class="menu"></div>
       </div>
     </div>
   </body>
