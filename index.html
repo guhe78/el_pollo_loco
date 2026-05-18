@@ -37,6 +37,19 @@
   </head>
   <body onload="init()">
     <h1>Sharkie the shark</h1>
-    <canvas id="canvas" width="720" height="480"></canvas>
+    <div id="game-container">
+      <canvas id="canvas" width="720" height="480"></canvas>
+      <div id="overlay" class="hidden">
+        <div class="menu">
+          <h1>Pause</h1>
+
+          <button onclick="restartGame()">Neustart</button>
+
+          <button onclick="continueGame()">Weiter</button>
+
+          <button onclick="quitGame()">Ende</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>

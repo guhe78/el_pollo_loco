@@ -7,6 +7,7 @@ class World {
   currentSection = null;
   keyboard;
   camera_x = 0;
+  isPaused = false;
 
   constructor(canvas, keyboard) {
     this.keyboard = keyboard;

@@ -14,3 +14,36 @@ canvas {
   height: 480px;
   background-color: black;
 }
+
+#game-container {
+  position: relative;
+  width: 720px;
+  height: 480px;
+}
+
+#canvas {
+  display: block;
+}
+
+#overlay {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.6);
+
+  z-index: 100;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.menu {
+  background: white;
+  padding: 32px;
+  border-radius: 12px;
+}
