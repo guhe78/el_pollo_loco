@@ -1,9 +1,9 @@
 class Coins extends DrawableObject {
   IMAGES = [
-    "img/Marcadores/1. Coins/1.png",
-    "img/Marcadores/1. Coins/2.png",
-    "img/Marcadores/1. Coins/3.png",
-    "img/Marcadores/1. Coins/4.png",
+    "../../assets/img/Marcadores/1. Coins/1.png",
+    "../../assets/img/Marcadores/1. Coins/2.png",
+    "../../assets/img/Marcadores/1. Coins/3.png",
+    "../../assets/img/Marcadores/1. Coins/4.png",
   ];
   path;
   position_x;

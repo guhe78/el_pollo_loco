@@ -9,20 +9,20 @@ const sectionTwoStartX = sectionOneStartX + SECTION_ONE_LENGTH;
 const endbossSectionStartX = sectionTwoStartX + SECTION_TWO_LENGTH;
 
 const backgroundsLightSection = [
-  "img/Background/Layers/5. Water/L.png",
-  "img/Background/Layers/3.Fondo 1/L.png",
-  "img/Background/Layers/4.Fondo 2/L.png",
-  "img/Background/Layers/2. Floor/L.png",
+  "../../assets/img/Background/Layers/5. Water/L.png",
+  "../../assets/img/Background/Layers/3.Fondo 1/L.png",
+  "../../assets/img/Background/Layers/4.Fondo 2/L.png",
+  "../../assets/img/Background/Layers/2. Floor/L.png",
 ];
 
 const backgroundsDarkSection = [
-  "img/Background/Layers/5. Water/D.png",
-  "img/Background/Layers/3.Fondo 1/D.png",
-  "img/Background/Layers/4.Fondo 2/D.png",
-  "img/Background/Layers/2. Floor/D.png",
+  "../../assets/img/Background/Layers/5. Water/D.png",
+  "../../assets/img/Background/Layers/3.Fondo 1/D.png",
+  "../../assets/img/Background/Layers/4.Fondo 2/D.png",
+  "../../assets/img/Background/Layers/2. Floor/D.png",
 ];
 
-const separatorPath = "img/Background/Barrier/3.png";
+const separatorPath = "../../assets/img/Background/Barrier/3.png";
 
 const endboss = new Endboss(
   endbossSectionStartX + ENDBOSS_SECTION_LENGTH - 500,

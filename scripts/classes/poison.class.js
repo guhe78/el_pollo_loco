@@ -1,9 +1,9 @@
 class Poison extends DrawableObject {
   IMAGES = [
-    "img/Marcadores/Posión/Dark - Left.png",
-    "img/Marcadores/Posión/Dark - Right.png",
-    "img/Marcadores/Posión/Light - Left.png",
-    "img/Marcadores/Posión/Light - Right.png",
+    "../../assets/img/Marcadores/Posión/Dark - Left.png",
+    "../../assets/img/Marcadores/Posión/Dark - Right.png",
+    "../../assets/img/Marcadores/Posión/Light - Left.png",
+    "../../assets/img/Marcadores/Posión/Light - Right.png",
   ];
   path;
   position_x;
