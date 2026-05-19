@@ -36,13 +36,17 @@
     <script type="" src="script.js"></script>
   </head>
   <body onload="init()">
-    <h1>Sharkie the shark</h1>
+    <h1 class="main-headline text-kontur">
+      <span>Sharkie</span><span> the </span><span>shark</span>
+    </h1>
     <div id="game-container">
       <canvas id="canvas" width="720" height="480"></canvas>
       <div id="startgame-overlay" class="overlay">
-        <div class="menu">
+        <div class="menu start-menu">
           <h2>Start Menu</h2>
           <button id="start-btn">Spiel starten</button>
+          <button>Einstellungen</button>
+          <button>How To</button>
         </div>
       </div>
       <div id="pause-overlay" class="overlay hidden">
