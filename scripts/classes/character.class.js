@@ -218,6 +218,17 @@ class Character extends MovableObject {
     );
     this.position_x += delta;
     this.slapSound.play();
+
+    if (this.world && this.world.currentSection) {
+      this.world.currentSection.enemies.forEach((enemy) => {
+        if (this.isColliding(enemy)) {
+          if (enemy.isStunned) {
+            enemy.startDeath(enemy.randomImagesDieArray);
+          }
+        }
+      });
+    }
+
     setTimeout(() => {
       this.position_x -= delta;
       this.isAttacking = false;

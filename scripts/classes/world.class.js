@@ -161,7 +161,7 @@ class World {
   checkCollision() {
     this.currentSection.enemies.forEach((enemy) => {
       if (this.character.isColliding(enemy)) {
-        if (this.character.isAttacking) {
+        if (this.character.isAttacking && enemy.isStunned) {
           enemy.hit(100);
           this.character.hitSound.play();
           if (enemy.isDead()) {
@@ -193,6 +193,12 @@ class World {
     const rightEdge = -this.camera_x + this.canvas.width;
 
     this.throwableObjects.forEach((object) => {
+      this.currentSection.enemies.forEach((enemy) => {
+        if (enemy.isColliding(object)) {
+          enemy.stun();
+          object.startRemove();
+        }
+      });
       if (
         this.currentSection.endboss &&
         this.currentSection.endboss.isColliding(object)
@@ -254,8 +260,12 @@ class World {
       this.flipImage(object);
     }
 
-    object.draw(this.ctx);
+    if (object.isStunned) {
+      this.ctx.globalAlpha = Math.sin(Date.now() / 100) > 0 ? 1 : 0.5;
+    }
 
+    object.draw(this.ctx);
+    this.ctx.globalAlpha = 1;
     this.ctx.stroke();
 
     if (object.otherDirection) {

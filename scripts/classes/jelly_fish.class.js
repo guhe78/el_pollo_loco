@@ -74,7 +74,8 @@ class JellyFish extends Enemy {
 
   moveInXPattern() {
     setInterval(() => {
-      if (!this.world || this.world.gameState !== "running") return;
+      if (!this.world || this.world.gameState !== "running" || this.isStunned)
+        return;
 
       this.position_x += this.speedX;
       this.position_y += this.speedY;
