@@ -5,7 +5,7 @@ class ThrowableObject extends MovableObject {
   ];
   width;
   height;
-  level = level1;
+  level = world.level;
   position_x;
   position_y;
   direction;

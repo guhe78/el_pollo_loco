@@ -41,7 +41,7 @@ document.addEventListener("keydown", (event) => {
   if (event.code === "ArrowDown") {
     keyboard.DOWN = true;
   }
-  if (event.code === "KeyT") {
+  if (event.code === "KeyD") {
     keyboard.THROW = true;
   }
   if (event.code === "Escape") {
@@ -65,7 +65,7 @@ document.addEventListener("keyup", (event) => {
   if (event.code === "ArrowDown") {
     keyboard.DOWN = false;
   }
-  if (event.code === "KeyT") {
+  if (event.code === "KeyD") {
     keyboard.THROW = false;
   }
 });
