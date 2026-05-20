@@ -160,27 +160,59 @@ class World {
 
   checkCollision() {
     this.currentSection.enemies.forEach((enemy) => {
+      if (!enemy) return; // Null-Check hinzufügen
+
       if (this.character.isColliding(enemy)) {
         if (this.character.isAttacking && enemy.isStunned) {
-          enemy.hit(100);
+          enemy.energy = 0; // Kill setzen
           this.character.hitSound.play();
           if (enemy.isDead()) {
             enemy.startDeath(enemy.randomImagesDieArray);
           }
-        } else {
-          this.character.auaSound.play();
-          this.character.hit(5);
-
-          this.statusBars[0].setLifePercentage(this.character.energy);
-
-          if (this.character.isDead()) {
-            this.gameOver();
+        } else if (!this.character.isAttacking) {
+          // Schaden nur wenn nicht attackiert oder enemy nicht stunned
+          if (!enemy.isStunned) {
+            this.character.auaSound.play();
+            this.character.hit(5);
+            this.statusBars[0].setLifePercentage(this.character.energy);
+            if (this.character.isDead()) {
+              this.gameOver();
+            }
           }
+          // Wenn stunned aber nicht slapping: kein Schaden an Character
         }
       }
 
       enemy.changeAnimation(enemy.randomImagesSwimArray);
     });
+
+    // Endboss separat checken
+    if (this.currentSection.endboss) {
+      if (this.character.isColliding(this.currentSection.endboss)) {
+        if (
+          this.character.isAttacking &&
+          this.currentSection.endboss.isStunned
+        ) {
+          this.currentSection.endboss.hit(10);
+          this.character.hitSound.play();
+          if (this.currentSection.endboss.isDead()) {
+            this.currentSection.endboss.startDeath(
+              this.currentSection.endboss.IMAGES_DEAD,
+            );
+            this.victory();
+          }
+        } else if (!this.character.isAttacking) {
+          if (!this.currentSection.endboss.isStunned) {
+            this.character.auaSound.play();
+            this.character.hit(5);
+            this.statusBars[0].setLifePercentage(this.character.energy);
+            if (this.character.isDead()) {
+              this.gameOver();
+            }
+          }
+        }
+      }
+    }
 
     this.currentSection.enemies = this.currentSection.enemies.filter(
       (enemy) => !enemy.shouldBeRemoved(),
@@ -206,7 +238,7 @@ class World {
         this.character.hitSound.play();
         object.startRemove();
 
-        this.currentSection.endboss.hit(20);
+        this.currentSection.endboss.stun();
         if (this.currentSection.endboss.isDead()) {
           this.currentSection.endboss.startDeath(
             this.currentSection.endboss.IMAGES_DEAD,
