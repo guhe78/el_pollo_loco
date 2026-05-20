@@ -1,30 +1,30 @@
 class JellyFish extends Enemy {
   IMAGES_SWIM = [
     [
-      "img/Enemy/2 Jelly fish/Regular damage/Lila 1.png",
-      "img/Enemy/2 Jelly fish/Regular damage/Lila 2.png",
-      "img/Enemy/2 Jelly fish/Regular damage/Lila 3.png",
-      "img/Enemy/2 Jelly fish/Regular damage/Lila 4.png",
+      "../../assets/img/Enemy/2 Jelly fish/Regular damage/Lila 1.png",
+      "../../assets/img/Enemy/2 Jelly fish/Regular damage/Lila 2.png",
+      "../../assets/img/Enemy/2 Jelly fish/Regular damage/Lila 3.png",
+      "../../assets/img/Enemy/2 Jelly fish/Regular damage/Lila 4.png",
     ],
     [
-      "img/Enemy/2 Jelly fish/Regular damage/Yellow 1.png",
-      "img/Enemy/2 Jelly fish/Regular damage/Yellow 2.png",
-      "img/Enemy/2 Jelly fish/Regular damage/Yellow 3.png",
-      "img/Enemy/2 Jelly fish/Regular damage/Yellow 4.png",
+      "../../assets/img/Enemy/2 Jelly fish/Regular damage/Yellow 1.png",
+      "../../assets/img/Enemy/2 Jelly fish/Regular damage/Yellow 2.png",
+      "../../assets/img/Enemy/2 Jelly fish/Regular damage/Yellow 3.png",
+      "../../assets/img/Enemy/2 Jelly fish/Regular damage/Yellow 4.png",
     ],
   ];
   IMAGES_DIE = [
     [
-      "img/Enemy/2 Jelly fish/Dead/Lila/L1.png",
-      "img/Enemy/2 Jelly fish/Dead/Lila/L2.png",
-      "img/Enemy/2 Jelly fish/Dead/Lila/L3.png",
-      "img/Enemy/2 Jelly fish/Dead/Lila/L4.png",
+      "../../assets/img/Enemy/2 Jelly fish/Dead/Lila/L1.png",
+      "../../assets/img/Enemy/2 Jelly fish/Dead/Lila/L2.png",
+      "../../assets/img/Enemy/2 Jelly fish/Dead/Lila/L3.png",
+      "../../assets/img/Enemy/2 Jelly fish/Dead/Lila/L4.png",
     ],
     [
-      "img/Enemy/2 Jelly fish/Dead/Yellow/y1.png",
-      "img/Enemy/2 Jelly fish/Dead/Yellow/y2.png",
-      "img/Enemy/2 Jelly fish/Dead/Yellow/y3.png",
-      "img/Enemy/2 Jelly fish/Dead/Yellow/y4.png",
+      "../../assets/img/Enemy/2 Jelly fish/Dead/Yellow/y1.png",
+      "../../assets/img/Enemy/2 Jelly fish/Dead/Yellow/y2.png",
+      "../../assets/img/Enemy/2 Jelly fish/Dead/Yellow/y3.png",
+      "../../assets/img/Enemy/2 Jelly fish/Dead/Yellow/y4.png",
     ],
   ];
   path;
@@ -74,6 +74,8 @@ class JellyFish extends Enemy {
 
   moveInXPattern() {
     setInterval(() => {
+      if (!this.world || this.world.gameState !== "running") return;
+
       this.position_x += this.speedX;
       this.position_y += this.speedY;
 

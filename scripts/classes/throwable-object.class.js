@@ -1,11 +1,11 @@
 class ThrowableObject extends MovableObject {
   IMAGES_BUBBLE = [
-    "img/Sharkie/4.Attack/Bubble trap/Bubble.png",
-    "img/Sharkie/4.Attack/Bubble trap/Poisoned Bubble (for whale).png",
+    "../../assets/img/Sharkie/4.Attack/Bubble trap/Bubble.png",
+    "../../assets/img/Sharkie/4.Attack/Bubble trap/Poisoned Bubble (for whale).png",
   ];
   width;
   height;
-  level = level1;
+  level = world.level;
   position_x;
   position_y;
   direction;

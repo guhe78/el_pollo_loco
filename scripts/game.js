@@ -7,6 +7,24 @@ function loadCanvas() {
   world = new World(canvas, keyboard);
 }
 
+document.addEventListener("click", (event) => {
+  const target = event.target;
+
+  if (!(target instanceof HTMLElement)) return;
+
+  if (target.id === "start-btn" || target.id === "resume-btn") {
+    world.startGame();
+  }
+
+  if (target.id === "restart-btn") {
+    world.restartGame();
+  }
+
+  if (target.id === "mainmenu-btn") {
+    world.startMenu();
+  }
+});
+
 document.addEventListener("keydown", (event) => {
   if (event.code === "Space") {
     keyboard.SPACE = true;
@@ -23,8 +41,11 @@ document.addEventListener("keydown", (event) => {
   if (event.code === "ArrowDown") {
     keyboard.DOWN = true;
   }
-  if (event.code === "KeyT") {
+  if (event.code === "KeyD") {
     keyboard.THROW = true;
+  }
+  if (event.code === "Escape") {
+    world.togglePause();
   }
 });
 
@@ -44,7 +65,7 @@ document.addEventListener("keyup", (event) => {
   if (event.code === "ArrowDown") {
     keyboard.DOWN = false;
   }
-  if (event.code === "KeyT") {
+  if (event.code === "KeyD") {
     keyboard.THROW = false;
   }
 });
