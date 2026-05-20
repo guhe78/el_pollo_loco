@@ -48,7 +48,7 @@ function createLevel() {
         ),
       ],
       createEnemies("puffer", 10, sectionOneStartX, SECTION_ONE_LENGTH),
-      createCollectibles("coins", 10, sectionOneStartX, SECTION_ONE_LENGTH),
+      createCollectibles("coins", 5, sectionOneStartX, SECTION_ONE_LENGTH),
     ),
     new Section(
       sectionTwoStartX,
@@ -67,7 +67,7 @@ function createLevel() {
         ),
       ],
       createEnemies("jelly", 10, sectionTwoStartX, SECTION_TWO_LENGTH),
-      createCollectibles("poison", 10, sectionTwoStartX, SECTION_TWO_LENGTH),
+      createCollectibles("poison", 5, sectionTwoStartX, SECTION_TWO_LENGTH),
     ),
     new Section(
       endbossSectionStartX,
