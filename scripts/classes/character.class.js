@@ -219,15 +219,8 @@ class Character extends MovableObject {
     this.position_x += delta;
     this.slapSound.play();
 
-    if (this.world && this.world.currentSection) {
-      this.world.currentSection.enemies.forEach((enemy) => {
-        if (this.isColliding(enemy)) {
-          if (enemy.isStunned) {
-            enemy.startDeath(enemy.randomImagesDieArray);
-          }
-        }
-      });
-    }
+    // Nur Animation und Sound - keine Schaden-Logik hier!
+    // Die Kampf-Logik gehört in World.checkCollision()
 
     setTimeout(() => {
       this.position_x -= delta;
