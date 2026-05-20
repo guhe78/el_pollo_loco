@@ -3,7 +3,7 @@ class World {
   statusBars = [new LifeBar(), new PoisonBar(), new CoinBar()];
   throwableObjects = [];
   lastThrowAt = 0;
-  level = level1;
+  level;
   currentSection = null;
   keyboard;
   camera_x = 0;
@@ -13,6 +13,7 @@ class World {
     this.keyboard = keyboard;
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
+    this.level = createLevel();
     this.currentSection = this.level.sections[0];
     this.overlayManager = new OverlayManager();
     this.setWorld();
@@ -57,6 +58,18 @@ class World {
   startGame() {
     this.setGameState("running");
     this.overlayManager.hide();
+  }
+
+  restartGame() {
+    this.character.stop();
+    this.camera_x = 0;
+    this.level = createLevel();
+    this.character = new Character();
+    this.statusBars = [new LifeBar(), new PoisonBar(), new CoinBar()];
+    this.throwableObjects = [];
+    this.currentSection = this.level.sections[0];
+    this.setWorld();
+    this.startGame();
   }
 
   run() {
@@ -124,7 +137,8 @@ class World {
       return;
     }
 
-    this.overlayManager.show(states[state]);
+    const template = states[state];
+    this.overlayManager.show(typeof template === "function" ? template() : "");
   }
 
   spawnBubble(isFacingLeft) {

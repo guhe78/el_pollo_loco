@@ -17,7 +17,7 @@ document.addEventListener("click", (event) => {
   }
 
   if (target.id === "restart-btn") {
-    location.reload();
+    world.restartGame();
   }
 
   if (target.id === "mainmenu-btn") {

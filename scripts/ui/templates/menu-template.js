@@ -3,10 +3,8 @@ function startMenuTemplate() {
     <div id="startgame-overlay" class="overlay">
       <div class="menu start-menu">
         <h2>Start Menu</h2>
-        <button id="start-btn">Spiel starten</button>
-        <div id="settings-howto-container">
+        <button id="start-btn" class="button">Spiel starten</button>
           ${settingsHowtoTemplate()}
-        </div>
       </div>
     </div>
   `;
@@ -15,15 +13,13 @@ function startMenuTemplate() {
 function pauseMenuTemplate() {
   return `
     <div id="pausegame-overlay" class="overlay">
-      <div class="menu pause-menu">
-        <h2>Pause Menu</h2>
-        <button id="resume-btn">Spiel fortsetzen</button>
-        <div id="menu-actions-container">
+      <div class="menu ingame-menu">
+        <h3>Pause Menu</h3>
+        <button id="resume-btn" class="button">Spiel fortsetzen</button>
           ${menuActionsTemplate()}
-        </div>
-        <div id="settings-howto-container">
-          ${settingsHowtoTemplate()}
-        </div>
+          <div class="small-buttons-container">
+            ${settingsHowtoTemplate()}
+          </div>
       </div>
     </div>
   `;
@@ -32,12 +28,9 @@ function pauseMenuTemplate() {
 function gameOverMenuTemplate() {
   return `
     <div id="gameover-overlay" class="overlay">
-      <div class="menu gameover-menu">
+      <div class="menu ingame-menu">
         <h2>Game Over</h2>
-        <div id="menu-actions-container">
-          ${menuActionsTemplate()}
-        </div>
-      </div>
+        ${menuActionsTemplate()}  
     </div>
   `;
 }
@@ -45,15 +38,11 @@ function gameOverMenuTemplate() {
 function victoryMenuTemplate() {
   return `
     <div id="victory-overlay" class="overlay">
-      <div class="menu victory-menu">
+      <div class="menu ingame-menu">
         <h2>Victory!</h2>
         <h3>Your score: <span id="score-value">0</span></h3>
-          <div id="highscore-list-container">
           ${highscoreListTemplate()}
-          </div>
-          <div id="menu-actions-container">
           ${menuActionsTemplate()}
-          </div>
       </div>
     </div>
   `;
@@ -61,8 +50,8 @@ function victoryMenuTemplate() {
 
 function settingsHowtoTemplate() {
   return `
-    <button id="settings-btn">Einstellungen</button>
-    <button id="howto-btn">How To</button>
+    <button id="settings-btn" class="button">Einstellungen</button>
+    <button id="howto-btn" class="button">How To</button>
   `;
 }
 
@@ -77,7 +66,7 @@ function highscoreListTemplate() {
 
 function menuActionsTemplate() {
   return `
-    <button id="restart-btn">Neustart</button>
-    <button id="mainmenu-btn">Hauptmenü</button>
+    <button id="restart-btn" class="button">Neustart</button>
+    <button id="mainmenu-btn" class="button">Hauptmenü</button>
   `;
 }

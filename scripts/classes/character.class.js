@@ -118,7 +118,7 @@ class Character extends MovableObject {
   }
 
   movementControl() {
-    setInterval(() => {
+    this.movementInterval = setInterval(() => {
       if (!this.world || this.world.gameState !== "running") return;
       let isMoving = false;
       const maxCharacterX =
@@ -234,6 +234,11 @@ class Character extends MovableObject {
       this.world.spawnBubble(this.otherDirection);
       this.isThrowing = false;
     }, throwAnimationDuration);
+  }
+
+  stop() {
+    clearInterval(this.movementInterval);
+    clearInterval(this.animationInterval);
   }
 
   calculateAnimationDuration(imageArray) {

@@ -29,58 +29,60 @@ const endboss = new Endboss(
   120,
 );
 
-const level1 = new Level([
-  new Section(
-    sectionOneStartX,
-    SECTION_ONE_LENGTH,
-    [
-      ...createBackgrounds(
-        SECTION_ONE_LENGTH,
-        sectionOneStartX,
-        backgroundsLightSection,
-      ),
-      new Barrier(
-        separatorPath,
-        sectionOneStartX + SECTION_ONE_LENGTH - 300,
-        500,
-        480,
-      ),
-    ],
-    createEnemies("puffer", 10, sectionOneStartX, SECTION_ONE_LENGTH),
-    createCollectibles("coins", 10, sectionOneStartX, SECTION_ONE_LENGTH),
-  ),
-  new Section(
-    sectionTwoStartX,
-    SECTION_TWO_LENGTH,
-    [
-      ...createBackgrounds(
-        SECTION_TWO_LENGTH,
-        sectionTwoStartX,
+function createLevel() {
+  return new Level([
+    new Section(
+      sectionOneStartX,
+      SECTION_ONE_LENGTH,
+      [
+        ...createBackgrounds(
+          SECTION_ONE_LENGTH,
+          sectionOneStartX,
+          backgroundsLightSection,
+        ),
+        new Barrier(
+          separatorPath,
+          sectionOneStartX + SECTION_ONE_LENGTH - 300,
+          500,
+          480,
+        ),
+      ],
+      createEnemies("puffer", 10, sectionOneStartX, SECTION_ONE_LENGTH),
+      createCollectibles("coins", 10, sectionOneStartX, SECTION_ONE_LENGTH),
+    ),
+    new Section(
+      sectionTwoStartX,
+      SECTION_TWO_LENGTH,
+      [
+        ...createBackgrounds(
+          SECTION_TWO_LENGTH,
+          sectionTwoStartX,
+          backgroundsDarkSection,
+        ),
+        new Barrier(
+          separatorPath,
+          sectionTwoStartX + SECTION_TWO_LENGTH - 300,
+          500,
+          480,
+        ),
+      ],
+      createEnemies("jelly", 10, sectionTwoStartX, SECTION_TWO_LENGTH),
+      createCollectibles("poison", 10, sectionTwoStartX, SECTION_TWO_LENGTH),
+    ),
+    new Section(
+      endbossSectionStartX,
+      ENDBOSS_SECTION_LENGTH,
+      createBackgrounds(
+        ENDBOSS_SECTION_LENGTH,
+        endbossSectionStartX,
         backgroundsDarkSection,
       ),
-      new Barrier(
-        separatorPath,
-        sectionTwoStartX + SECTION_TWO_LENGTH - 300,
-        500,
-        480,
-      ),
-    ],
-    createEnemies("jelly", 10, sectionTwoStartX, SECTION_TWO_LENGTH),
-    createCollectibles("poison", 10, sectionTwoStartX, SECTION_TWO_LENGTH),
-  ),
-  new Section(
-    endbossSectionStartX,
-    ENDBOSS_SECTION_LENGTH,
-    createBackgrounds(
-      ENDBOSS_SECTION_LENGTH,
-      endbossSectionStartX,
-      backgroundsDarkSection,
+      [],
+      [],
+      endboss,
     ),
-    [],
-    [],
-    endboss,
-  ),
-]);
+  ]);
+}
 
 function createBackgrounds(sectionLength, startX, backgroundsArray) {
   const backgrounds = [];
