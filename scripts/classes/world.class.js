@@ -14,6 +14,7 @@ class World {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.currentSection = this.level.sections[0];
+    this.overlayManager = new OverlayManager();
     this.setWorld();
     this.setGameState("startMenu");
     this.draw();
@@ -55,7 +56,7 @@ class World {
 
   startGame() {
     this.setGameState("running");
-    this.hideAllMenus();
+    this.overlayManager.hide();
   }
 
   run() {
@@ -115,53 +116,15 @@ class World {
     this.setGameState("victory");
   }
 
-  showPauseMenu() {
-    document.getElementById("pause-overlay").classList.remove("hidden");
-  }
-
-  showStartMenu() {
-    document.getElementById("startgame-overlay").classList.remove("hidden");
-  }
-
-  showGameOverMenu() {
-    document.getElementById("gameover-overlay").classList.remove("hidden");
-  }
-
-  showVictoryMenu() {
-    document.getElementById("victory-overlay").classList.remove("hidden");
-  }
-
-  hideAllMenus() {
-    document.getElementById("startgame-overlay").classList.add("hidden");
-    document.getElementById("pause-overlay").classList.add("hidden");
-    document.getElementById("gameover-overlay").classList.add("hidden");
-    document.getElementById("victory-overlay").classList.add("hidden");
-  }
-
   setGameState(state) {
     this.gameState = state;
 
-    switch (state) {
-      case "startMenu":
-        this.showStartMenu();
-        break;
-
-      case "running":
-        this.hideAllMenus();
-        break;
-
-      case "paused":
-        this.showPauseMenu();
-        break;
-
-      case "gameover":
-        this.showGameOverMenu();
-        break;
-
-      case "victory":
-        this.showVictoryMenu();
-        break;
+    if (state === "running") {
+      this.overlayManager.hide();
+      return;
     }
+
+    this.overlayManager.show(states[state]);
   }
 
   spawnBubble(isFacingLeft) {

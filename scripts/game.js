@@ -7,8 +7,22 @@ function loadCanvas() {
   world = new World(canvas, keyboard);
 }
 
-document.getElementById("start-btn").addEventListener("click", () => {
-  world.startGame();
+document.addEventListener("click", (event) => {
+  const target = event.target;
+
+  if (!(target instanceof HTMLElement)) return;
+
+  if (target.id === "start-btn" || target.id === "resume-btn") {
+    world.startGame();
+  }
+
+  if (target.id === "restart-btn") {
+    location.reload();
+  }
+
+  if (target.id === "mainmenu-btn") {
+    world.startMenu();
+  }
 });
 
 document.addEventListener("keydown", (event) => {

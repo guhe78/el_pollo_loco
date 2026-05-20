@@ -32,8 +32,12 @@
     <script src="./scripts/classes/level.class.js"></script>
     <script src="./scripts/classes/section.class.js"></script>
     <script src="./scripts/level/level1.js"></script>
+    <script src="./scripts/ui/templates/menu-template.js"></script>
+    <script src="./scripts/ui/overlay-states.js"></script>
+    <script src="./scripts/ui/overlay-manager.js"></script>
+    <script src="./scripts/ui/templates/highscore-list-template.js"></script>
     <script src="./scripts/game.js" defer></script>
-    <script type="" src="script.js"></script>
+    <script type="" src="script.js" defer></script>
   </head>
   <body onload="init()">
     <h1 class="main-headline text-kontur">
@@ -41,33 +45,7 @@
     </h1>
     <div id="game-container">
       <canvas id="canvas" width="720" height="480"></canvas>
-      <div id="startgame-overlay" class="overlay">
-        <div class="menu start-menu">
-          <h2>Start Menu</h2>
-          <button id="start-btn">Spiel starten</button>
-          <button>Einstellungen</button>
-          <button>How To</button>
-        </div>
-      </div>
-      <div id="pause-overlay" class="overlay hidden">
-        <div class="menu">
-          <h2>Pause</h2>
-          <button onclick="restartGame()">Neustart</button>
-          <button onclick="continueGame()">Weiter</button>
-          <button onclick="quitGame()">Ende</button>
-        </div>
-      </div>
-      <div id="gameover-overlay" class="overlay hidden">
-        <div class="menu">
-          <h2>GAMEOVER</h2>
-          <button onclick="restartGame()">Nochmal</button>
-          <button onclick="startMenu()">Hauptmenu</button>
-          <button onclick="quitGame()">Exit</button>
-        </div>
-      </div>
-      <div id="victory-overlay" class="overlay hidden">
-        <div class="menu"></div>
-      </div>
+      <div id="game-overlay" class="overlay"></div>
     </div>
   </body>
 </html>
