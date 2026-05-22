@@ -49,8 +49,13 @@ function victoryMenuTemplate() {
 }
 
 function settingsHowtoTemplate() {
+  const mode = localStorage.getItem("displayMode") || "standard";
+  const label =
+    mode === "fullscreen"
+      ? "Einstellungen (Modus: Vollbild 2x)"
+      : "Einstellungen (Modus: Standard 720x480)";
   return `
-    <button id="settings-btn" class="button">Einstellungen</button>
+    <button id="settings-btn" class="button">${label}</button>
     <button id="howto-btn" class="button">How To</button>
   `;
 }
