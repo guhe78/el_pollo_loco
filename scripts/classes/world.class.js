@@ -131,6 +131,8 @@ class World {
 
   setGameState(state) {
     this.gameState = state;
+    const isInGameState = state !== "startMenu";
+    document.body.classList.toggle("game-running", isInGameState);
 
     if (state === "running") {
       this.overlayManager.hide();

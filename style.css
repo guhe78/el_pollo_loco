@@ -5,9 +5,21 @@
   font-style: normal;
 }
 
+:root {
+  --game-base-width: 720px;
+  --game-aspect: 720 / 480;
+  --game-scale: 1;
+}
+
 * {
   margin: 0;
   box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
 }
 
 body {
@@ -15,6 +27,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+  padding-top: 16px;
+  gap: 12px;
+  margin: 0;
+  height: 100%;
+  min-height: 100dvh;
+  overflow-x: hidden;
 }
 
 body::before {
@@ -30,41 +49,92 @@ body::before {
   z-index: -1;
 }
 
+body.mode-fullscreen {
+  --game-scale: 2;
+}
+
+body:not(.game-running) .main-headline {
+  display: flex;
+}
+
+body:not(.game-running) #canvas {
+  visibility: hidden;
+}
+
+body:not(.game-running) #startgame-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 180;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body:not(.game-running) .start-menu {
+  width: min(92vw, 520px);
+  min-height: auto;
+  max-height: 85dvh;
+  overflow: auto;
+}
+
+body.game-running {
+  overflow: hidden;
+}
+
+@media (max-width: 900px) and (orientation: landscape) {
+  body.game-running .main-headline {
+    display: none;
+  }
+}
+
+body.game-running .start-menu {
+  display: none;
+}
+
+body.game-running .rotate-hint {
+  display: none;
+}
+
 canvas {
-  width: 720px;
-  height: 480px;
   background-color: lightskyblue;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 h1 {
-  font-size: 96px;
+  font-size: clamp(2.5rem, 10vw, 6rem);
 }
 
 h2 {
-  font-size: 48px;
+  font-size: clamp(1.75rem, 5vw, 3rem);
 }
-
 h3 {
-  font-size: 36px;
+  font-size: clamp(1.25rem, 4vw, 2.25rem);
 }
 
 #game-container {
   position: relative;
-  width: 720px;
-  height: 480px;
-}
-
-#canvas {
-  display: block;
+  width: min(
+    calc(var(--game-base-width) * var(--game-scale)),
+    calc((100dvh - 16px) * 1.5),
+    calc(100vw - 16px)
+  );
+  aspect-ratio: var(--game-aspect);
+  height: auto;
+  margin-inline: auto;
+  margin-top: 16px;
 }
 
 .main-headline {
-  padding-top: 60px;
-  padding-bottom: 60px;
-  height: 250px;
-
+  padding: 24px 16px;
+  min-height: auto;
+  height: clamp(50px, 20vw, 250px);
   display: flex;
-  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(8px, 3vw, 32px);
 }
 
 .main-headline span:nth-child(1) {
@@ -90,9 +160,19 @@ h3 {
   justify-content: center;
   align-items: center;
 
-  background: rgba(0, 0, 0, 0.3);
+  background: transparent;
 
   z-index: 100;
+}
+
+#pausegame-overlay,
+#gameover-overlay,
+#victory-overlay {
+  background: rgba(0, 0, 0, 0.65);
+}
+
+#startgame-overlay {
+  background: transparent;
 }
 
 .hidden {
@@ -112,8 +192,11 @@ h3 {
   justify-content: center;
   gap: 12px;
 
-  width: 320px;
-  height: 280px;
+  width: min(90vw, 320px);
+  min-height: 280px;
+  height: auto;
+  max-height: 90%;
+  overflow: auto;
 
   color: darkblue;
   text-shadow: 5px 4px 3px pink;
@@ -129,8 +212,10 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 240px;
-  height: 90px;
+
+  width: min(100%, 240px);
+  min-height: 56px;
+  height: auto;
 
   background-color: blue;
   color: lightblue;
@@ -142,15 +227,17 @@ h3 {
 }
 
 .start-menu {
-  width: 750px;
-  height: 500px;
+  width: min(92vw, 720px);
+  min-height: min(80vh, 500px);
+  height: auto;
 
   align-items: center;
 }
 
 .ingame-menu {
-  width: 550px;
-  height: 350px;
+  width: min(90vw, 550px);
+  min-height: 350px;
+  height: auto;
 
   align-items: center;
 }
@@ -166,10 +253,62 @@ h3 {
 .small-buttons-container {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
 }
 
 .small-buttons-container .button {
   width: 170px;
   height: 40px;
   padding-top: 7px;
+}
+
+.rotate-hint {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.85);
+  color: lightblue;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+}
+
+@media (orientation: portrait) and (max-width: 900px) {
+  body.game-running #game-container {
+    display: none;
+  }
+
+  body.game-running .rotate-hint {
+    display: flex;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 900px) {
+  body.game-running .main-headline {
+    display: none;
+  }
+
+  body.game-running .rotate-hint {
+    display: none;
+  }
+
+  body.game-running #game-container {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-headline {
+    gap: 8px;
+    padding: 12px 8px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 9vw, 3.5rem);
+  }
 }
