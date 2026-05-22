@@ -162,17 +162,16 @@ class World {
 
   checkCollision() {
     this.currentSection.enemies.forEach((enemy) => {
-      if (!enemy) return; // Null-Check hinzufügen
+      if (!enemy) return;
 
       if (this.character.isColliding(enemy)) {
         if (this.character.isAttacking && enemy.isStunned) {
-          enemy.energy = 0; // Kill setzen
+          enemy.energy = 0;
           this.character.hitSound.play();
           if (enemy.isDead()) {
             enemy.startDeath(enemy.randomImagesDieArray);
           }
         } else if (!this.character.isAttacking) {
-          // Schaden nur wenn nicht attackiert oder enemy nicht stunned
           if (!enemy.isStunned) {
             this.character.auaSound.play();
             this.character.hit(5);
@@ -181,14 +180,12 @@ class World {
               this.gameOver();
             }
           }
-          // Wenn stunned aber nicht slapping: kein Schaden an Character
         }
       }
 
       enemy.changeAnimation(enemy.randomImagesSwimArray);
     });
 
-    // Endboss separat checken
     if (this.currentSection.endboss) {
       if (this.character.isColliding(this.currentSection.endboss)) {
         if (
