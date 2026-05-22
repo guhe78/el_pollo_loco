@@ -53,6 +53,17 @@ body.mode-fullscreen {
   --game-scale: 2;
 }
 
+body.game-running.mode-fullscreen .main-headline {
+  display: none;
+}
+
+body.mode-fullscreen #game-container {
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 body:not(.game-running) .main-headline {
   display: flex;
 }
@@ -122,7 +133,7 @@ h3 {
     calc(100vw - 16px)
   );
   aspect-ratio: var(--game-aspect);
-  height: auto;
+  max-height: 100vh;
   margin-inline: auto;
   margin-top: 16px;
 }
