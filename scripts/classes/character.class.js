@@ -200,13 +200,17 @@ class Character extends MovableObject {
     const maxCharacterX =
       this.world.level.levelEndX + this.cameraOffsetX - this.world.canvas.width;
     this.position_x = Math.min(this.position_x + this.speed, maxCharacterX);
-    this.world.camera_x = Math.min(0, -this.position_x + this.cameraOffsetX);
+    this.world.camera_x = Math.round(
+      Math.min(0, -this.position_x + this.cameraOffsetX),
+    );
   }
 
   moveLeft() {
     this.otherDirection = true;
     this.position_x -= this.speed;
-    this.world.camera_x = Math.min(0, -this.position_x + this.cameraOffsetX);
+    this.world.camera_x = Math.round(
+      Math.min(0, -this.position_x + this.cameraOffsetX),
+    );
   }
 
   applySlapAttack() {
