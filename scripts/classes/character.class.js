@@ -86,6 +86,7 @@ class Character extends MovableObject {
   auaSound = new Audio("../../assets/audio/aua.mp3");
   blingSound = new Audio("../../assets/audio/bling.mp3");
   hitSound = new Audio("../../assets/audio/hit.mp3");
+  highscore = 0;
 
   constructor() {
     super();
@@ -218,9 +219,6 @@ class Character extends MovableObject {
     );
     this.position_x += delta;
     this.slapSound.play();
-
-    // Nur Animation und Sound - keine Schaden-Logik hier!
-    // Die Kampf-Logik gehört in World.checkCollision()
 
     setTimeout(() => {
       this.position_x -= delta;
