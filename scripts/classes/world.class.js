@@ -122,11 +122,15 @@ class World {
   }
 
   gameOver() {
-    this.setGameState("gameover");
+    setTimeout(() => {
+      this.setGameState("gameover");
+    }, 3000);
   }
 
   victory() {
-    this.setGameState("victory");
+    setTimeout(() => {
+      this.setGameState("victory");
+    }, 3000);
   }
 
   setGameState(state) {
