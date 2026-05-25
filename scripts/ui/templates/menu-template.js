@@ -41,7 +41,6 @@ function victoryMenuTemplate() {
       <div class="menu ingame-menu">
         <h2>Victory!</h2>
         <h3>Your score: <span id="score-value">${world.character.highscore}</span></h3>
-          ${highscoreListTemplate()}
           ${menuActionsTemplate()}
       </div>
     </div>
@@ -57,15 +56,6 @@ function settingsHowtoTemplate() {
   return `
     <button id="settings-btn" class="button">${label}</button>
     <button id="howto-btn" class="button">How To</button>
-  `;
-}
-
-function highscoreListTemplate() {
-  return `
-    <h3>Highscores</h3>
-    <ol id="highscore-list">
-      <!-- Highscore items will be dynamically inserted here -->
-    </ol>
   `;
 }
 
