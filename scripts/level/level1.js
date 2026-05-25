@@ -111,7 +111,7 @@ function createBackgrounds(sectionLength, startX, backgroundsArray) {
 
 function createEnemies(sort, count, startX, sectionLength) {
   const enemies = [];
-  const minX = startX + 300;
+  const minX = startX + 500;
   const maxX = startX + sectionLength - 300;
   const spacing = count > 1 ? (maxX - minX) / (count - 1) : 0;
 
