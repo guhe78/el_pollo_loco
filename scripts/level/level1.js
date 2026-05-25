@@ -1,4 +1,4 @@
-const BG_TILE_WIDTH = 3840 / 2.25;
+const BG_TILE_WIDTH = Math.round(3840 / 2.25);
 
 const SECTION_ONE_LENGTH = BG_TILE_WIDTH * 2;
 const SECTION_TWO_LENGTH = BG_TILE_WIDTH * 2;
