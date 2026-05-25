@@ -170,6 +170,7 @@ class World {
           this.character.hitSound.play();
           if (enemy.isDead()) {
             enemy.startDeath(enemy.randomImagesDieArray);
+            this.character.highscore += 10;
           }
         } else if (!this.character.isAttacking) {
           if (!enemy.isStunned) {
@@ -198,6 +199,7 @@ class World {
             this.currentSection.endboss.startDeath(
               this.currentSection.endboss.IMAGES_DEAD,
             );
+            this.character.highscore += 100;
             this.victory();
           }
         } else if (!this.character.isAttacking) {
@@ -271,6 +273,7 @@ class World {
 
           this.statusBars[1].setPoisonPercentage(20);
         }
+        this.character.highscore += 5;
         this.character.blingSound.play();
       }
     });

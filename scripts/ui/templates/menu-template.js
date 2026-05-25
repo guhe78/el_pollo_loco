@@ -40,7 +40,7 @@ function victoryMenuTemplate() {
     <div id="victory-overlay" class="overlay">
       <div class="menu ingame-menu">
         <h2>Victory!</h2>
-        <h3>Your score: <span id="score-value">0</span></h3>
+        <h3>Your score: <span id="score-value">${world.character.highscore}</span></h3>
           ${highscoreListTemplate()}
           ${menuActionsTemplate()}
       </div>
