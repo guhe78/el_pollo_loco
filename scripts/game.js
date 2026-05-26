@@ -45,6 +45,14 @@ document.addEventListener("click", async (event) => {
     world.startMenu();
     return;
   }
+  if (target.id === "howto-btn") {
+    world.showHowTo();
+    return;
+  }
+  if (target.id === "back-btn") {
+    world.startMenu();
+    return;
+  }
 });
 
 document.addEventListener("keydown", (event) => {

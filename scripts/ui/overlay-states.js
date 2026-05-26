@@ -3,4 +3,5 @@ const states = {
   paused: pauseMenuTemplate,
   gameover: gameOverMenuTemplate,
   victory: victoryMenuTemplate,
+  howto: howToMenuTemplate,
 };

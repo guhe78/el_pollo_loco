@@ -148,6 +148,10 @@ class World {
     }, 3000);
   }
 
+  showHowTo() {
+    this.setGameState("howto");
+  }
+
   setGameState(state) {
     this.gameState = state;
     const isInGameState = state !== "startMenu";
