@@ -59,6 +59,42 @@ function settingsHowtoTemplate() {
   `;
 }
 
+function howToMenuTemplate() {
+  return `
+    <div id="howto-overlay" class="overlay">
+      <div class="menu howto-menu">
+        <h2>How To Play</h2>
+        <h3>Steuerung</h3>
+        <ul>
+          <li>Pfeiltasten: Schwimmen und bewegen</li>
+          <li>D: Blase schießen</li>
+          <li>Leertaste: Nahkampfangriff</li>
+        </ul>
+        <h3>Kampf-System</h3>
+        <ul>
+          <li>Mit Blasen betäubst du Gegner.</li>
+          <li>Nur betäubte Gegner kannst du mit Leertaste besiegen.</li>
+          <li>Triffst du unbetäubte Gegner, verlierst du Leben.</li>
+        </ul>
+        <h3>Ziele im Level</h3>
+        <ul>
+          <li>Abschnitt 1: Münzen sammeln</li>
+          <li>Abschnitt 2: Giftflaschen sammeln</li>
+          <li>Gegner und Items geben Punkte.</li>
+        </ul>
+        <h3>Endboss</h3>
+        <ul>
+          <li>Genauso wie normale Gegner: erst mit Blasen betäuben.</li>
+          <li>Dann mit Leertaste angreifen.</li>
+          <li>Wiederholen, bis der Endboss besiegt ist.</li>
+        </ul>
+        <p><strong>Tipp:</strong> Sichere Reihenfolge: D, dann Leertaste.</p>
+        <button id="back-btn" class="button">Zurück</button>
+      </div>
+    </div>
+  `;
+}
+
 function menuActionsTemplate() {
   return `
     <button id="restart-btn" class="button">Neustart</button>
