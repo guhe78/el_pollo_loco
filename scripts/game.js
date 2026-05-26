@@ -15,6 +15,8 @@ document.addEventListener("click", async (event) => {
   if (!(target instanceof HTMLElement)) return;
 
   if (target.id === "settings-btn") {
+    if (isMobileDevice()) return;
+
     const nextMode =
       getDisplayMode() === "standard" ? "fullscreen" : "standard";
     setDisplayMode(nextMode);
