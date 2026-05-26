@@ -311,12 +311,10 @@ class World {
     this.endbossIntroDone = true;
     this.isEndbossIntroActive = true;
 
-    // Originale Y-Position merken, dann Endboss über den Bildschirm schieben
     const targetY = endboss.position_y;
     endboss.position_y = -endboss.height;
     endboss.setAnimation(endboss.IMAGES_INTRO);
 
-    // Kamera-Zielwerte berechnen
     const endbossCameraX = Math.round(
       Math.min(
         0,
@@ -327,14 +325,12 @@ class World {
       Math.min(0, -this.character.position_x + this.character.cameraOffsetX),
     );
 
-    // Phase 1: Kamera schwenkt zum Endboss
     const panToEndboss = setInterval(() => {
       const diff = endbossCameraX - this.camera_x;
       if (Math.abs(diff) < 5) {
         this.camera_x = endbossCameraX;
         clearInterval(panToEndboss);
 
-        // Phase 2: Endboss fällt von oben rein
         const introFall = setInterval(() => {
           endboss.position_y += 8;
           if (endboss.position_y >= targetY) {
@@ -350,14 +346,14 @@ class World {
                   clearInterval(panToCharacter);
                   this.isEndbossIntroActive = false;
                 } else {
-                  this.camera_x += d * 0.08;
+                  this.camera_x += d * 0.04;
                 }
               }, 1000 / 60);
-            }, 3500);
+            }, 2000);
           }
         }, 1000 / 60);
       } else {
-        this.camera_x += diff * 0.08;
+        this.camera_x += diff * 0.04;
       }
     }, 1000 / 60);
   }
