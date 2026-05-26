@@ -8,6 +8,8 @@ class World {
   keyboard;
   camera_x = 0;
   gameState;
+  isEndbossIntroActive = false;
+  endbossIntroDone = false;
 
   constructor(canvas, keyboard) {
     this.keyboard = keyboard;
@@ -61,6 +63,8 @@ class World {
   }
 
   restartGame() {
+    this.isEndbossIntroActive = false;
+    this.endbossIntroDone = false;
     this.character.stop();
     this.camera_x = 0;
     this.level = createLevel();
@@ -96,6 +100,7 @@ class World {
 
   updateSection() {
     const x = this.character.position_x;
+    const previousSection = this.currentSection;
     const lastSection = this.level.sections[this.level.sections.length - 1];
 
     this.level.sections.forEach((section) => {
@@ -106,6 +111,15 @@ class World {
 
     if (x >= lastSection.startX) {
       this.currentSection = lastSection;
+    }
+
+    const enteredNewSection = previousSection !== this.currentSection;
+    if (
+      enteredNewSection &&
+      this.currentSection.endboss &&
+      !this.endbossIntroDone
+    ) {
+      this.startEndbossIntro();
     }
   }
 
@@ -288,6 +302,64 @@ class World {
     this.currentSection.collectibles = this.currentSection.collectibles.filter(
       (item) => !item.isCollected,
     );
+  }
+
+  startEndbossIntro() {
+    const endboss = this.currentSection.endboss;
+    if (!endboss) return;
+
+    this.endbossIntroDone = true;
+    this.isEndbossIntroActive = true;
+
+    // Originale Y-Position merken, dann Endboss über den Bildschirm schieben
+    const targetY = endboss.position_y;
+    endboss.position_y = -endboss.height;
+    endboss.setAnimation(endboss.IMAGES_INTRO);
+
+    // Kamera-Zielwerte berechnen
+    const endbossCameraX = Math.round(
+      Math.min(
+        0,
+        -endboss.position_x + this.canvas.width / 2 - endboss.width / 2,
+      ),
+    );
+    const characterCameraX = Math.round(
+      Math.min(0, -this.character.position_x + this.character.cameraOffsetX),
+    );
+
+    // Phase 1: Kamera schwenkt zum Endboss
+    const panToEndboss = setInterval(() => {
+      const diff = endbossCameraX - this.camera_x;
+      if (Math.abs(diff) < 5) {
+        this.camera_x = endbossCameraX;
+        clearInterval(panToEndboss);
+
+        // Phase 2: Endboss fällt von oben rein
+        const introFall = setInterval(() => {
+          endboss.position_y += 8;
+          if (endboss.position_y >= targetY) {
+            endboss.position_y = targetY;
+            clearInterval(introFall);
+            endboss.setAnimation(endboss.IMAGES_SWIM);
+
+            setTimeout(() => {
+              const panToCharacter = setInterval(() => {
+                const d = characterCameraX - this.camera_x;
+                if (Math.abs(d) < 5) {
+                  this.camera_x = characterCameraX;
+                  clearInterval(panToCharacter);
+                  this.isEndbossIntroActive = false;
+                } else {
+                  this.camera_x += d * 0.08;
+                }
+              }, 1000 / 60);
+            }, 3500);
+          }
+        }, 1000 / 60);
+      } else {
+        this.camera_x += diff * 0.08;
+      }
+    }, 1000 / 60);
   }
 
   drawArrayToMap(array) {

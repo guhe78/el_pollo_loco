@@ -127,6 +127,10 @@ class Character extends MovableObject {
         this.cameraOffsetX -
         this.world.canvas.width;
 
+      if (this.world.isEndbossIntroActive) {
+        this.changeAnimation(false);
+        return;
+      }
       if (
         this.world.keyboard.RIGHT &&
         this.position_x < maxCharacterX &&
