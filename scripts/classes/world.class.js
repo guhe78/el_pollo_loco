@@ -128,6 +128,7 @@ class World {
   }
 
   victory() {
+    this.setGameState("victoryTransition");
     setTimeout(() => {
       this.setGameState("victory");
     }, 3000);
@@ -139,6 +140,11 @@ class World {
     document.body.classList.toggle("game-running", isInGameState);
 
     if (state === "running") {
+      this.overlayManager.hide();
+      return;
+    }
+
+    if (state === "victoryTransition") {
       this.overlayManager.hide();
       return;
     }
@@ -192,28 +198,25 @@ class World {
     });
 
     if (this.currentSection.endboss) {
-      if (this.character.isColliding(this.currentSection.endboss)) {
-        if (
-          this.character.isAttacking &&
-          this.currentSection.endboss.isStunned
-        ) {
-          this.currentSection.endboss.hit(10);
+      const endboss = this.currentSection.endboss;
+
+      if (!endboss.isDead() && this.character.isColliding(endboss)) {
+        if (this.character.isAttacking && endboss.isStunned) {
+          endboss.hit(10);
           this.character.hitSound.play();
-          if (this.currentSection.endboss.isDead()) {
-            this.currentSection.endboss.startDeath(
-              this.currentSection.endboss.IMAGES_DEAD,
-            );
+
+          if (endboss.isDead()) {
+            endboss.startDeath(endboss.IMAGES_DEAD);
             this.character.highscore += 100;
             this.victory();
           }
-        } else if (!this.character.isAttacking) {
-          if (!this.currentSection.endboss.isStunned) {
-            this.character.auaSound.play();
-            this.character.hit(5);
-            this.statusBars[0].setLifePercentage(this.character.energy);
-            if (this.character.isDead()) {
-              this.gameOver();
-            }
+        } else if (!this.character.isAttacking && !endboss.isStunned) {
+          this.character.auaSound.play();
+          this.character.hit(5);
+          this.statusBars[0].setLifePercentage(this.character.energy);
+
+          if (this.character.isDead()) {
+            this.gameOver();
           }
         }
       }
@@ -226,7 +229,6 @@ class World {
 
   checkBubbleCollision() {
     const leftEdge = -this.camera_x;
-
     const rightEdge = -this.camera_x + this.canvas.width;
 
     this.throwableObjects.forEach((object) => {
@@ -238,6 +240,7 @@ class World {
       });
       if (
         this.currentSection.endboss &&
+        !this.currentSection.endboss.isDead() &&
         this.currentSection.endboss.isColliding(object)
       ) {
         this.character.hitSound.play();
