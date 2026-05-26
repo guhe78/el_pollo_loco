@@ -1,4 +1,16 @@
 class Endboss extends Enemy {
+  IMAGES_INTRO = [
+    "../../assets/img/Enemy/3 Final Enemy/1.Introduce/1.png",
+    "../../assets/img/Enemy/3 Final Enemy/1.Introduce/2.png",
+    "../../assets/img/Enemy/3 Final Enemy/1.Introduce/3.png",
+    "../../assets/img/Enemy/3 Final Enemy/1.Introduce/4.png",
+    "../../assets/img/Enemy/3 Final Enemy/1.Introduce/5.png",
+    "../../assets/img/Enemy/3 Final Enemy/1.Introduce/6.png",
+    "../../assets/img/Enemy/3 Final Enemy/1.Introduce/7.png",
+    "../../assets/img/Enemy/3 Final Enemy/1.Introduce/8.png",
+    "../../assets/img/Enemy/3 Final Enemy/1.Introduce/9.png",
+    "../../assets/img/Enemy/3 Final Enemy/1.Introduce/10.png",
+  ];
   IMAGES_SWIM = [
     "../../assets/img/Enemy/3 Final Enemy/2.floating/1.png",
     "../../assets/img/Enemy/3 Final Enemy/2.floating/2.png",
@@ -43,6 +55,7 @@ class Endboss extends Enemy {
     this.position_x = position_x;
     this.position_y = position_y;
     this.loadImage();
+    this.loadImages(this.IMAGES_INTRO);
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_DEAD);
