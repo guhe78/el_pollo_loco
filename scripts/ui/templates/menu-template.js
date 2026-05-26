@@ -62,12 +62,12 @@ function settingsHowtoTemplate() {
 function howToMenuTemplate() {
   return `
     <div id="howto-overlay" class="overlay">
-      <div class="menu howto-menu">
+      <div class="menu howto-menu text-kontur">
         <h2>How To Play</h2>
         <h3>Steuerung</h3>
         <ul>
           <li>Pfeiltasten: Schwimmen und bewegen</li>
-          <li>D: Blase schießen</li>
+          <li>D-Taste: Blase schießen</li>
           <li>Leertaste: Nahkampfangriff</li>
         </ul>
         <h3>Kampf-System</h3>
