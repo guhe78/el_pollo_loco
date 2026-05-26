@@ -224,6 +224,15 @@ h3 {
   color: lightblue;
 }
 
+.settings-btn,
+.howto-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding-top: 1px;
+  text-indent: 2px;
+}
+
 .menu .button:hover {
   cursor: pointer;
   border: 2px solid lightblue;

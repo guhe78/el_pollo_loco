@@ -48,15 +48,36 @@ function victoryMenuTemplate() {
 }
 
 function settingsHowtoTemplate() {
-  const mode = localStorage.getItem("displayMode") || "standard";
-  const label =
-    mode === "fullscreen"
-      ? "Einstellungen (Modus: Vollbild 2x)"
-      : "Einstellungen (Modus: Standard 720x480)";
   return `
-    <button id="settings-btn" class="button">${label}</button>
-    <button id="howto-btn" class="button">How To</button>
+    <button id="settings-btn" class="button settings-btn">⚙️</button>
+    <button id="howto-btn" class="button howto-btn">❓</button>
   `;
+}
+
+function settingsMenuTemplate() {
+  const mode = localStorage.getItem("displayMode") || "standard";
+  const soundEnabled = localStorage.getItem("soundEnabled") !== "false";
+  const isMobile = window.matchMedia("(pointer: coarse)").matches;
+
+  const modeInfo =
+    mode === "fullscreen"
+      ? "Aktuell: Vollbild 2x"
+      : "Aktuell: Standard 720x480";
+  const soundLabel = soundEnabled ? "Sound: AN" : "Sound: AUS";
+
+  const displayButtons = isMobile
+    ? "<p>Auf Mobilgeräten ist Vollbild immer aktiv.</p>"
+    : `<button id="display-standard-btn" class="button">Standard 720x480</button>
+        <button id="display-fullscreen-btn" class="button">Vollbild 2x</button>    
+        <p>${modeInfo}</p>`;
+  return `<div id="settings-overlay" class="overlay">    
+          <div class="menu ingame-menu">      
+            <h2>Einstellungen</h2>      
+              ${displayButtons}      
+              <button id="sound-toggle-btn" class="button">${soundLabel}</button>      
+              <button id="back-settings-btn" class="button">Zurück</button>    
+          </div>  
+        </div> `;
 }
 
 function howToMenuTemplate() {

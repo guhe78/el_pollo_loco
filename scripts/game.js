@@ -1,4 +1,5 @@
 const DISPLAY_MODE_KEY = "displayMode"; // "standard" | "fullscreen"
+const SOUND_ENABLED_KEY = "soundEnabled";
 
 let canvas;
 let world;
@@ -8,6 +9,7 @@ function loadCanvas() {
   canvas = document.getElementById("canvas");
   applyDisplayMode();
   world = new World(canvas, keyboard);
+  applySoundMode();
 }
 
 document.addEventListener("click", async (event) => {
@@ -15,20 +17,12 @@ document.addEventListener("click", async (event) => {
   if (!(target instanceof HTMLElement)) return;
 
   if (target.id === "settings-btn") {
-    if (isMobileDevice()) return;
-
-    const nextMode =
-      getDisplayMode() === "standard" ? "fullscreen" : "standard";
-    setDisplayMode(nextMode);
-    applyDisplayMode();
-    target.textContent =
-      nextMode === "fullscreen"
-        ? "Einstellungen (Modus: Vollbild 2x)"
-        : "Einstellungen (Modus: Standard 720x480)";
+    world.showSettings();
     return;
   }
 
   if (target.id === "start-btn") {
+    applyDisplayMode();
     world.startGame();
     return;
   }
@@ -47,12 +41,49 @@ document.addEventListener("click", async (event) => {
     world.startMenu();
     return;
   }
+
   if (target.id === "howto-btn") {
     world.showHowTo();
     return;
   }
+
   if (target.id === "back-btn") {
     world.startMenu();
+    return;
+  }
+
+  if (target.id === "display-standard-btn") {
+    if (!isMobileDevice()) {
+      setDisplayMode("standard");
+      if (world.menuReturnState === "paused") {
+        applyDisplayMode();
+      }
+    }
+    world.setGameState("settings");
+    return;
+  }
+
+  if (target.id === "display-fullscreen-btn") {
+    if (!isMobileDevice()) {
+      setDisplayMode("fullscreen");
+      if (world.menuReturnState === "paused") {
+        applyDisplayMode();
+      }
+    }
+    world.setGameState("settings");
+    return;
+  }
+
+  if (target.id === "sound-toggle-btn") {
+    const next = !getSoundEnabled();
+    setSoundEnabled(next);
+    applySoundMode();
+    world.setGameState("settings");
+    return;
+  }
+
+  if (target.id === "back-settings-btn") {
+    world.closeOverlayMenu();
     return;
   }
 });
@@ -123,4 +154,17 @@ function applyDisplayMode() {
   }
 
   document.body.classList.toggle("mode-fullscreen", mode === "fullscreen");
+}
+
+function getSoundEnabled() {
+  return localStorage.getItem(SOUND_ENABLED_KEY) !== "false";
+}
+
+function setSoundEnabled(enabled) {
+  localStorage.setItem(SOUND_ENABLED_KEY, String(enabled));
+}
+
+function applySoundMode() {
+  if (!world) return;
+  world.setSoundEnabled(getSoundEnabled());
 }

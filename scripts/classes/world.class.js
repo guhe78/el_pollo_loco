@@ -10,6 +10,8 @@ class World {
   gameState;
   isEndbossIntroActive = false;
   endbossIntroDone = false;
+  menuReturnState = "startMenu";
+  soundEnabled = true;
 
   constructor(canvas, keyboard) {
     this.keyboard = keyboard;
@@ -73,6 +75,7 @@ class World {
     this.throwableObjects = [];
     this.currentSection = this.level.sections[0];
     this.setWorld();
+    this.setSoundEnabled(this.soundEnabled);
     this.startGame();
   }
 
@@ -149,12 +152,44 @@ class World {
   }
 
   showHowTo() {
+    if (this.gameState === "paused" || this.gameState === "startMenu") {
+      this.menuReturnState = this.gameState;
+    }
     this.setGameState("howto");
+  }
+
+  showSettings() {
+    if (this.gameState === "paused" || this.gameState === "startMenu") {
+      this.menuReturnState = this.gameState;
+    }
+    this.setGameState("settings");
+  }
+
+  closeOverlayMenu() {
+    this.setGameState(this.menuReturnState);
+  }
+
+  setSoundEnabled(enabled) {
+    this.soundEnabled = enabled;
+    const sounds = [
+      this.character.blubSound,
+      this.character.slapSound,
+      this.character.auaSound,
+      this.character.blingSound,
+      this.character.hitSound,
+    ];
+    sounds.forEach((audio) => {
+      if (!audio) return;
+      audio.muted = !enabled;
+    });
   }
 
   setGameState(state) {
     this.gameState = state;
-    const isInGameState = state !== "startMenu";
+    const isInGameState =
+      state === "running" ||
+      state === "paused" ||
+      state === "victoryTransition";
     document.body.classList.toggle("game-running", isInGameState);
 
     if (state === "running") {
