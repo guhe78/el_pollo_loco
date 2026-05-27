@@ -10,6 +10,7 @@ function loadCanvas() {
   applyDisplayMode();
   world = new World(canvas, keyboard);
   applySoundMode();
+  setupMobileControls();
 }
 
 document.addEventListener("click", async (event) => {
@@ -29,11 +30,6 @@ document.addEventListener("click", async (event) => {
 
   if (target.id === "resume-btn") {
     world.startGame();
-    return;
-  }
-
-  if (target.id === "mobile-pause-btn") {
-    world.togglePause();
     return;
   }
 
@@ -179,6 +175,7 @@ function setupMobileControls() {
   if (pauseBtn) {
     pauseBtn.addEventListener("click", (event) => {
       event.preventDefault();
+      event.stopPropagation();
       world.togglePause();
     });
   }
@@ -197,11 +194,13 @@ function bindHoldControl(buttonId, keyName) {
 
   const press = (event) => {
     event.preventDefault();
+    event.stopPropagation();
     keyboard[keyName] = true;
   };
 
   const release = (event) => {
     event.preventDefault();
+    event.stopPropagation();
     keyboard[keyName] = false;
   };
 
