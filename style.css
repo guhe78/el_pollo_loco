@@ -584,10 +584,6 @@ body.game-running .rotate-hint {
 ========================================================= */
 
 @media (max-width: 1024px) {
-  #settings-btn {
-    display: none;
-  }
-
   .howto-menu {
     width: min(92vw, 720px);
 
