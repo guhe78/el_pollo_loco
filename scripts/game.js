@@ -146,14 +146,14 @@ function isMobileDevice() {
 }
 
 function applyDisplayMode() {
+  const isMobile = isMobileDevice();
   const mode = getDisplayMode();
 
-  if (isMobileDevice()) {
-    document.body.classList.add("mode-fullscreen");
-    return;
-  }
-
-  document.body.classList.toggle("mode-fullscreen", mode === "fullscreen");
+  document.body.classList.toggle("is-mobile", isMobile);
+  document.body.classList.toggle(
+    "mode-fullscreen",
+    isMobile || mode === "fullscreen",
+  );
 }
 
 function getSoundEnabled() {
