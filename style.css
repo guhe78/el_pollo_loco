@@ -306,6 +306,7 @@ body.game-running .rotate-hint {
   height: auto;
 
   padding-top: 10px;
+  padding-inline: 12px;
 
   border: none;
   border-radius: 24px;
@@ -316,7 +317,6 @@ body.game-running .rotate-hint {
   background-color: var(--color-primary);
   color: var(--color-secondary);
 }
-
 .menu .button:hover,
 .ingame-menu .button:hover {
   cursor: pointer;
@@ -350,6 +350,10 @@ body.game-running .rotate-hint {
 }
 
 .mobile-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
@@ -357,7 +361,11 @@ body.game-running .rotate-hint {
   border: none;
   border-radius: 50%;
 
-  background: rgba(0, 0, 180, 0.75);
+  padding: 0;
+  line-height: 1;
+  text-align: center;
+
+  background: rgba(0, 0, 180, 0.5);
   color: lightblue;
   font-family: "LuckiestGuy-Regular";
 }
@@ -379,6 +387,17 @@ body.game-running .rotate-hint {
     transform: scale(0.96);
   }
 
+  #mobile-up-btn,
+  #mobile-down-btn {
+    padding-top: 3px;
+  }
+
+  #mobile-throw-btn,
+  #mobile-slap-btn,
+  #mobile-pause-btn {
+    padding-top: 3px;
+  }
+
   .mobile-btn-pause {
     position: absolute;
     top: 12px;
@@ -398,9 +417,9 @@ body.game-running .rotate-hint {
   }
 
   .mobile-btn-action {
-    min-width: 88px;
+    width: 52px;
     height: 52px;
-    padding: 0 14px;
+    padding: 0;
     border-radius: 14px;
     font-size: 18px;
   }
