@@ -1,3 +1,7 @@
+/* =========================================================
+   Fonts & Root Variables
+========================================================= */
+
 @font-face {
   font-family: "LuckiestGuy-Regular";
   src: url("assets/fonts/Luckiest_Guy/LuckiestGuy-Regular.ttf");
@@ -8,8 +12,21 @@
 :root {
   --game-base-width: 720px;
   --game-aspect: 720 / 480;
-  --game-scale: 1;
+
+  --color-primary: blue;
+  --color-secondary: lightblue;
+  --color-accent: #3ec5ff;
+
+  --overlay-dark: rgba(0, 0, 0, 0.65);
+  --overlay-rotate: rgba(0, 0, 0, 0.85);
+
+  --menu-overlay-top: rgba(0, 0, 128, 0.4);
+  --menu-overlay-bottom: rgba(0, 0, 128, 0.3);
 }
+
+/* =========================================================
+   Reset & Base
+========================================================= */
 
 * {
   margin: 0;
@@ -24,85 +41,37 @@ body {
 
 body {
   font-family: "LuckiestGuy-Regular";
-  color: #3ec5ff;
+  color: var(--color-accent);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding-top: 16px;
+
   gap: 12px;
+  padding-top: 16px;
   margin: 0;
-  height: 100%;
+
   min-height: 100dvh;
   overflow-x: hidden;
 }
 
 body::before {
   content: "";
+
   position: fixed;
-  top: -10px;
-  left: -10px;
-  right: -10px;
-  bottom: -10px;
+  inset: -10px;
+
   background: url("assets/images/main_background.jpg");
   background-size: cover;
+
   filter: blur(4px);
   z-index: -1;
 }
 
-body.mode-fullscreen {
-  --game-scale: 2;
-}
-
-body.mode-fullscreen #game-container {
-  margin-top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-body:not(.game-running) .main-headline {
-  display: flex;
-}
-
-body:not(.game-running) #canvas {
-  visibility: hidden;
-}
-
-body:not(.game-running) #startgame-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 180;
-  background: rgba(0, 0, 0, 0);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-body.game-running {
-  overflow: hidden;
-}
-
-@media (max-width: 900px) and (orientation: landscape) {
-  body.game-running .main-headline {
-    display: none;
-  }
-}
-
-body.game-running .start-menu {
-  display: none;
-}
-
-body.game-running .rotate-hint {
-  display: none;
-}
-
-canvas {
-  background-color: lightskyblue;
-  display: block;
-  width: 100%;
-  height: 100%;
-}
+/* =========================================================
+   Typography
+========================================================= */
 
 h1 {
   font-size: clamp(2.5rem, 8vw, 5rem);
@@ -111,41 +80,9 @@ h1 {
 h2 {
   font-size: clamp(1.5rem, 2.5vw, 2.5rem);
 }
+
 h3 {
   font-size: clamp(1rem, 1.5vw, 2rem);
-}
-
-#game-container {
-  position: relative;
-  width: min(
-    calc(var(--game-base-width) * var(--game-scale)),
-    calc((100dvh - 16px) * 1.5),
-    calc(100vw - 16px)
-  );
-  aspect-ratio: var(--game-aspect);
-  max-height: 100vh;
-  margin-inline: auto;
-  margin-top: 16px;
-}
-
-.main-headline {
-  padding: 24px 16px;
-  min-height: auto;
-  height: clamp(50px, 20vw, 250px);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: clamp(8px, 3vw, 32px);
-}
-
-.main-headline span:nth-child(1) {
-  align-self: center;
-}
-.main-headline span:nth-child(2) {
-  align-self: flex-start;
-}
-.main-headline span:nth-child(3) {
-  align-self: flex-end;
 }
 
 .text-kontur {
@@ -153,24 +90,165 @@ h3 {
   -webkit-text-stroke: 1px lightskyblue;
 }
 
-.overlay {
-  position: absolute;
+/* =========================================================
+   Headlines
+========================================================= */
+
+.main-headline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  gap: clamp(8px, 3vw, 32px);
+
+  padding: 24px 16px;
+  height: clamp(50px, 20vw, 250px);
+}
+
+.main-headline span:nth-child(1) {
+  align-self: center;
+}
+
+.main-headline span:nth-child(2) {
+  align-self: flex-start;
+}
+
+.main-headline span:nth-child(3) {
+  align-self: flex-end;
+}
+
+body > .main-headline {
+  display: flex;
+  justify-content: center;
+}
+
+.overlay .main-headline {
+  display: none;
+}
+
+.menu .main-headline {
+  height: auto;
+  padding: clamp(12px, 3cqw, 24px) clamp(8px, 2cqw, 16px);
+  gap: clamp(6px, 2cqw, 24px);
+}
+
+.menu .main-headline {
+  font-size: clamp(1.8rem, 8cqw, 4rem);
+}
+
+/* =========================================================
+   Game Container & Canvas
+========================================================= */
+
+#game-container {
+  position: relative;
+
+  width: min(
+    var(--game-base-width),
+    calc(100vw - 16px),
+    calc((100dvh - 16px) * 1.5)
+  );
+
+  aspect-ratio: var(--game-aspect);
+  margin: 16px auto 0;
+}
+
+canvas {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  background-color: lightskyblue;
+}
+
+/* =========================================================
+   Fullscreen Mode
+========================================================= */
+
+body.mode-fullscreen {
+  justify-content: center;
+  align-items: center;
+
+  gap: 0;
+  padding-top: 0;
+
+  min-height: 100dvh;
+}
+
+body.mode-fullscreen #game-container {
+  width: min(1440px, calc(100vw - 16px), calc((100dvh - 16px) * 1.5));
+
+  aspect-ratio: var(--game-aspect);
+
+  height: auto;
+  max-height: calc(100dvh - 16px);
+
+  margin: 0 auto;
+}
+
+body.mode-fullscreen > .main-headline,
+body.is-mobile > .main-headline {
+  display: none;
+}
+
+body.mode-fullscreen .overlay .main-headline,
+body.is-mobile .overlay .main-headline {
+  display: flex;
+}
+
+/* =========================================================
+   Game State
+========================================================= */
+
+body:not(.game-running) #canvas {
+  visibility: hidden;
+}
+
+body:not(.game-running) #startgame-overlay {
+  position: fixed;
   inset: 0;
+
+  z-index: 180;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
   background: transparent;
+}
+
+body.game-running {
+  overflow: hidden;
+}
+
+body.game-running .start-menu,
+body.game-running .rotate-hint {
+  display: none;
+}
+
+/* =========================================================
+   Overlay
+========================================================= */
+
+.overlay {
+  position: absolute;
+  inset: 0;
 
   z-index: 100;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: transparent;
 }
 
 #pausegame-overlay,
 #gameover-overlay,
 #victory-overlay,
 #howto-overlay {
-  background: rgba(0, 0, 0, 0.65);
+  background: var(--overlay-dark);
 }
 
 #startgame-overlay {
@@ -181,37 +259,44 @@ h3 {
   display: none !important;
 }
 
+/* =========================================================
+   Menus
+========================================================= */
+
 .menu {
-  background:
-    linear-gradient(rgba(0, 0, 128, 0.4), rgba(0, 0, 128, 0.3)),
-    url("assets/images/menu_background.jpg");
-  background-size: cover;
-  background-position: center;
-
-  padding: 32px;
-  border-radius: 12px;
-
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
+
   gap: 12px;
 
   width: min(100%, 720px);
   height: min(100%, 480px);
+
+  padding: 32px;
   overflow: auto;
 
-  color: blue;
+  border-radius: 12px;
+
+  color: var(--color-primary);
+
+  background:
+    linear-gradient(var(--menu-overlay-top), var(--menu-overlay-bottom)),
+    url("assets/images/menu_background.jpg");
+
+  background-size: cover;
+  background-position: center;
 
   scrollbar-gutter: stable;
+
+  container-type: inline-size;
 }
 
-.button {
-  font-family: "LuckiestGuy-Regular";
-  font-size: 18px;
-  border-radius: 24px;
-  border: none;
-  padding-top: 10px;
+/* =========================================================
+   Buttons
+========================================================= */
 
+.button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -220,33 +305,68 @@ h3 {
   min-height: 40px;
   height: auto;
 
-  background-color: blue;
-  color: lightblue;
+  padding-top: 10px;
+
+  border: none;
+  border-radius: 24px;
+
+  font-family: "LuckiestGuy-Regular";
+  font-size: 18px;
+
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+.menu .button:hover,
+.ingame-menu .button:hover {
+  cursor: pointer;
+  border: 2px solid var(--color-secondary);
 }
 
 .settings-btn,
 .howto-btn {
   width: 50px;
   height: 50px;
-  border-radius: 50%;
+
   padding-top: 1px;
+
+  border-radius: 50%;
+
   text-indent: 2px;
 }
 
-.menu .button:hover {
-  cursor: pointer;
-  border: 2px solid lightblue;
+.small-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
 }
+
+/* =========================================================
+   Specific Menus
+========================================================= */
 
 .start-menu,
 .howto-menu {
   width: 720px;
   height: 480px;
+
   min-height: 480px;
   max-height: 480px;
 
   align-items: center;
 }
+
+.ingame-menu {
+  align-items: center;
+}
+
+.ingame-menu .button {
+  font-size: 20px;
+}
+
+/* =========================================================
+   How-To Menu Scrollbar
+========================================================= */
 
 .howto-menu {
   scrollbar-width: thin;
@@ -265,8 +385,8 @@ h3 {
 
 .howto-menu::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, #7fe4ff 0%, #3ec5ff 45%, #2288ff 100%);
-  border-radius: 999px;
   border: 2px solid rgba(8, 21, 55, 0.6);
+  border-radius: 999px;
 }
 
 .howto-menu::-webkit-scrollbar-thumb:hover {
@@ -277,50 +397,63 @@ h3 {
   background: transparent;
 }
 
-.ingame-menu {
-  width: 560px;
-  height: 360px;
-  min-height: 360px;
-  max-height: 360px;
-
-  align-items: center;
-}
-
-.ingame-menu .button {
-  font-size: 20px;
-}
-
-.ingame-menu .button:hover {
-  border: 2px solid lightblue;
-}
-
-.small-buttons-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-}
-
-.small-buttons-container .button {
-  width: 170px;
-  height: 40px;
-  padding-top: 7px;
-}
+/* =========================================================
+   Rotate Hint
+========================================================= */
 
 .rotate-hint {
   display: none;
+
   position: fixed;
   inset: 0;
+
   z-index: 200;
-  background: rgba(0, 0, 0, 0.85);
-  color: lightblue;
+
   align-items: center;
   justify-content: center;
-  text-align: center;
+
   padding: 24px;
+
+  text-align: center;
   font-size: clamp(1.5rem, 5vw, 2.5rem);
+
+  background: var(--overlay-rotate);
+  color: var(--color-secondary);
 }
+
+/* =========================================================
+   Responsive - Landscape Mobile
+========================================================= */
+
+@media (orientation: landscape) and (max-width: 1024px) {
+  body.game-running {
+    justify-content: center;
+    align-items: center;
+
+    gap: 0;
+    padding-top: 0;
+
+    min-height: 100dvh;
+  }
+
+  body.game-running .main-headline,
+  body.game-running .rotate-hint {
+    display: none;
+  }
+
+  body.game-running #game-container {
+    width: min(calc(100vw - 16px), calc((100dvh - 16px) * 1.5));
+
+    aspect-ratio: var(--game-aspect);
+
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+/* =========================================================
+   Responsive - Portrait Mobile
+========================================================= */
 
 @media (orientation: portrait) and (max-width: 1024px) {
   body.game-running #game-container {
@@ -332,31 +465,9 @@ h3 {
   }
 }
 
-@media (orientation: landscape) and (max-width: 1024px) {
-  body.game-running {
-    padding-top: 0;
-    gap: 0;
-    justify-content: flex-start;
-    min-height: 100dvh;
-  }
-
-  body.game-running .main-headline {
-    display: none;
-  }
-
-  body.game-running .rotate-hint {
-    display: none;
-  }
-
-  body.game-running #game-container {
-    margin-top: 0;
-    height: 100dvh;
-    max-height: 100dvh;
-    width: min(calc(100dvh * 1.5), 100vw);
-
-    display: block;
-  }
-}
+/* =========================================================
+   Responsive - Tablet
+========================================================= */
 
 @media (max-width: 1024px) {
   #settings-btn {
@@ -365,12 +476,17 @@ h3 {
 
   .howto-menu {
     width: min(92vw, 720px);
+
     height: auto;
-    min-height: 0;
     max-height: 100dvh;
+    min-height: 0;
+
     padding: 20px;
+
     justify-content: flex-start;
+
     overflow-y: auto;
+
     border-radius: 0;
   }
 
@@ -380,6 +496,16 @@ h3 {
 
   .howto-menu h3 {
     font-size: clamp(1rem, 4vw, 1.4rem);
+  }
+}
+
+/* =========================================================
+   Responsive - Small Phones
+========================================================= */
+
+@media (max-width: 900px) and (orientation: landscape) {
+  body.game-running .main-headline {
+    display: none;
   }
 }
 

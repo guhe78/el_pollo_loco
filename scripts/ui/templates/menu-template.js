@@ -2,9 +2,13 @@ function startMenuTemplate() {
   return `
     <div id="startgame-overlay" class="overlay">
       <div class="menu start-menu">
-        <h2>Start Menu</h2>
+        <h1 class="main-headline text-kontur">
+      <span>Sharkie</span><span> the </span><span>shark</span>
+    </h1>
         <button id="start-btn" class="button">Spiel starten</button>
-          ${settingsHowtoTemplate()}
+          <div class="small-buttons-container">
+            ${settingsHowtoTemplate()}
+          </div>
       </div>
     </div>
   `;
@@ -14,6 +18,9 @@ function pauseMenuTemplate() {
   return `
     <div id="pausegame-overlay" class="overlay">
       <div class="menu ingame-menu">
+        <h1 class="main-headline text-kontur">
+          <span>Sharkie</span><span> the </span><span>shark</span>
+        </h1>
         <h3>Pause Menu</h3>
         <button id="resume-btn" class="button">Spiel fortsetzen</button>
           ${menuActionsTemplate()}
@@ -29,7 +36,10 @@ function gameOverMenuTemplate() {
   return `
     <div id="gameover-overlay" class="overlay">
       <div class="menu ingame-menu">
-        <h2>Game Over</h2>
+        <h1 class="main-headline text-kontur">
+          <span>Sharkie</span><span> the </span><span>shark</span>
+        </h1>
+        <h3>Game Over</h3>
         ${menuActionsTemplate()}  
     </div>
   `;
@@ -39,7 +49,10 @@ function victoryMenuTemplate() {
   return `
     <div id="victory-overlay" class="overlay">
       <div class="menu ingame-menu">
-        <h2>Victory!</h2>
+        <h1 class="main-headline text-kontur">
+          <span>Sharkie</span><span> the </span><span>shark</span>
+        </h1>
+        <h3>Victory!</h3>
         <h3>Your score: <span id="score-value">${world.character.highscore}</span></h3>
           ${menuActionsTemplate()}
       </div>
@@ -60,16 +73,14 @@ function settingsMenuTemplate() {
   const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
   const modeInfo =
-    mode === "fullscreen"
-      ? "Aktuell: Vollbild 2x"
-      : "Aktuell: Standard 720x480";
-  const soundLabel = soundEnabled ? "Sound: AN" : "Sound: AUS";
-
+    mode === "fullscreen" ? "Aktuell: Vollbild" : "Aktuell: Standard 720x480";
   const displayButtons = isMobile
     ? "<p>Auf Mobilgeräten ist Vollbild immer aktiv.</p>"
-    : `<button id="display-standard-btn" class="button">Standard 720x480</button>
-        <button id="display-fullscreen-btn" class="button">Vollbild 2x</button>    
-        <p>${modeInfo}</p>`;
+    : `<button id="display-standard-btn" class="button">Standard 720x480</button>   
+       <button id="display-fullscreen-btn" class="button">Vollbild</button>    
+       <p>${modeInfo}</p>`;
+  const soundLabel = soundEnabled ? "Sound: AN" : "Sound: AUS";
+
   return `<div id="settings-overlay" class="overlay">    
           <div class="menu ingame-menu">      
             <h2>Einstellungen</h2>      
