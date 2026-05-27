@@ -32,6 +32,11 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
+  if (target.id === "mobile-pause-btn") {
+    world.togglePause();
+    return;
+  }
+
   if (target.id === "restart-btn") {
     world.restartGame();
     return;
@@ -167,4 +172,41 @@ function setSoundEnabled(enabled) {
 function applySoundMode() {
   if (!world) return;
   world.setSoundEnabled(getSoundEnabled());
+}
+
+function setupMobileControls() {
+  const pauseBtn = document.getElementById("mobile-pause-btn");
+  if (pauseBtn) {
+    pauseBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      world.togglePause();
+    });
+  }
+
+  bindHoldControl("mobile-up-btn", "UP");
+  bindHoldControl("mobile-down-btn", "DOWN");
+  bindHoldControl("mobile-left-btn", "LEFT");
+  bindHoldControl("mobile-right-btn", "RIGHT");
+  bindHoldControl("mobile-throw-btn", "THROW");
+  bindHoldControl("mobile-slap-btn", "SPACE");
+}
+
+function bindHoldControl(buttonId, keyName) {
+  const button = document.getElementById(buttonId);
+  if (!button) return;
+
+  const press = (event) => {
+    event.preventDefault();
+    keyboard[keyName] = true;
+  };
+
+  const release = (event) => {
+    event.preventDefault();
+    keyboard[keyName] = false;
+  };
+
+  button.addEventListener("pointerdown", press);
+  button.addEventListener("pointerup", release);
+  button.addEventListener("pointercancel", release);
+  button.addEventListener("pointerleave", release);
 }
