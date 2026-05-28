@@ -145,6 +145,9 @@ class World {
   }
 
   victory() {
+    this.character.isAttacking = false;
+    this.character.isThrowing = false;
+    this.character.setAnimation(this.character.IMAGES_IDLE);
     this.setGameState("victoryTransition");
     setTimeout(() => {
       this.setGameState("victory");
@@ -351,8 +354,28 @@ class World {
     this.isEndbossIntroActive = true;
 
     const targetY = endboss.position_y;
+    const introDiveY = Math.max(0, targetY - 70);
+    const holdBeforePanMs = 900;
+
+    if (endboss.animationInterval) {
+      clearInterval(endboss.animationInterval);
+      endboss.animationInterval = null;
+    }
+
+    endboss.currentAnimation = endboss.IMAGES_INTRO;
+    endboss.currentImage = 0;
+
+    const setIntroFrame = (index) => {
+      const frameIndex = Math.max(
+        0,
+        Math.min(index, endboss.IMAGES_INTRO.length - 1),
+      );
+      endboss.currentImage = frameIndex;
+      endboss.image = endboss.imageCache[endboss.IMAGES_INTRO[frameIndex]];
+    };
+
     endboss.position_y = -endboss.height;
-    endboss.setAnimation(endboss.IMAGES_INTRO);
+    setIntroFrame(0);
     const levelMinCameraX = Math.round(
       Math.min(0, -this.level.levelEndX + this.canvas.width),
     );
@@ -379,6 +402,7 @@ class World {
     );
 
     const panToEndboss = setInterval(() => {
+      setIntroFrame(0);
       const diff = endbossCameraX - this.camera_x;
       if (Math.abs(diff) < 5) {
         this.camera_x = endbossCameraX;
@@ -386,23 +410,49 @@ class World {
 
         const introFall = setInterval(() => {
           endboss.position_y += 8;
-          if (endboss.position_y >= targetY) {
-            endboss.position_y = targetY;
-            clearInterval(introFall);
-            endboss.setAnimation(endboss.IMAGES_SWIM);
 
-            setTimeout(() => {
-              const panToCharacter = setInterval(() => {
-                const d = characterCameraX - this.camera_x;
-                if (Math.abs(d) < 5) {
-                  this.camera_x = characterCameraX;
-                  clearInterval(panToCharacter);
-                  this.isEndbossIntroActive = false;
-                } else {
-                  this.camera_x += d * 0.04;
-                }
-              }, 1000 / 60);
-            }, 2000);
+          const fallProgress =
+            (endboss.position_y + endboss.height) /
+            (introDiveY + endboss.height);
+          const introFrameIndex = Math.floor(
+            Math.max(0, Math.min(1, fallProgress)) *
+              (endboss.IMAGES_INTRO.length - 1),
+          );
+          setIntroFrame(introFrameIndex);
+
+          if (endboss.position_y >= introDiveY) {
+            endboss.position_y = introDiveY;
+            setIntroFrame(endboss.IMAGES_INTRO.length - 1);
+            clearInterval(introFall);
+
+            const swimToStart = setInterval(() => {
+              setIntroFrame(endboss.IMAGES_INTRO.length - 1);
+              const deltaY = targetY - endboss.position_y;
+              if (Math.abs(deltaY) < 0.8) {
+                endboss.position_y = targetY;
+                clearInterval(swimToStart);
+                setTimeout(() => {
+                  const panToCharacter = setInterval(() => {
+                    setIntroFrame(endboss.IMAGES_INTRO.length - 1);
+                    const d = characterCameraX - this.camera_x;
+                    if (Math.abs(d) < 2) {
+                      this.camera_x = characterCameraX;
+                      clearInterval(panToCharacter);
+                      endboss.setAnimation(endboss.IMAGES_SWIM);
+                      endboss.startAnimation(
+                        () => endboss.currentAnimation,
+                        200,
+                      );
+                      this.isEndbossIntroActive = false;
+                    } else {
+                      this.camera_x += d * 0.012;
+                    }
+                  }, 1000 / 60);
+                }, holdBeforePanMs);
+              } else {
+                endboss.position_y += deltaY * 0.12;
+              }
+            }, 1000 / 60);
           }
         }, 1000 / 60);
       } else {
