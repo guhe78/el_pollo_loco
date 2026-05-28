@@ -81,6 +81,8 @@ class Character extends MovableObject {
   animationSpeed = 100;
   cameraOffsetX = 100;
   cameraOffsetY = 100;
+  edgeReachBottom = 45;
+  edgeReachTop = 100;
   blubSound = new Audio("../../assets/audio/blubb.mp3");
   slapSound = new Audio("../../assets/audio/slap.mp3");
   auaSound = new Audio("../../assets/audio/aua.mp3");
@@ -122,12 +124,10 @@ class Character extends MovableObject {
     this.movementInterval = setInterval(() => {
       if (!this.world || this.world.gameState !== "running") return;
       let isMoving = false;
-      const isInEndbossSection = Boolean(this.world.currentSection?.endboss);
       const isEndbossFightActive = this.isEndbossFightActive();
-      const minY = isInEndbossSection ? -140 : this.endYUp;
-      const maxY = isInEndbossSection
-        ? this.world.canvas.height - this.height + 80
-        : this.endYDown;
+      const minY = -this.edgeReachTop;
+      const maxY =
+        this.world.canvas.height - this.height + this.edgeReachBottom;
       const { minX, maxX } = this.getHorizontalBounds();
 
       if (this.world.isEndbossIntroActive) {
