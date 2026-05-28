@@ -61,6 +61,7 @@ class Endboss extends Enemy {
   attackRoarSound = new Audio("../../assets/audio/mooaarr.mp3");
   world;
   offset = {};
+  movementController;
 
   /**
    * Creates the endboss with movement, animation and audio setup.
@@ -78,6 +79,7 @@ class Endboss extends Enemy {
       left: 20,
     };
     this.setInitialAnimation();
+    this.movementController = new EndbossMovementController(this);
     this.moveUpAndDown();
     this.startAnimation(() => this.currentAnimation, 200);
   }
@@ -119,183 +121,7 @@ class Endboss extends Enemy {
    */
   moveUpAndDown() {
     setInterval(() => {
-      this.updateMovementState();
+      this.movementController.updateMovementState();
     }, 1000 / 60);
-  }
-
-  /**
-   * Routes movement updates based on the current movement state.
-   */
-  updateMovementState() {
-    if (this.shouldSkipMovement()) return;
-    if (this.movementState === "floating") return this.handleFloatingMovement();
-    if (this.movementState === "attacking") return this.handleAttackMovement();
-    if (this.movementState === "returning") this.handleReturnMovement();
-  }
-
-  /**
-   * Checks whether movement should currently be skipped.
-   * @returns {*} Result value.
-   */
-  shouldSkipMovement() {
-    return (
-      !this.world ||
-      this.world.gameState !== "running" ||
-      this.isStunned ||
-      !this.world.endbossIntroDone ||
-      this.world.isEndbossIntroActive ||
-      this.isDead()
-    );
-  }
-
-  /**
-   * Applies floating movement and transitions into attack phase.
-   */
-  handleFloatingMovement() {
-    this.setAnimation(this.IMAGES_SWIM);
-    this.position_y += this.speedY;
-    this.clampVerticalMovement();
-
-    if (this.isAttackReady()) {
-      this.startAttackPhase();
-    }
-  }
-
-  /**
-   * Clamps vertical movement and reverses direction at bounds.
-   */
-  clampVerticalMovement() {
-    const { minY, maxY } = this.getVerticalBounds();
-    if (this.position_y < minY || this.position_y > maxY) {
-      this.position_y = Math.max(minY, Math.min(maxY, this.position_y));
-      this.speedY = -this.speedY;
-    }
-  }
-
-  /**
-   * Checks whether the attack cooldown has elapsed.
-   * @returns {*} Result value.
-   */
-  isAttackReady() {
-    return Date.now() - this.attackStartedAt >= this.attackCooldown;
-  }
-
-  /**
-   * Starts attack movement phase and prepares attack targets.
-   */
-  startAttackPhase() {
-    this.movementState = "attacking";
-    this.attackTargetX = this.getAttackTargetX();
-    this.retreatTargetX = this.getRetreatTargetX();
-    this.setAnimation(this.IMAGES_ATTACK);
-    this.playAttackRoar();
-  }
-
-  /**
-   * Plays the endboss roar sound for attack start.
-   */
-  playAttackRoar() {
-    this.attackRoarSound.currentTime = 0;
-    this.attackRoarSound.muted = !this.world.soundEnabled;
-    this.attackRoarSound.play();
-  }
-
-  /**
-   * Moves endboss toward the attack target x-position.
-   */
-  handleAttackMovement() {
-    this.position_x -= this.attackSpeed;
-    if (this.position_x > this.attackTargetX) return;
-
-    this.position_x = this.attackTargetX;
-    this.movementState = "returning";
-    this.setAnimation(this.IMAGES_SWIM);
-  }
-
-  /**
-   * Moves endboss back to retreat position and resets state.
-   */
-  handleReturnMovement() {
-    this.position_x += this.returnSpeed;
-    if (this.position_x < this.retreatTargetX) return;
-
-    this.position_x = this.retreatTargetX;
-    this.startX = this.retreatTargetX;
-    this.movementState = "floating";
-    this.attackStartedAt = Date.now();
-  }
-
-  /**
-   * Calculates horizontal attack target position.
-   * @returns {*} Result value.
-   */
-  getAttackTargetX() {
-    const section = this.getCurrentEndbossSection();
-    if (!section) {
-      return this.startX;
-    }
-
-    const leftVisibleX = this.getLeftVisibleX();
-    return Math.max(section.startX, leftVisibleX);
-  }
-
-  /**
-   * Calculates horizontal retreat target position.
-   * @returns {*} Result value.
-   */
-  getRetreatTargetX() {
-    const section = this.getCurrentEndbossSection();
-    if (!section) {
-      return this.startX;
-    }
-
-    const sectionRightLimit = section.endX - this.width;
-    return Math.min(sectionRightLimit, this.startX + this.retreatDistance);
-  }
-
-  /**
-   * Returns the current section if it contains this endboss.
-   * @returns {*} Result value.
-   */
-  getCurrentEndbossSection() {
-    if (!this.world || !this.world.currentSection) {
-      return null;
-    }
-
-    const section = this.world.currentSection;
-    if (section.endboss !== this) {
-      return null;
-    }
-
-    return section;
-  }
-
-  /**
-   * Returns vertical movement bounds for the endboss.
-   * @returns {*} Result value.
-   */
-  getVerticalBounds() {
-    if (!this.world || !this.world.canvas) {
-      return {
-        minY: this.startY - this.rangeY,
-        maxY: this.startY + this.rangeY,
-      };
-    }
-
-    const minY = 0;
-    const maxY = this.world.canvas.height - this.height;
-    return { minY, maxY };
-  }
-
-  /**
-   * Returns current world x-position of the left camera edge.
-   * @returns {*} Result value.
-   */
-  getLeftVisibleX() {
-    if (!this.world) {
-      return this.startX;
-    }
-
-    return -this.world.camera_x;
   }
 }
