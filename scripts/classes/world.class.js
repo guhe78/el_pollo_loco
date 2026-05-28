@@ -353,13 +353,17 @@ class World {
     const targetY = endboss.position_y;
     endboss.position_y = -endboss.height;
     endboss.setAnimation(endboss.IMAGES_INTRO);
+    const minCameraX = Math.round(
+      Math.min(0, -this.level.levelEndX + this.canvas.width),
+    );
 
-    const endbossCameraX = Math.round(
+    const rawEndbossCameraX = Math.round(
       Math.min(
         0,
         -endboss.position_x + this.canvas.width / 2 - endboss.width / 2,
       ),
     );
+    const endbossCameraX = Math.max(minCameraX, rawEndbossCameraX);
     const characterCameraX = Math.round(
       Math.min(0, -this.character.position_x + this.character.cameraOffsetX),
     );
