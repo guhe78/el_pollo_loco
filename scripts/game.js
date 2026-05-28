@@ -49,7 +49,7 @@ document.addEventListener("click", async (event) => {
   }
 
   if (target.id === "back-btn") {
-    world.startMenu();
+    world.closeOverlayMenu();
     return;
   }
 

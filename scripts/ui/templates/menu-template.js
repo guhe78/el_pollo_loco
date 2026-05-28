@@ -21,7 +21,7 @@ function pauseMenuTemplate() {
         <h1 class="main-headline text-kontur">
           <span>Sharkie</span><span> the </span><span>shark</span>
         </h1>
-        <h3>Pause Menu</h3>
+        <h2 class="text-kontur">Pause Menu</h2>
         <button id="resume-btn" class="button">Spiel fortsetzen</button>
           ${menuActionsTemplate()}
           <div class="small-buttons-container">
@@ -39,7 +39,7 @@ function gameOverMenuTemplate() {
         <h1 class="main-headline text-kontur">
           <span>Sharkie</span><span> the </span><span>shark</span>
         </h1>
-        <h3>Game Over</h3>
+        <h2 class="text-kontur">Game Over</h2>
         ${menuActionsTemplate()}  
     </div>
   `;
@@ -52,8 +52,8 @@ function victoryMenuTemplate() {
         <h1 class="main-headline text-kontur">
           <span>Sharkie</span><span> the </span><span>shark</span>
         </h1>
-        <h3>Victory!</h3>
-        <h3>Your score: <span id="score-value">${world.character.highscore}</span></h3>
+        <h2 class="text-kontur">Victory!</h2>
+        <h2 class="text-kontur">Your score: <span id="score-value">${world.character.highscore}</span></h2>
           ${menuActionsTemplate()}
       </div>
     </div>
@@ -81,7 +81,7 @@ function settingsMenuTemplate() {
 
   return `<div id="settings-overlay" class="overlay">    
           <div class="menu ingame-menu">      
-            <h2>Einstellungen</h2>      
+            <h2 class="text-kontur">Einstellungen</h2>      
               ${displayButtons}      
               <button id="sound-toggle-btn" class="button">${soundLabel}</button>      
               <button id="back-settings-btn" class="button">Zurück</button>    
