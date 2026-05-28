@@ -53,20 +53,11 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
-  if (target.id === "display-standard-btn") {
+  if (target.id === "display-toggle-btn") {
     if (!isMobileDevice()) {
-      setDisplayMode("standard");
-      if (world.menuReturnState === "paused") {
-        applyDisplayMode();
-      }
-    }
-    world.setGameState("settings");
-    return;
-  }
-
-  if (target.id === "display-fullscreen-btn") {
-    if (!isMobileDevice()) {
-      setDisplayMode("fullscreen");
+      const nextMode =
+        getDisplayMode() === "fullscreen" ? "standard" : "fullscreen";
+      setDisplayMode(nextMode);
       if (world.menuReturnState === "paused") {
         applyDisplayMode();
       }
