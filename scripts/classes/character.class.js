@@ -88,6 +88,7 @@ class Character extends MovableObject {
   auaSound = new Audio("../../assets/audio/aua.mp3");
   blingSound = new Audio("../../assets/audio/bling.mp3");
   hitSound = new Audio("../../assets/audio/hit.mp3");
+  swimSound = new Audio("../../assets/audio/swim.mp3");
   lastSlapStartedAt = 0;
   slapImpactDelayMs = 220;
   slapImpactReadyAt = 0;
@@ -113,6 +114,7 @@ class Character extends MovableObject {
     this.image = this.imageCache[this.IMAGES_IDLE[0]];
 
     this.movementControl();
+    this.swimSound.loop = true;
     this.startAnimation(() => this.currentAnimation, 100);
   }
 
@@ -127,89 +129,113 @@ class Character extends MovableObject {
 
   movementControl() {
     this.movementInterval = setInterval(() => {
-      if (!this.world || this.world.gameState !== "running") return;
-      let isMoving = false;
-      const isEndbossFightActive = this.isEndbossFightActive();
-      const minY = -this.edgeReachTop;
-      const maxY =
-        this.world.canvas.height - this.height + this.edgeReachBottom;
-      const { minX, maxX } = this.getHorizontalBounds();
-
-      if (this.world.isEndbossIntroActive) {
-        this.changeAnimation(false);
-        return;
-      }
-      if (
-        this.world.keyboard.RIGHT &&
-        this.position_x < maxX &&
-        !this.isAttacking &&
-        !this.isDead()
-      ) {
-        this.moveRight();
-        isMoving = true;
-      }
-      if (
-        this.world.keyboard.LEFT &&
-        this.position_x > minX &&
-        !this.isAttacking &&
-        !this.isDead()
-      ) {
-        this.moveLeft();
-        isMoving = true;
-      }
-      if (
-        this.world.keyboard.UP &&
-        this.position_y > minY &&
-        !this.isAttacking &&
-        !this.isDead()
-      ) {
-        this.position_y -= this.speed;
-        isMoving = true;
-      }
-      if (
-        this.world.keyboard.DOWN &&
-        this.position_y < maxY &&
-        !this.isAttacking &&
-        !this.isDead()
-      ) {
-        this.position_y += this.speed;
-        isMoving = true;
-      }
-      if (this.world.keyboard.SPACE && !this.isAttacking && !this.isDead()) {
-        this.applySlapAttack();
-        this.world.keyboard.SPACE = false;
-      }
-      if (
-        this.world.keyboard.THROW &&
-        !this.isThrowing &&
-        !this.isAttacking &&
-        !this.isDead()
-      ) {
-        this.applyBubbleAttack();
-      }
-
-      if (isEndbossFightActive) {
-        this.clampCameraToCurrentSection();
-      }
-
-      this.changeAnimation(isMoving);
+      this.updateMovementFrame();
     }, 1000 / 60);
   }
 
-  changeAnimation(isMoving) {
-    if (this.isDead()) {
-      this.setAnimation(this.IMAGES_DEAD_ELECTRO);
-    } else if (this.isHurt()) {
-      this.setAnimation(this.IMAGES_HURT_ELECTRO);
-    } else if (this.isAttacking) {
-      this.setAnimation(this.IMAGES_ATTACK);
-    } else if (this.isThrowing) {
-      this.setAnimation(this.IMAGES_BUBBLE);
-    } else if (isMoving) {
-      this.setAnimation(this.IMAGES_SWIM);
-    } else {
-      this.setAnimation(this.IMAGES_IDLE);
+  updateMovementFrame() {
+    if (!this.isMovementActive()) return;
+    if (this.world.isEndbossIntroActive) return this.showIdleDuringIntro();
+
+    const bounds = this.getMovementBounds();
+    const isMoving = this.handleMovement(bounds);
+
+    this.handleCombatActions();
+    this.updateSectionCamera();
+    this.changeAnimation(isMoving);
+  }
+
+  isMovementActive() {
+    return this.world && this.world.gameState === "running";
+  }
+
+  showIdleDuringIntro() {
+    this.changeAnimation(false);
+  }
+
+  getMovementBounds() {
+    return {
+      minY: -this.edgeReachTop,
+      maxY: this.world.canvas.height - this.height + this.edgeReachBottom,
+      ...this.getHorizontalBounds(),
+    };
+  }
+
+  handleMovement(bounds) {
+    const movedX = this.handleHorizontalMovement(bounds);
+    const movedY = this.handleVerticalMovement(bounds);
+    return movedX || movedY;
+  }
+
+  handleHorizontalMovement({ minX, maxX }) {
+    if (!this.canMove()) return false;
+    if (this.world.keyboard.RIGHT && this.position_x < maxX) {
+      this.moveRight();
+      return true;
     }
+    if (this.world.keyboard.LEFT && this.position_x > minX) {
+      this.moveLeft();
+      return true;
+    }
+    return false;
+  }
+
+  handleVerticalMovement({ minY, maxY }) {
+    if (!this.canMove()) return false;
+    if (this.world.keyboard.UP && this.position_y > minY) {
+      this.position_y -= this.speed;
+      return true;
+    }
+    if (this.world.keyboard.DOWN && this.position_y < maxY) {
+      this.position_y += this.speed;
+      return true;
+    }
+    return false;
+  }
+
+  handleCombatActions() {
+    if (this.world.keyboard.SPACE && this.canMove()) {
+      this.applySlapAttack();
+      this.world.keyboard.SPACE = false;
+    }
+
+    if (this.world.keyboard.THROW && !this.isThrowing && this.canMove()) {
+      this.applyBubbleAttack();
+    }
+  }
+
+  updateSectionCamera() {
+    if (this.isEndbossFightActive()) {
+      this.clampCameraToCurrentSection();
+    }
+  }
+
+  canMove() {
+    return !this.isAttacking && !this.isDead();
+  }
+
+  changeAnimation(isMoving) {
+    this.setCurrentAnimation(isMoving);
+    this.updateSwimSound(isMoving);
+  }
+
+  setCurrentAnimation(isMoving) {
+    if (this.isDead()) return this.setAnimation(this.IMAGES_DEAD_ELECTRO);
+    if (this.isHurt()) return this.setAnimation(this.IMAGES_HURT_ELECTRO);
+    if (this.isAttacking) return this.setAnimation(this.IMAGES_ATTACK);
+    if (this.isThrowing) return this.setAnimation(this.IMAGES_BUBBLE);
+    if (isMoving) return this.setAnimation(this.IMAGES_SWIM);
+
+    this.setAnimation(this.IMAGES_IDLE);
+  }
+
+  updateSwimSound(isMoving) {
+    if (isMoving && !this.isHurt() && !this.isDead()) {
+      this.playSwimSound();
+      return;
+    }
+
+    this.stopSwimSound();
   }
 
   moveRight() {
@@ -275,36 +301,52 @@ class Character extends MovableObject {
 
   applySlapAttack() {
     if (this.isAttacking) return;
-    this.isAttacking = true;
-    this.lastSlapStartedAt = Date.now();
-    this.slapImpactReadyAt = this.lastSlapStartedAt + this.slapImpactDelayMs;
+
+    const attack = this.createSlapAttack();
+    this.startSlapAttack(attack);
+    this.finishSlapAttack(attack);
+  }
+
+  createSlapAttack() {
     const direction = this.otherDirection ? -1 : 1;
-    const delta = this.attackDistance * direction;
-    const animationDuration = this.calculateAnimationDuration(
-      this.IMAGES_ATTACK,
-    );
-    this.position_x += delta;
+    return {
+      startedAt: Date.now(),
+      delta: this.attackDistance * direction,
+      animationDuration: this.calculateAnimationDuration(this.IMAGES_ATTACK),
+    };
+  }
+
+  startSlapAttack(attack) {
+    this.isAttacking = true;
+    this.lastSlapStartedAt = attack.startedAt;
+    this.slapImpactReadyAt = this.lastSlapStartedAt + this.slapImpactDelayMs;
+    this.position_x += attack.delta;
     this.lastSlapSoundEndsAt =
       this.lastSlapStartedAt + this.getSlapSoundDurationMs();
     this.slapSound.currentTime = 0;
     this.slapSound.play();
+  }
 
+  finishSlapAttack(attack) {
     setTimeout(() => {
-      this.position_x -= delta;
+      this.position_x -= attack.delta;
       this.isAttacking = false;
-    }, animationDuration);
+    }, attack.animationDuration);
   }
 
   applyBubbleAttack() {
     this.isThrowing = true;
-    const throwAnimationDuration = this.calculateAnimationDuration(
-      this.IMAGES_BUBBLE,
-    );
+    const throwAnimationDuration = this.getBubbleThrowDuration();
     this.blubSound.play();
+
     setTimeout(() => {
       this.world.spawnBubble(this.otherDirection);
       this.isThrowing = false;
     }, throwAnimationDuration);
+  }
+
+  getBubbleThrowDuration() {
+    return this.calculateAnimationDuration(this.IMAGES_BUBBLE);
   }
 
   stop() {
@@ -327,5 +369,20 @@ class Character extends MovableObject {
 
   getDelayUntilSlapSoundFinished() {
     return Math.max(0, (this.lastSlapSoundEndsAt || 0) - Date.now());
+  }
+
+  playSwimSound() {
+    if (!this.world.soundEnabled) return;
+
+    this.swimSound.muted = false;
+
+    if (this.swimSound.paused) {
+      this.swimSound.play();
+    }
+  }
+
+  stopSwimSound() {
+    this.swimSound.pause();
+    this.swimSound.currentTime = 0;
   }
 }
