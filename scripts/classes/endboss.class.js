@@ -62,84 +62,173 @@ class Endboss extends Enemy {
   world;
   offset = {};
 
+  /**
+   * Creates the endboss with movement, animation and audio setup.
+   * @param {*} position_x
+   * @param {*} position_y
+   */
   constructor(position_x, position_y) {
     super();
-    this.path = this.IMAGES_SWIM[0];
-    this.position_x = position_x;
-    this.position_y = position_y;
-    this.startX = position_x;
-    this.startY = position_y;
-    this.loadImage();
-    this.loadImages(this.IMAGES_INTRO);
-    this.loadImages(this.IMAGES_SWIM);
-    this.loadImages(this.IMAGES_ATTACK);
-    this.loadImages(this.IMAGES_DEAD);
-    this.moveUpAndDown();
+    this.setStartPosition(position_x, position_y);
+    this.loadEndbossImages();
     this.offset = {
       top: 90,
       bottom: 20,
       right: 20,
       left: 20,
     };
-    this.currentAnimation = this.IMAGES_SWIM;
-    this.image = this.imageCache[this.IMAGES_SWIM[0]];
-
+    this.setInitialAnimation();
+    this.moveUpAndDown();
     this.startAnimation(() => this.currentAnimation, 200);
   }
 
+  /**
+   * Sets initial coordinates and base sprite path.
+   * @param {*} position_x
+   * @param {*} position_y
+   */
+  setStartPosition(position_x, position_y) {
+    this.path = this.IMAGES_SWIM[0];
+    this.position_x = position_x;
+    this.position_y = position_y;
+    this.startX = position_x;
+    this.startY = position_y;
+  }
+
+  /**
+   * Preloads all endboss image sequences.
+   */
+  loadEndbossImages() {
+    this.loadImage();
+    this.loadImages(this.IMAGES_INTRO);
+    this.loadImages(this.IMAGES_SWIM);
+    this.loadImages(this.IMAGES_ATTACK);
+    this.loadImages(this.IMAGES_DEAD);
+  }
+
+  /**
+   * Sets initial animation state for the endboss.
+   */
+  setInitialAnimation() {
+    this.currentAnimation = this.IMAGES_SWIM;
+    this.image = this.imageCache[this.IMAGES_SWIM[0]];
+  }
+
+  /**
+   * Starts the continuous movement update loop.
+   */
   moveUpAndDown() {
     setInterval(() => {
-      if (!this.world || this.world.gameState !== "running" || this.isStunned)
-        return;
-      if (!this.world.endbossIntroDone) return;
-      if (this.world.isEndbossIntroActive || this.isDead()) return;
-
-      if (this.movementState === "floating") {
-        this.setAnimation(this.IMAGES_SWIM);
-        this.position_y += this.speedY;
-        const { minY, maxY } = this.getVerticalBounds();
-
-        if (this.position_y >= maxY || this.position_y <= minY) {
-          this.position_y = Math.max(minY, Math.min(maxY, this.position_y));
-          this.speedY = -this.speedY;
-        }
-
-        if (Date.now() - this.attackStartedAt >= this.attackCooldown) {
-          this.movementState = "attacking";
-          this.attackTargetX = this.getAttackTargetX();
-          this.retreatTargetX = this.getRetreatTargetX();
-          this.setAnimation(this.IMAGES_ATTACK);
-          this.attackRoarSound.currentTime = 0;
-          this.attackRoarSound.muted = !this.world.soundEnabled;
-          this.attackRoarSound.play();
-        }
-        return;
-      }
-
-      if (this.movementState === "attacking") {
-        this.position_x -= this.attackSpeed;
-
-        if (this.position_x <= this.attackTargetX) {
-          this.position_x = this.attackTargetX;
-          this.movementState = "returning";
-          this.setAnimation(this.IMAGES_SWIM);
-        }
-        return;
-      }
-
-      if (this.movementState === "returning") {
-        this.position_x += this.returnSpeed;
-
-        if (this.position_x >= this.retreatTargetX) {
-          this.position_x = this.retreatTargetX;
-          this.startX = this.retreatTargetX;
-          this.movementState = "floating";
-          this.attackStartedAt = Date.now();
-        }
-      }
+      this.updateMovementState();
     }, 1000 / 60);
   }
 
+  /**
+   * Routes movement updates based on the current movement state.
+   */
+  updateMovementState() {
+    if (this.shouldSkipMovement()) return;
+    if (this.movementState === "floating") return this.handleFloatingMovement();
+    if (this.movementState === "attacking") return this.handleAttackMovement();
+    if (this.movementState === "returning") this.handleReturnMovement();
+  }
+
+  /**
+   * Checks whether movement should currently be skipped.
+   * @returns {*} Result value.
+   */
+  shouldSkipMovement() {
+    return (
+      !this.world ||
+      this.world.gameState !== "running" ||
+      this.isStunned ||
+      !this.world.endbossIntroDone ||
+      this.world.isEndbossIntroActive ||
+      this.isDead()
+    );
+  }
+
+  /**
+   * Applies floating movement and transitions into attack phase.
+   */
+  handleFloatingMovement() {
+    this.setAnimation(this.IMAGES_SWIM);
+    this.position_y += this.speedY;
+    this.clampVerticalMovement();
+
+    if (this.isAttackReady()) {
+      this.startAttackPhase();
+    }
+  }
+
+  /**
+   * Clamps vertical movement and reverses direction at bounds.
+   */
+  clampVerticalMovement() {
+    const { minY, maxY } = this.getVerticalBounds();
+    if (this.position_y < minY || this.position_y > maxY) {
+      this.position_y = Math.max(minY, Math.min(maxY, this.position_y));
+      this.speedY = -this.speedY;
+    }
+  }
+
+  /**
+   * Checks whether the attack cooldown has elapsed.
+   * @returns {*} Result value.
+   */
+  isAttackReady() {
+    return Date.now() - this.attackStartedAt >= this.attackCooldown;
+  }
+
+  /**
+   * Starts attack movement phase and prepares attack targets.
+   */
+  startAttackPhase() {
+    this.movementState = "attacking";
+    this.attackTargetX = this.getAttackTargetX();
+    this.retreatTargetX = this.getRetreatTargetX();
+    this.setAnimation(this.IMAGES_ATTACK);
+    this.playAttackRoar();
+  }
+
+  /**
+   * Plays the endboss roar sound for attack start.
+   */
+  playAttackRoar() {
+    this.attackRoarSound.currentTime = 0;
+    this.attackRoarSound.muted = !this.world.soundEnabled;
+    this.attackRoarSound.play();
+  }
+
+  /**
+   * Moves endboss toward the attack target x-position.
+   */
+  handleAttackMovement() {
+    this.position_x -= this.attackSpeed;
+    if (this.position_x > this.attackTargetX) return;
+
+    this.position_x = this.attackTargetX;
+    this.movementState = "returning";
+    this.setAnimation(this.IMAGES_SWIM);
+  }
+
+  /**
+   * Moves endboss back to retreat position and resets state.
+   */
+  handleReturnMovement() {
+    this.position_x += this.returnSpeed;
+    if (this.position_x < this.retreatTargetX) return;
+
+    this.position_x = this.retreatTargetX;
+    this.startX = this.retreatTargetX;
+    this.movementState = "floating";
+    this.attackStartedAt = Date.now();
+  }
+
+  /**
+   * Calculates horizontal attack target position.
+   * @returns {*} Result value.
+   */
   getAttackTargetX() {
     const section = this.getCurrentEndbossSection();
     if (!section) {
@@ -150,6 +239,10 @@ class Endboss extends Enemy {
     return Math.max(section.startX, leftVisibleX);
   }
 
+  /**
+   * Calculates horizontal retreat target position.
+   * @returns {*} Result value.
+   */
   getRetreatTargetX() {
     const section = this.getCurrentEndbossSection();
     if (!section) {
@@ -160,6 +253,10 @@ class Endboss extends Enemy {
     return Math.min(sectionRightLimit, this.startX + this.retreatDistance);
   }
 
+  /**
+   * Returns the current section if it contains this endboss.
+   * @returns {*} Result value.
+   */
   getCurrentEndbossSection() {
     if (!this.world || !this.world.currentSection) {
       return null;
@@ -173,6 +270,10 @@ class Endboss extends Enemy {
     return section;
   }
 
+  /**
+   * Returns vertical movement bounds for the endboss.
+   * @returns {*} Result value.
+   */
   getVerticalBounds() {
     if (!this.world || !this.world.canvas) {
       return {
@@ -186,6 +287,10 @@ class Endboss extends Enemy {
     return { minY, maxY };
   }
 
+  /**
+   * Returns current world x-position of the left camera edge.
+   * @returns {*} Result value.
+   */
   getLeftVisibleX() {
     if (!this.world) {
       return this.startX;

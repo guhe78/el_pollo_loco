@@ -43,15 +43,15 @@ class JellyFish extends Enemy {
   rangeX = 80;
   rangeY = 80;
 
+  /**
+   * Creates a jelly fish enemy with randomized movement direction.
+   * @param {*} position_x
+   * @param {*} position_y
+   */
   constructor(position_x, position_y) {
     super();
-    this.path = this.IMAGES_SWIM[this.randomElement][0];
-    this.position_x = position_x;
-    this.position_y = position_y;
-    this.startX = position_x;
-    this.startY = position_y;
-    this.speedX = Math.random() > 0.5 ? 2 : -2;
-    this.speedY = Math.random() > 0.5 ? 2 : -2;
+    this.setStartPosition(position_x, position_y);
+    this.setMovementDirection();
     this.offset = {
       top: 5,
       bottom: 25,
@@ -61,38 +61,110 @@ class JellyFish extends Enemy {
     this.loadImage();
     this.loadEnemyImages();
     this.moveInXPattern();
-    this.currentAnimation = this.randomImagesSwimArray;
-    this.image = this.imageCache[this.randomImagesSwimArray[0]];
+    this.setInitialAnimation();
 
     this.startAnimation(() => this.currentAnimation, 200);
   }
 
+  /**
+   * Sets initial position and sprite path.
+   * @param {*} position_x
+   * @param {*} position_y
+   */
+  setStartPosition(position_x, position_y) {
+    this.path = this.IMAGES_SWIM[this.randomElement][0];
+    this.position_x = position_x;
+    this.position_y = position_y;
+    this.startX = position_x;
+    this.startY = position_y;
+  }
+
+  /**
+   * Randomizes horizontal and vertical movement direction.
+   */
+  setMovementDirection() {
+    this.speedX = Math.random() > 0.5 ? 2 : -2;
+    this.speedY = Math.random() > 0.5 ? 2 : -2;
+  }
+
+  /**
+   * Sets initial animation frame for the selected jelly fish variant.
+   */
+  setInitialAnimation() {
+    this.currentAnimation = this.randomImagesSwimArray;
+    this.image = this.imageCache[this.randomImagesSwimArray[0]];
+  }
+
+  /**
+   * Preloads swim and death sprites for this jelly fish variant.
+   */
   loadEnemyImages() {
     this.loadImages(this.randomImagesSwimArray);
     this.loadImages(this.randomImagesDieArray);
   }
 
+  /**
+   * Starts the continuous movement update interval.
+   */
   moveInXPattern() {
     setInterval(() => {
-      if (!this.world || this.world.gameState !== "running" || this.isStunned)
-        return;
-
-      this.position_x += this.speedX;
-      this.position_y += this.speedY;
-
-      if (
-        this.position_x >= this.startX + this.rangeX ||
-        this.position_x <= this.startX - this.rangeX
-      ) {
-        this.speedX *= -1;
-      }
-
-      if (
-        this.position_y >= this.startY + this.rangeY ||
-        this.position_y <= this.startY - this.rangeY
-      ) {
-        this.speedY *= -1;
-      }
+      this.updateMovementPattern();
     }, 1000 / 60);
+  }
+
+  /**
+   * Updates one movement frame of the jelly fish pattern.
+   */
+  updateMovementPattern() {
+    if (this.shouldSkipMovement()) return;
+
+    this.moveAlongX();
+    this.moveAlongY();
+    this.reverseXDirectionIfNeeded();
+    this.reverseYDirectionIfNeeded();
+  }
+
+  /**
+   * Checks whether movement update should be skipped.
+   * @returns {*} Result value.
+   */
+  shouldSkipMovement() {
+    return !this.world || this.world.gameState !== "running" || this.isStunned;
+  }
+
+  /**
+   * Moves jelly fish on horizontal axis.
+   */
+  moveAlongX() {
+    this.position_x += this.speedX;
+  }
+
+  /**
+   * Moves jelly fish on vertical axis.
+   */
+  moveAlongY() {
+    this.position_y += this.speedY;
+  }
+
+  /**
+   * Reverses horizontal direction when x-range bounds are reached.
+   */
+  reverseXDirectionIfNeeded() {
+    const maxX = this.startX + this.rangeX;
+    const minX = this.startX - this.rangeX;
+    if (this.position_x <= minX || this.position_x >= maxX) {
+      this.speedX *= -1;
+    }
+  }
+
+  /**
+   * Reverses vertical direction when y-range bounds are reached.
+   */
+  reverseYDirectionIfNeeded() {
+    const maxY = this.startY + this.rangeY;
+    const minY = this.startY - this.rangeY;
+    if (this.position_y <= minY || this.position_y >= maxY) {
+      this.speedY *= -1;
+    }
   }
 }

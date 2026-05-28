@@ -14,6 +14,9 @@ class PoisonBar extends StatusBar {
   position_y = 80;
   poisonPercentage = 0;
 
+  /**
+   * Creates the poison status bar and loads its image assets.
+   */
   constructor() {
     super();
     this.loadImage();
@@ -21,11 +24,19 @@ class PoisonBar extends StatusBar {
     this.setPercentage(this.poisonPercentage, this.IMAGES_POISONBAR);
   }
 
+  /**
+   * Increases poison value and updates displayed bar image.
+   * @param {*} poisonPercentage
+   */
   setPoisonPercentage(poisonPercentage) {
     this.poisonPercentage += poisonPercentage;
     this.setPercentage(this.getPoisonPercentage(), this.IMAGES_POISONBAR);
   }
 
+  /**
+   * Returns current poison percentage value.
+   * @returns {*} Result value.
+   */
   getPoisonPercentage() {
     return this.poisonPercentage;
   }

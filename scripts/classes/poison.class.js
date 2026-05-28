@@ -17,6 +17,11 @@ class Poison extends DrawableObject {
   imageCache = {};
   randomElement = parseInt(Math.random() * this.IMAGES.length);
 
+  /**
+   * Creates a poison collectible with a random sprite variant.
+   * @param {*} position_x
+   * @param {*} position_y
+   */
   constructor(position_x, position_y) {
     super();
     this.path = this.IMAGES[this.randomElement];

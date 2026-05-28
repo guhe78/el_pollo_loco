@@ -1,13 +1,24 @@
 class EndbossLifeBar extends LifeBar {
+  /**
+   * Creates the endboss life bar with default vertical position.
+   */
   constructor() {
     super();
     this.position_y = 0;
   }
 
+  /**
+   * Sets horizontal screen position of the endboss life bar.
+   * @param {*} position_x
+   */
   setPositionX(position_x) {
     this.position_x = position_x;
   }
 
+  /**
+   * Draws mirrored and color-shifted endboss life bar image.
+   * @param {*} ctx
+   */
   draw(ctx) {
     const centerX = this.position_x + this.width / 2;
     const centerY = this.position_y + this.height / 2;

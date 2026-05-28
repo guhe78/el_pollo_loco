@@ -14,6 +14,9 @@ class LifeBar extends StatusBar {
   position_y = 0;
   lifePercentage = 100;
 
+  /**
+   * Creates the life bar and loads life bar image assets.
+   */
   constructor() {
     super();
     this.loadImage();
@@ -21,10 +24,18 @@ class LifeBar extends StatusBar {
     this.setLifePercentage(this.lifePercentage);
   }
 
+  /**
+   * Sets life percentage and updates displayed life bar frame.
+   * @param {*} lifePercentage
+   */
   setLifePercentage(lifePercentage) {
     this.setPercentage(lifePercentage, this.IMAGES_LIFEBAR);
   }
 
+  /**
+   * Sets horizontal screen position of the life bar.
+   * @param {*} position_x
+   */
   setPositionX(position_x) {
     this.position_x = position_x;
   }
