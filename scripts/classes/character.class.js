@@ -88,6 +88,11 @@ class Character extends MovableObject {
   auaSound = new Audio("../../assets/audio/aua.mp3");
   blingSound = new Audio("../../assets/audio/bling.mp3");
   hitSound = new Audio("../../assets/audio/hit.mp3");
+  lastSlapStartedAt = 0;
+  slapImpactDelayMs = 220;
+  slapImpactReadyAt = 0;
+  lastSlapSoundEndsAt = 0;
+  slapSoundFallbackDurationMs = 450;
   highscore = 0;
 
   constructor() {
@@ -271,12 +276,17 @@ class Character extends MovableObject {
   applySlapAttack() {
     if (this.isAttacking) return;
     this.isAttacking = true;
+    this.lastSlapStartedAt = Date.now();
+    this.slapImpactReadyAt = this.lastSlapStartedAt + this.slapImpactDelayMs;
     const direction = this.otherDirection ? -1 : 1;
     const delta = this.attackDistance * direction;
     const animationDuration = this.calculateAnimationDuration(
       this.IMAGES_ATTACK,
     );
     this.position_x += delta;
+    this.lastSlapSoundEndsAt =
+      this.lastSlapStartedAt + this.getSlapSoundDurationMs();
+    this.slapSound.currentTime = 0;
     this.slapSound.play();
 
     setTimeout(() => {
@@ -304,5 +314,18 @@ class Character extends MovableObject {
 
   calculateAnimationDuration(imageArray) {
     return imageArray.length * this.animationSpeed;
+  }
+
+  getSlapSoundDurationMs() {
+    const durationSeconds = this.slapSound?.duration;
+    if (Number.isFinite(durationSeconds) && durationSeconds > 0) {
+      return Math.round(durationSeconds * 1000);
+    }
+
+    return this.slapSoundFallbackDurationMs;
+  }
+
+  getDelayUntilSlapSoundFinished() {
+    return Math.max(0, (this.lastSlapSoundEndsAt || 0) - Date.now());
   }
 }

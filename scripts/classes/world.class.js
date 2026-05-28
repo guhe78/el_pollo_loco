@@ -1,6 +1,7 @@
 class World {
   character = new Character();
   statusBars = [new LifeBar(), new PoisonBar(), new CoinBar()];
+  endbossLifeBar = new EndbossLifeBar();
   throwableObjects = [];
   lastThrowAt = 0;
   level;
@@ -55,6 +56,7 @@ class World {
     this.drawArrayToMap(this.throwableObjects);
     this.ctx.translate(-this.camera_x, 0);
     this.drawArrayToMap(this.statusBars);
+    this.drawEndbossLifeBar();
 
     requestAnimationFrame(() => this.draw());
   }
@@ -72,6 +74,7 @@ class World {
     this.level = createLevel();
     this.character = new Character();
     this.statusBars = [new LifeBar(), new PoisonBar(), new CoinBar()];
+    this.endbossLifeBar = new EndbossLifeBar();
     this.throwableObjects = [];
     this.currentSection = this.level.sections[0];
     this.setWorld();
@@ -229,15 +232,11 @@ class World {
   checkCollision() {
     this.currentSection.enemies.forEach((enemy) => {
       if (!enemy) return;
+      if (enemy.isPendingSlapKill) return;
 
       if (this.character.isColliding(enemy)) {
         if (this.character.isAttacking && enemy.isStunned) {
-          enemy.energy = 0;
-          this.character.hitSound.play();
-          if (enemy.isDead()) {
-            enemy.startDeath(enemy.randomImagesDieArray);
-            this.character.highscore += 10;
-          }
+          this.handleEnemySlapKill(enemy);
         } else if (!this.character.isAttacking) {
           if (!enemy.isStunned) {
             this.character.auaSound.play();
@@ -258,14 +257,7 @@ class World {
 
       if (!endboss.isDead() && this.character.isColliding(endboss)) {
         if (this.character.isAttacking && endboss.isStunned) {
-          endboss.hit(10);
-          this.character.hitSound.play();
-
-          if (endboss.isDead()) {
-            endboss.startDeath(endboss.IMAGES_DEAD);
-            this.character.highscore += 100;
-            this.victory();
-          }
+          this.handleEndbossSlapHit(endboss);
         } else if (!this.character.isAttacking && !endboss.isStunned) {
           this.character.auaSound.play();
           this.character.hit(5);
@@ -281,6 +273,53 @@ class World {
     this.currentSection.enemies = this.currentSection.enemies.filter(
       (enemy) => !enemy.shouldBeRemoved(),
     );
+  }
+
+  handleEnemySlapKill(enemy) {
+    if (
+      enemy.isPendingSlapKill ||
+      enemy.isDead() ||
+      enemy.removeStartedAt !== null
+    )
+      return;
+
+    enemy.isPendingSlapKill = true;
+
+    enemy.energy = 0;
+    enemy.startDeath(enemy.randomImagesDieArray);
+    this.character.highscore += 10;
+    this.playHitSoundAfterSlap();
+    enemy.isPendingSlapKill = false;
+  }
+
+  handleEndbossSlapHit(endboss) {
+    if (endboss.isPendingSlapHit || endboss.isDead()) return;
+
+    endboss.isPendingSlapHit = true;
+
+    endboss.hit(10);
+    this.playHitSoundAfterSlap();
+
+    if (endboss.isDead()) {
+      endboss.startDeath(endboss.IMAGES_DEAD);
+      this.character.highscore += 100;
+      this.victory();
+    }
+
+    const attackDuration = this.character.calculateAnimationDuration(
+      this.character.IMAGES_ATTACK,
+    );
+    setTimeout(() => {
+      endboss.isPendingSlapHit = false;
+    }, attackDuration);
+  }
+
+  playHitSoundAfterSlap() {
+    const delay = this.character.getDelayUntilSlapSoundFinished();
+    setTimeout(() => {
+      this.character.hitSound.currentTime = 0;
+      this.character.hitSound.play();
+    }, delay);
   }
 
   checkBubbleCollision() {
@@ -299,7 +338,6 @@ class World {
         !this.currentSection.endboss.isDead() &&
         this.currentSection.endboss.isColliding(object)
       ) {
-        this.character.hitSound.play();
         object.startRemove();
 
         this.currentSection.endboss.stun();
@@ -344,6 +382,19 @@ class World {
     this.currentSection.collectibles = this.currentSection.collectibles.filter(
       (item) => !item.isCollected,
     );
+  }
+
+  drawEndbossLifeBar() {
+    const endboss = this.currentSection?.endboss;
+    if (!endboss || this.gameState !== "running") return;
+
+    const characterLifeBar = this.statusBars[0];
+    this.endbossLifeBar.setLifePercentage(endboss.energy);
+    this.endbossLifeBar.position_y = characterLifeBar.position_y;
+    this.endbossLifeBar.setPositionX(
+      this.canvas.width - 10 - this.endbossLifeBar.width,
+    );
+    this.addToMap(this.endbossLifeBar);
   }
 
   startEndbossIntro() {

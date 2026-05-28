@@ -54,9 +54,9 @@ class JellyFish extends Enemy {
     this.speedY = Math.random() > 0.5 ? 2 : -2;
     this.offset = {
       top: 5,
-      bottom: 10,
-      right: 5,
-      left: 5,
+      bottom: 25,
+      right: 25,
+      left: 25,
     };
     this.loadImage();
     this.loadEnemyImages();
