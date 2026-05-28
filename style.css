@@ -12,6 +12,7 @@
 :root {
   --game-base-width: 720px;
   --game-aspect: 720 / 480;
+  --panel-radius: 12px;
 
   --color-primary: blue;
   --color-secondary: lightblue;
@@ -151,6 +152,8 @@ body > .main-headline {
 
   aspect-ratio: var(--game-aspect);
   margin: 16px auto 0;
+  border-radius: var(--panel-radius);
+  overflow: hidden;
 }
 
 canvas {
@@ -158,6 +161,7 @@ canvas {
 
   width: 100%;
   height: auto;
+  border-radius: var(--panel-radius);
 
   background-color: lightskyblue;
 }
@@ -291,7 +295,7 @@ body.game-running .rotate-hint {
   padding: 32px;
   overflow: auto;
 
-  border-radius: 12px;
+  border-radius: var(--panel-radius);
 
   color: var(--color-primary);
 
