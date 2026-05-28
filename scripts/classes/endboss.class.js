@@ -90,6 +90,7 @@ class Endboss extends Enemy {
     setInterval(() => {
       if (!this.world || this.world.gameState !== "running" || this.isStunned)
         return;
+      if (!this.world.endbossIntroDone) return;
       if (this.world.isEndbossIntroActive || this.isDead()) return;
 
       if (this.movementState === "floating") {
