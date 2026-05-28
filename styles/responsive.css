@@ -1,0 +1,121 @@
+/* =========================================================
+   Responsive - Landscape Mobile
+========================================================= */
+
+@media (orientation: landscape) and (max-width: 1024px) {
+  body.game-running {
+    justify-content: center;
+    align-items: center;
+
+    gap: 0;
+    padding-top: 0;
+
+    min-height: 100dvh;
+  }
+
+  body.game-running .main-headline,
+  body.game-running .rotate-hint {
+    display: none;
+  }
+
+  body.game-running #game-container {
+    width: min(calc(100vw - 16px), calc((100dvh - 16px) * 1.5));
+
+    aspect-ratio: var(--game-aspect);
+
+    height: auto;
+    margin: 0 auto;
+  }
+}
+
+/* =========================================================
+   Responsive - Portrait Mobile
+========================================================= */
+
+@media (orientation: portrait) and (max-width: 1024px) {
+  .overlay,
+  #settings-overlay,
+  body:not(.game-running) #startgame-overlay {
+    position: fixed;
+    inset: 0;
+  }
+
+  .menu {
+    width: min(94vw, 720px);
+    height: min(92dvh, 720px);
+    min-height: 0;
+    max-height: 92dvh;
+    padding: 20px 18px;
+  }
+
+  .howto-menu {
+    justify-content: flex-start;
+    gap: 8px;
+    overflow-y: auto;
+  }
+
+  .howto-menu h2 {
+    font-size: clamp(1.1rem, 5.5vw, 1.8rem);
+  }
+
+  .howto-menu h3 {
+    font-size: clamp(0.95rem, 4.4vw, 1.2rem);
+  }
+
+  .howto-menu li,
+  .howto-menu p {
+    font-size: clamp(0.82rem, 3.4vw, 1rem);
+    line-height: 1.2;
+  }
+
+  .howto-menu ul {
+    padding-left: 22px;
+  }
+
+  body.game-running #game-container {
+    display: none;
+  }
+
+  body.game-running .rotate-hint {
+    display: flex;
+  }
+
+  body.game-running .mobile-controls {
+    display: none;
+  }
+}
+
+/* =========================================================
+   Responsive - Tablet
+========================================================= */
+
+@media (max-width: 1024px) {
+  .howto-menu h2 {
+    font-size: clamp(1.3rem, 5vw, 2rem);
+  }
+
+  .howto-menu h3 {
+    font-size: clamp(1rem, 4vw, 1.4rem);
+  }
+}
+
+/* =========================================================
+   Responsive - Small Phones
+========================================================= */
+
+@media (max-width: 900px) and (orientation: landscape) {
+  body.game-running .main-headline {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-headline {
+    gap: 8px;
+    padding: 12px 8px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 9vw, 3.5rem);
+  }
+}

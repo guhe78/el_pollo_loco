@@ -1,0 +1,240 @@
+/* =========================================================
+   Headlines
+========================================================= */
+
+.main-headline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  gap: clamp(8px, 3vw, 32px);
+
+  padding: 24px 16px;
+  height: clamp(50px, 20vw, 250px);
+}
+
+.main-headline span:nth-child(1) {
+  align-self: center;
+}
+
+.main-headline span:nth-child(2) {
+  align-self: flex-start;
+}
+
+.main-headline span:nth-child(3) {
+  align-self: flex-end;
+}
+
+body > .main-headline {
+  display: flex;
+  justify-content: center;
+}
+
+.overlay .main-headline {
+  display: none;
+}
+
+.menu .main-headline {
+  height: auto;
+  padding: clamp(12px, 3cqw, 24px) clamp(8px, 2cqw, 16px);
+  gap: clamp(6px, 2cqw, 24px);
+}
+
+.menu .main-headline {
+  font-size: clamp(1.8rem, 8cqw, 4rem);
+}
+
+/* =========================================================
+   Game Container & Canvas
+========================================================= */
+
+#game-container {
+  position: relative;
+
+  width: min(var(--game-base-width), calc(100vw - 16px));
+
+  aspect-ratio: var(--game-aspect);
+  margin: 16px auto 0;
+  border-radius: var(--panel-radius);
+  overflow: hidden;
+}
+
+canvas {
+  display: block;
+
+  width: 100%;
+  height: auto;
+  border-radius: var(--panel-radius);
+
+  background-color: lightskyblue;
+}
+
+/* =========================================================
+   Fullscreen Mode
+========================================================= */
+
+body.mode-fullscreen {
+  justify-content: center;
+  align-items: center;
+
+  gap: 0;
+  padding-top: 0;
+
+  min-height: 100dvh;
+}
+
+body.mode-fullscreen #game-container {
+  width: min(1440px, calc(100vw - 16px), calc((100dvh - 16px) * 1.5));
+
+  aspect-ratio: var(--game-aspect);
+
+  height: auto;
+  max-height: calc(100dvh - 16px);
+
+  margin: 0 auto;
+}
+
+body.mode-fullscreen > .main-headline,
+body.is-mobile > .main-headline {
+  display: none;
+}
+
+body.mode-fullscreen .overlay .main-headline,
+body.is-mobile .overlay .main-headline {
+  display: flex;
+}
+
+/* =========================================================
+   Game State
+========================================================= */
+
+body:not(.game-running) #canvas {
+  visibility: hidden;
+}
+
+body:not(.game-running) #startgame-overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 100;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: transparent;
+}
+
+body.game-running {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body.game-running:not(.mode-fullscreen):not(.is-mobile) #game-container {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  margin: 16px auto 0;
+  z-index: 90;
+}
+
+body.game-running .start-menu,
+body.game-running .rotate-hint {
+  display: none;
+}
+
+/* =========================================================
+   Overlay
+========================================================= */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+
+  z-index: 100;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: transparent;
+}
+
+#pausegame-overlay,
+#gameover-overlay,
+#victory-overlay,
+#howto-overlay {
+  background: transparent;
+}
+
+#settings-overlay {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
+
+#startgame-overlay {
+  background: transparent;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* =========================================================
+   Menus
+========================================================= */
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  gap: 12px;
+
+  width: min(100%, 720px);
+  height: min(100%, 480px);
+
+  padding: 32px;
+  overflow: auto;
+
+  border-radius: var(--panel-radius);
+
+  color: var(--color-primary);
+
+  background:
+    linear-gradient(var(--menu-overlay-top), var(--menu-overlay-bottom)),
+    url("../assets/images/menu_background.jpg");
+
+  background-size: cover;
+  background-position: center;
+
+  scrollbar-gutter: stable;
+
+  container-type: inline-size;
+}
+
+/* =========================================================
+   Rotate Hint
+========================================================= */
+
+.rotate-hint {
+  display: none;
+
+  position: fixed;
+  inset: 0;
+
+  z-index: 200;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+
+  text-align: center;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+
+  background: var(--overlay-rotate);
+  color: var(--color-secondary);
+}

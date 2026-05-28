@@ -1,0 +1,209 @@
+/* =========================================================
+   Buttons
+========================================================= */
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: min(100%, 200px);
+  height: 56px;
+
+  padding-top: 8px;
+  padding-inline: 12px;
+
+  border: 2px solid transparent;
+  border-radius: 24px;
+  box-sizing: border-box;
+
+  font-family: "LuckiestGuy-Regular";
+  font-size: 20px;
+
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+.menu .button:hover,
+.ingame-menu .button:hover {
+  cursor: pointer;
+  border-color: var(--color-secondary);
+}
+
+.settings-btn,
+.howto-btn {
+  width: 50px;
+  height: 50px;
+
+  padding-top: 1px;
+
+  border-radius: 50%;
+
+  text-indent: 2px;
+}
+
+.small-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* =========================================================
+   Mobile Controls
+========================================================= */
+
+.mobile-controls {
+  display: none;
+}
+
+.mobile-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+
+  border: 2px solid transparent;
+  border-radius: 50%;
+
+  padding: 0;
+  line-height: 1;
+  text-align: center;
+
+  background: rgba(0, 0, 180, 0.5);
+  color: lightblue;
+  font-family: "LuckiestGuy-Regular";
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease,
+    transform 80ms ease;
+}
+
+@media (pointer: coarse) {
+  body.is-mobile.game-running .mobile-controls {
+    position: fixed;
+    inset: 0;
+    z-index: 220;
+    display: block;
+    pointer-events: none;
+  }
+
+  .mobile-btn {
+    pointer-events: auto;
+  }
+
+  .mobile-btn:active {
+    transform: scale(0.96);
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 2px rgba(173, 216, 230, 0.35);
+  }
+
+  #mobile-up-btn,
+  #mobile-down-btn {
+    padding-top: 3px;
+  }
+
+  #mobile-throw-btn,
+  #mobile-slap-btn,
+  #mobile-pause-btn {
+    padding-top: 3px;
+  }
+
+  .mobile-btn-pause {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 52px;
+    height: 52px;
+    font-size: 20px;
+    border-radius: 14px;
+  }
+
+  .mobile-controls-left {
+    position: absolute;
+    left: 12px;
+    bottom: 12px;
+    display: flex;
+    gap: 10px;
+  }
+
+  .mobile-btn-action {
+    width: 52px;
+    height: 52px;
+    padding: 0;
+    border-radius: 14px;
+    font-size: 18px;
+  }
+
+  .mobile-controls-right {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    display: grid;
+    gap: 10px;
+    justify-items: center;
+  }
+
+  .mobile-controls-right-row {
+    display: flex;
+    gap: 10px;
+  }
+
+  .mobile-btn-dir {
+    width: 56px;
+    height: 56px;
+    font-size: 28px;
+  }
+}
+
+/* =========================================================
+   Specific Menus
+========================================================= */
+
+.start-menu,
+.howto-menu {
+  align-items: center;
+}
+
+.ingame-menu {
+  align-items: center;
+}
+
+.ingame-menu .button {
+  font-size: 20px;
+}
+
+/* =========================================================
+   How-To Menu Scrollbar
+========================================================= */
+
+.howto-menu {
+  scrollbar-width: thin;
+  scrollbar-color: #3ec5ff rgba(8, 21, 55, 0.45);
+  scrollbar-gutter: stable;
+}
+
+.howto-menu::-webkit-scrollbar {
+  width: 12px;
+}
+
+.howto-menu::-webkit-scrollbar-track {
+  background: rgba(8, 21, 55, 0.45);
+  border-radius: 999px;
+}
+
+.howto-menu::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #7fe4ff 0%, #3ec5ff 45%, #2288ff 100%);
+  border: 2px solid rgba(8, 21, 55, 0.6);
+  border-radius: 999px;
+}
+
+.howto-menu::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #a4efff 0%, #56d1ff 45%, #2f98ff 100%);
+}
+
+.howto-menu::-webkit-scrollbar-corner {
+  background: transparent;
+}

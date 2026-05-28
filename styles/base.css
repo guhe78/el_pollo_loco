@@ -1,0 +1,92 @@
+/* =========================================================
+   Fonts & Root Variables
+========================================================= */
+
+@font-face {
+  font-family: "LuckiestGuy-Regular";
+  src: url("../assets/fonts/Luckiest_Guy/LuckiestGuy-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --game-base-width: 720px;
+  --game-aspect: 720 / 480;
+  --panel-radius: 12px;
+
+  --color-primary: blue;
+  --color-secondary: lightblue;
+  --color-accent: #3ec5ff;
+
+  --overlay-dark: rgba(0, 0, 0, 0.65);
+  --overlay-rotate: rgba(0, 0, 0, 0.85);
+
+  --menu-overlay-top: rgba(0, 0, 128, 0.4);
+  --menu-overlay-bottom: rgba(0, 0, 128, 0.3);
+}
+
+/* =========================================================
+   Reset & Base
+========================================================= */
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: "LuckiestGuy-Regular";
+  color: var(--color-accent);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+
+  gap: 12px;
+  padding-top: 16px;
+  margin: 0;
+
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+
+  position: fixed;
+  inset: -10px;
+
+  background: url("../assets/images/main_background.jpg");
+  background-size: cover;
+
+  filter: blur(4px);
+  z-index: -1;
+}
+
+/* =========================================================
+   Typography
+========================================================= */
+
+h1 {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+}
+
+h2 {
+  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+
+h3 {
+  font-size: clamp(1rem, 1.5vw, 2rem);
+}
+
+.text-kontur {
+  color: blue;
+  -webkit-text-stroke: 1px lightskyblue;
+}
