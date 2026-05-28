@@ -31,6 +31,19 @@ class ThrowableObject extends MovableObject {
 
   throw() {
     this.speedY = 10;
-    this.applyGravitiy();
+    this.interval = setInterval(() => {
+      if (this.removeStartedAt !== null) {
+        this.stopIntervall();
+        return;
+      }
+
+      this.position_x += this.speedX;
+      this.position_y += this.speedY;
+      this.speedY -= this.acceleration;
+
+      if (this.position_y + this.height <= 0) {
+        this.startRemove();
+      }
+    }, 1000 / 25);
   }
 }
