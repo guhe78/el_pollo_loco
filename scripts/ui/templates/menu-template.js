@@ -1,3 +1,7 @@
+/**
+ * Returns HTML template for the start menu overlay.
+ * @returns {*} Result value.
+ */
 function startMenuTemplate() {
   return `
     <div id="startgame-overlay" class="overlay">
@@ -14,6 +18,10 @@ function startMenuTemplate() {
   `;
 }
 
+/**
+ * Returns HTML template for the pause menu overlay.
+ * @returns {*} Result value.
+ */
 function pauseMenuTemplate() {
   return `
     <div id="pausegame-overlay" class="overlay">
@@ -32,6 +40,10 @@ function pauseMenuTemplate() {
   `;
 }
 
+/**
+ * Returns HTML template for the game-over overlay.
+ * @returns {*} Result value.
+ */
 function gameOverMenuTemplate() {
   return `
     <div id="gameover-overlay" class="overlay">
@@ -45,6 +57,10 @@ function gameOverMenuTemplate() {
   `;
 }
 
+/**
+ * Returns HTML template for the victory overlay.
+ * @returns {*} Result value.
+ */
 function victoryMenuTemplate() {
   return `
     <div id="victory-overlay" class="overlay">
@@ -60,6 +76,10 @@ function victoryMenuTemplate() {
   `;
 }
 
+/**
+ * Returns HTML snippet for settings and help shortcut buttons.
+ * @returns {*} Result value.
+ */
 function settingsHowtoTemplate() {
   return `
     <button id="settings-btn" class="button settings-btn">⚙️</button>
@@ -67,6 +87,10 @@ function settingsHowtoTemplate() {
   `;
 }
 
+/**
+ * Returns HTML template for the settings overlay.
+ * @returns {*} Result value.
+ */
 function settingsMenuTemplate() {
   const mode = localStorage.getItem("displayMode") || "standard";
   const soundEnabled = localStorage.getItem("soundEnabled") !== "false";
@@ -89,6 +113,10 @@ function settingsMenuTemplate() {
         </div> `;
 }
 
+/**
+ * Returns HTML template for the how-to-play overlay.
+ * @returns {*} Result value.
+ */
 function howToMenuTemplate() {
   return `
     <div id="howto-overlay" class="overlay">
@@ -125,6 +153,10 @@ function howToMenuTemplate() {
   `;
 }
 
+/**
+ * Returns HTML snippet for common in-game menu action buttons.
+ * @returns {*} Result value.
+ */
 function menuActionsTemplate() {
   return `
     <button id="restart-btn" class="button">Neustart</button>
