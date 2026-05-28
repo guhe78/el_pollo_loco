@@ -122,10 +122,13 @@ class Character extends MovableObject {
     this.movementInterval = setInterval(() => {
       if (!this.world || this.world.gameState !== "running") return;
       let isMoving = false;
-      const maxCharacterX =
-        this.world.level.levelEndX +
-        this.cameraOffsetX -
-        this.world.canvas.width;
+      const isInEndbossSection = Boolean(this.world.currentSection?.endboss);
+      const isEndbossFightActive = this.isEndbossFightActive();
+      const minY = isInEndbossSection ? -140 : this.endYUp;
+      const maxY = isInEndbossSection
+        ? this.world.canvas.height - this.height + 80
+        : this.endYDown;
+      const { minX, maxX } = this.getHorizontalBounds();
 
       if (this.world.isEndbossIntroActive) {
         this.changeAnimation(false);
@@ -133,7 +136,7 @@ class Character extends MovableObject {
       }
       if (
         this.world.keyboard.RIGHT &&
-        this.position_x < maxCharacterX &&
+        this.position_x < maxX &&
         !this.isAttacking &&
         !this.isDead()
       ) {
@@ -142,7 +145,7 @@ class Character extends MovableObject {
       }
       if (
         this.world.keyboard.LEFT &&
-        this.position_x > 0 &&
+        this.position_x > minX &&
         !this.isAttacking &&
         !this.isDead()
       ) {
@@ -151,7 +154,7 @@ class Character extends MovableObject {
       }
       if (
         this.world.keyboard.UP &&
-        this.position_y > this.endYUp &&
+        this.position_y > minY &&
         !this.isAttacking &&
         !this.isDead()
       ) {
@@ -160,7 +163,7 @@ class Character extends MovableObject {
       }
       if (
         this.world.keyboard.DOWN &&
-        this.position_y < this.endYDown &&
+        this.position_y < maxY &&
         !this.isAttacking &&
         !this.isDead()
       ) {
@@ -179,6 +182,11 @@ class Character extends MovableObject {
       ) {
         this.applyBubbleAttack();
       }
+
+      if (isEndbossFightActive) {
+        this.clampCameraToCurrentSection();
+      }
+
       this.changeAnimation(isMoving);
     }, 1000 / 60);
   }
@@ -201,19 +209,65 @@ class Character extends MovableObject {
 
   moveRight() {
     this.otherDirection = false;
-    const maxCharacterX =
-      this.world.level.levelEndX + this.cameraOffsetX - this.world.canvas.width;
-    this.position_x = Math.min(this.position_x + this.speed, maxCharacterX);
-    this.world.camera_x = Math.round(
-      Math.min(0, -this.position_x + this.cameraOffsetX),
-    );
+    const { maxX } = this.getHorizontalBounds();
+    this.position_x = Math.min(this.position_x + this.speed, maxX);
+    this.updateCameraPosition();
   }
 
   moveLeft() {
     this.otherDirection = true;
-    this.position_x -= this.speed;
-    this.world.camera_x = Math.round(
+    const { minX } = this.getHorizontalBounds();
+    this.position_x = Math.max(this.position_x - this.speed, minX);
+    this.updateCameraPosition();
+  }
+
+  isEndbossFightActive() {
+    return Boolean(
+      this.world?.currentSection?.endboss && this.world.endbossIntroDone,
+    );
+  }
+
+  getHorizontalBounds() {
+    const defaultMaxX =
+      this.world.level.levelEndX + this.cameraOffsetX - this.world.canvas.width;
+
+    if (!this.isEndbossFightActive()) {
+      return { minX: 0, maxX: defaultMaxX };
+    }
+
+    const section = this.world.currentSection;
+    const minX = section.startX;
+    const maxX = Math.max(
+      minX,
+      section.endX + this.cameraOffsetX - this.world.canvas.width,
+    );
+
+    return { minX, maxX };
+  }
+
+  updateCameraPosition() {
+    const targetCamera = Math.round(
       Math.min(0, -this.position_x + this.cameraOffsetX),
+    );
+    this.world.camera_x = targetCamera;
+
+    if (this.isEndbossFightActive()) {
+      this.clampCameraToCurrentSection();
+    }
+  }
+
+  clampCameraToCurrentSection() {
+    const section = this.world.currentSection;
+    if (!section) return;
+
+    const minCameraX = Math.round(
+      Math.min(0, -section.endX + this.world.canvas.width),
+    );
+    const maxCameraX = Math.round(Math.min(0, -section.startX));
+
+    this.world.camera_x = Math.max(
+      minCameraX,
+      Math.min(maxCameraX, this.world.camera_x),
     );
   }
 

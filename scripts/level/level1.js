@@ -2,7 +2,7 @@ const BG_TILE_WIDTH = Math.round(3840 / 2.25);
 
 const SECTION_ONE_LENGTH = BG_TILE_WIDTH * 2;
 const SECTION_TWO_LENGTH = BG_TILE_WIDTH * 2;
-const ENDBOSS_SECTION_LENGTH = BG_TILE_WIDTH;
+const ENDBOSS_SECTION_LENGTH = Math.round(BG_TILE_WIDTH * 0.65);
 
 const sectionOneStartX = 0;
 const sectionTwoStartX = sectionOneStartX + SECTION_ONE_LENGTH;
@@ -25,7 +25,7 @@ const backgroundsDarkSection = [
 const separatorPath = "../../assets/img/Background/Barrier/3.png";
 
 const endboss = new Endboss(
-  endbossSectionStartX + ENDBOSS_SECTION_LENGTH - 500,
+  endbossSectionStartX + ENDBOSS_SECTION_LENGTH - 420,
   120,
 );
 
