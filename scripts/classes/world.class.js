@@ -13,6 +13,7 @@ class World {
   endbossIntroDone = false;
   menuReturnState = "startMenu";
   soundEnabled = true;
+  splashSound = new Audio("../../assets/audio/splash.mp3");
 
   constructor(canvas, keyboard) {
     this.keyboard = keyboard;
@@ -183,6 +184,7 @@ class World {
       this.character.auaSound,
       this.character.blingSound,
       this.character.hitSound,
+      this.splashSound,
     ];
     sounds.forEach((audio) => {
       if (!audio) return;
@@ -459,6 +461,9 @@ class World {
         this.camera_x = endbossCameraX;
         clearInterval(panToEndboss);
 
+        this.splashSound.currentTime = 0;
+        this.splashSound.play();
+
         const introFall = setInterval(() => {
           endboss.position_y += 8;
 
@@ -496,7 +501,7 @@ class World {
                       );
                       this.isEndbossIntroActive = false;
                     } else {
-                      this.camera_x += d * 0.012;
+                      this.camera_x += d * 0.02;
                     }
                   }, 1000 / 60);
                 }, holdBeforePanMs);

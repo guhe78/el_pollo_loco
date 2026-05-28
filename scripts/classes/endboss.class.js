@@ -58,6 +58,7 @@ class Endboss extends Enemy {
   attackStartedAt = Date.now();
   attackTargetX = null;
   retreatTargetX = null;
+  attackRoarSound = new Audio("../../assets/audio/mooaarr.mp3");
   world;
   offset = {};
 
@@ -108,7 +109,9 @@ class Endboss extends Enemy {
           this.attackTargetX = this.getAttackTargetX();
           this.retreatTargetX = this.getRetreatTargetX();
           this.setAnimation(this.IMAGES_ATTACK);
-          console.log("[DUMMY SOUND] Endboss attack start");
+          this.attackRoarSound.currentTime = 0;
+          this.attackRoarSound.muted = !this.world.soundEnabled;
+          this.attackRoarSound.play();
         }
         return;
       }
