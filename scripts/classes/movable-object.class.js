@@ -11,10 +11,22 @@ class MovableObject extends DrawableObject {
   removeDuration = 500;
   interval = null;
 
+  /**
+   * Creates a movable object with drawable base properties.
+   * @param {*} path
+   * @param {*} position_x
+   * @param {*} position_y
+   * @param {*} width
+   * @param {*} height
+   */
   constructor(path, position_x, position_y, width, height) {
     super(path, position_x, position_y, width, height);
   }
 
+  /**
+   * Plays the next frame from the given image sequence.
+   * @param {*} images
+   */
   playAnimation(images) {
     const i = this.currentImage % images.length;
     const path = images[i];
@@ -22,6 +34,11 @@ class MovableObject extends DrawableObject {
     this.currentImage++;
   }
 
+  /**
+   * Starts a repeating animation loop.
+   * @param {*} getImages
+   * @param {*} speed
+   */
   startAnimation(getImages, speed) {
     this.animationInterval = setInterval(() => {
       const images = getImages();
@@ -32,6 +49,11 @@ class MovableObject extends DrawableObject {
     }, speed);
   }
 
+  /**
+   * Checks axis-aligned collision against another movable object.
+   * @param {*} movableObject
+   * @returns {*} Result value.
+   */
   isColliding(movableObject) {
     return (
       this.position_x + this.width - this.offset.right >
@@ -49,6 +71,10 @@ class MovableObject extends DrawableObject {
     );
   }
 
+  /**
+   * Changes active animation and resets frame index on change.
+   * @param {*} images
+   */
   setAnimation(images) {
     if (this.currentAnimation !== images) {
       this.currentAnimation = images;
@@ -56,6 +82,10 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Applies damage and updates hit timestamp.
+   * @param {*} damagePoints
+   */
   hit(damagePoints) {
     this.energy -= damagePoints;
     if (this.isDead(this)) {
@@ -65,15 +95,26 @@ class MovableObject extends DrawableObject {
     }
   }
 
+  /**
+   * Checks whether the object is currently in hurt state.
+   * @returns {*} Result value.
+   */
   isHurt() {
     let timePassed = new Date().getTime() - this.lastHit;
     return timePassed < 500;
   }
 
+  /**
+   * Checks whether object energy is depleted.
+   * @returns {*} Result value.
+   */
   isDead() {
     return this.energy <= 0;
   }
 
+  /**
+   * Starts gravity-like movement interval for projectiles.
+   */
   applyGravitiy() {
     this.interval = setInterval(() => {
       this.position_x += this.speedX;
@@ -85,18 +126,28 @@ class MovableObject extends DrawableObject {
     }, 1000 / 25);
   }
 
+  /**
+   * Stops the active movement interval.
+   */
   stopIntervall() {
     if (!this.interval) return;
     clearInterval(this.interval);
     this.interval = null;
   }
 
+  /**
+   * Marks object for delayed removal.
+   */
   startRemove() {
     if (this.removeStartedAt !== null) return;
     this.removeStartedAt = Date.now();
     this.stopIntervall();
   }
 
+  /**
+   * Checks whether removal delay has elapsed.
+   * @returns {*} Result value.
+   */
   shouldBeRemoved() {
     return (
       this.removeStartedAt !== null &&

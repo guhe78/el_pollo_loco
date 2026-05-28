@@ -1,4 +1,13 @@
 class Section {
+  /**
+   * Creates a level section with world objects and optional endboss.
+   * @param {*} startX
+   * @param {*} length
+   * @param {*} backgrounds
+   * @param {*} enemies
+   * @param {*} collectibles
+   * @param {*} endboss
+   */
   constructor(
     startX,
     length,

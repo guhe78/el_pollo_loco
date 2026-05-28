@@ -88,7 +88,6 @@ class Character extends MovableObject {
   auaSound = new Audio("../../assets/audio/aua.mp3");
   blingSound = new Audio("../../assets/audio/bling.mp3");
   hitSound = new Audio("../../assets/audio/hit.mp3");
-  swimSound = new Audio("../../assets/audio/swim.mp3");
   lastSlapStartedAt = 0;
   slapImpactDelayMs = 220;
   slapImpactReadyAt = 0;
@@ -96,6 +95,9 @@ class Character extends MovableObject {
   slapSoundFallbackDurationMs = 450;
   highscore = 0;
 
+  /**
+   * Creates the player character and initializes animations and controls.
+   */
   constructor() {
     super();
     this.width = 250;
@@ -114,10 +116,12 @@ class Character extends MovableObject {
     this.image = this.imageCache[this.IMAGES_IDLE[0]];
 
     this.movementControl();
-    this.swimSound.loop = true;
     this.startAnimation(() => this.currentAnimation, 100);
   }
 
+  /**
+   * Preloads all image sequences used by the character states.
+   */
   loadCharacterImages() {
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_SWIM);
@@ -127,12 +131,18 @@ class Character extends MovableObject {
     this.loadImages(this.IMAGES_DEAD_ELECTRO);
   }
 
+  /**
+   * Starts the movement update loop.
+   */
   movementControl() {
     this.movementInterval = setInterval(() => {
       this.updateMovementFrame();
     }, 1000 / 60);
   }
 
+  /**
+   * Updates one movement frame including input, camera and animation.
+   */
   updateMovementFrame() {
     if (!this.isMovementActive()) return;
     if (this.world.isEndbossIntroActive) return this.showIdleDuringIntro();
@@ -145,14 +155,25 @@ class Character extends MovableObject {
     this.changeAnimation(isMoving);
   }
 
+  /**
+   * Checks whether movement updates should currently run.
+   * @returns {boolean} True when world exists and game is running.
+   */
   isMovementActive() {
     return this.world && this.world.gameState === "running";
   }
 
+  /**
+   * Forces idle animation during endboss intro.
+   */
   showIdleDuringIntro() {
     this.changeAnimation(false);
   }
 
+  /**
+   * Calculates vertical and horizontal movement bounds.
+   * @returns {{minY:number,maxY:number,minX:number,maxX:number}} Movement limits.
+   */
   getMovementBounds() {
     return {
       minY: -this.edgeReachTop,
@@ -161,12 +182,22 @@ class Character extends MovableObject {
     };
   }
 
+  /**
+   * Handles horizontal and vertical movement and returns if movement happened.
+   * @param {{minY:number,maxY:number,minX:number,maxX:number}} bounds Movement limits.
+   * @returns {boolean} True if the character moved in this frame.
+   */
   handleMovement(bounds) {
     const movedX = this.handleHorizontalMovement(bounds);
     const movedY = this.handleVerticalMovement(bounds);
     return movedX || movedY;
   }
 
+  /**
+   * Applies horizontal movement according to input and section limits.
+   * @param {{minX:number,maxX:number}} param0 Horizontal movement bounds.
+   * @returns {boolean} True if character moved horizontally.
+   */
   handleHorizontalMovement({ minX, maxX }) {
     if (!this.canMove()) return false;
     if (this.world.keyboard.RIGHT && this.position_x < maxX) {
@@ -180,6 +211,11 @@ class Character extends MovableObject {
     return false;
   }
 
+  /**
+   * Applies vertical movement according to input and limits.
+   * @param {{minY:number,maxY:number}} param0 Vertical movement bounds.
+   * @returns {boolean} True if character moved vertically.
+   */
   handleVerticalMovement({ minY, maxY }) {
     if (!this.canMove()) return false;
     if (this.world.keyboard.UP && this.position_y > minY) {
@@ -193,6 +229,9 @@ class Character extends MovableObject {
     return false;
   }
 
+  /**
+   * Handles slap and bubble attack inputs.
+   */
   handleCombatActions() {
     if (this.world.keyboard.SPACE && this.canMove()) {
       this.applySlapAttack();
@@ -204,21 +243,35 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Keeps camera clamped while the endboss fight is active.
+   */
   updateSectionCamera() {
     if (this.isEndbossFightActive()) {
       this.clampCameraToCurrentSection();
     }
   }
 
+  /**
+   * Checks if the character is allowed to move.
+   * @returns {boolean} True when not attacking and not dead.
+   */
   canMove() {
     return !this.isAttacking && !this.isDead();
   }
 
+  /**
+   * Updates the displayed animation based on movement and state.
+   * @param {boolean} isMoving Indicates whether the character moved this frame.
+   */
   changeAnimation(isMoving) {
     this.setCurrentAnimation(isMoving);
-    this.updateSwimSound(isMoving);
   }
 
+  /**
+   * Selects the animation list for the current state.
+   * @param {boolean} isMoving Indicates whether the character moved this frame.
+   */
   setCurrentAnimation(isMoving) {
     if (this.isDead()) return this.setAnimation(this.IMAGES_DEAD_ELECTRO);
     if (this.isHurt()) return this.setAnimation(this.IMAGES_HURT_ELECTRO);
@@ -229,6 +282,10 @@ class Character extends MovableObject {
     this.setAnimation(this.IMAGES_IDLE);
   }
 
+  /**
+   * Updates swim sound state based on movement and damage state.
+   * @param {boolean} isMoving Indicates whether the character moved this frame.
+   */
   updateSwimSound(isMoving) {
     if (isMoving && !this.isHurt() && !this.isDead()) {
       this.playSwimSound();
@@ -238,6 +295,9 @@ class Character extends MovableObject {
     this.stopSwimSound();
   }
 
+  /**
+   * Moves character to the right and updates camera.
+   */
   moveRight() {
     this.otherDirection = false;
     const { maxX } = this.getHorizontalBounds();
@@ -245,6 +305,9 @@ class Character extends MovableObject {
     this.updateCameraPosition();
   }
 
+  /**
+   * Moves character to the left and updates camera.
+   */
   moveLeft() {
     this.otherDirection = true;
     const { minX } = this.getHorizontalBounds();
@@ -252,12 +315,20 @@ class Character extends MovableObject {
     this.updateCameraPosition();
   }
 
+  /**
+   * Checks whether the character is currently inside an active endboss fight.
+   * @returns {boolean} True when section has this endboss and intro has finished.
+   */
   isEndbossFightActive() {
     return Boolean(
       this.world?.currentSection?.endboss && this.world.endbossIntroDone,
     );
   }
 
+  /**
+   * Calculates allowed horizontal movement range for current section.
+   * @returns {{minX:number,maxX:number}} Horizontal movement bounds.
+   */
   getHorizontalBounds() {
     const defaultMaxX =
       this.world.level.levelEndX + this.cameraOffsetX - this.world.canvas.width;
@@ -273,6 +344,9 @@ class Character extends MovableObject {
     return { minX, maxX };
   }
 
+  /**
+   * Updates camera position based on character position.
+   */
   updateCameraPosition() {
     const targetCamera = Math.round(
       Math.min(0, -this.position_x + this.cameraOffsetX),
@@ -284,6 +358,9 @@ class Character extends MovableObject {
     }
   }
 
+  /**
+   * Clamps camera to the current section limits.
+   */
   clampCameraToCurrentSection() {
     const section = this.world.currentSection;
     if (!section) return;
@@ -299,6 +376,9 @@ class Character extends MovableObject {
     );
   }
 
+  /**
+   * Starts the slap attack sequence.
+   */
   applySlapAttack() {
     if (this.isAttacking) return;
 
@@ -307,6 +387,10 @@ class Character extends MovableObject {
     this.finishSlapAttack(attack);
   }
 
+  /**
+   * Builds timing and movement data for a slap attack.
+   * @returns {{startedAt:number,delta:number,animationDuration:number}} Attack data.
+   */
   createSlapAttack() {
     const direction = this.otherDirection ? -1 : 1;
     return {
@@ -316,6 +400,10 @@ class Character extends MovableObject {
     };
   }
 
+  /**
+   * Applies immediate slap attack effects and plays slap sound.
+   * @param {{startedAt:number,delta:number,animationDuration:number}} attack Attack data.
+   */
   startSlapAttack(attack) {
     this.isAttacking = true;
     this.lastSlapStartedAt = attack.startedAt;
@@ -327,6 +415,10 @@ class Character extends MovableObject {
     this.slapSound.play();
   }
 
+  /**
+   * Ends slap attack after its animation time.
+   * @param {{startedAt:number,delta:number,animationDuration:number}} attack Attack data.
+   */
   finishSlapAttack(attack) {
     setTimeout(() => {
       this.position_x -= attack.delta;
@@ -334,6 +426,9 @@ class Character extends MovableObject {
     }, attack.animationDuration);
   }
 
+  /**
+   * Starts bubble throw animation and spawns the bubble at the end.
+   */
   applyBubbleAttack() {
     this.isThrowing = true;
     const throwAnimationDuration = this.getBubbleThrowDuration();
@@ -345,19 +440,35 @@ class Character extends MovableObject {
     }, throwAnimationDuration);
   }
 
+  /**
+   * Returns the duration of the bubble throw animation.
+   * @returns {number} Duration in milliseconds.
+   */
   getBubbleThrowDuration() {
     return this.calculateAnimationDuration(this.IMAGES_BUBBLE);
   }
 
+  /**
+   * Stops movement and animation intervals.
+   */
   stop() {
     clearInterval(this.movementInterval);
     clearInterval(this.animationInterval);
   }
 
+  /**
+   * Calculates animation duration from frame count and animation speed.
+   * @param {string[]} imageArray Image sequence used for the animation.
+   * @returns {number} Duration in milliseconds.
+   */
   calculateAnimationDuration(imageArray) {
     return imageArray.length * this.animationSpeed;
   }
 
+  /**
+   * Returns slap sound duration with a fallback when metadata is unavailable.
+   * @returns {number} Duration in milliseconds.
+   */
   getSlapSoundDurationMs() {
     const durationSeconds = this.slapSound?.duration;
     if (Number.isFinite(durationSeconds) && durationSeconds > 0) {
@@ -367,22 +478,11 @@ class Character extends MovableObject {
     return this.slapSoundFallbackDurationMs;
   }
 
+  /**
+   * Computes remaining time until slap sound playback should be finished.
+   * @returns {number} Remaining delay in milliseconds.
+   */
   getDelayUntilSlapSoundFinished() {
     return Math.max(0, (this.lastSlapSoundEndsAt || 0) - Date.now());
-  }
-
-  playSwimSound() {
-    if (!this.world.soundEnabled) return;
-
-    this.swimSound.muted = false;
-
-    if (this.swimSound.paused) {
-      this.swimSound.play();
-    }
-  }
-
-  stopSwimSound() {
-    this.swimSound.pause();
-    this.swimSound.currentTime = 0;
   }
 }

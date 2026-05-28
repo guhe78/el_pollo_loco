@@ -11,6 +11,12 @@ class ThrowableObject extends MovableObject {
   direction;
   removeDuration;
 
+  /**
+   * Creates a throwable bubble projectile.
+   * @param {*} position_x
+   * @param {*} position_y
+   * @param {*} direction
+   */
   constructor(position_x, position_y, direction) {
     super();
     this.path = this.IMAGES_BUBBLE[0];
@@ -29,6 +35,9 @@ class ThrowableObject extends MovableObject {
     this.throw();
   }
 
+  /**
+   * Starts projectile movement and marks bubble for removal at top edge.
+   */
   throw() {
     this.speedY = 10;
     this.interval = setInterval(() => {

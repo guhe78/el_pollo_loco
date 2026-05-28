@@ -55,6 +55,11 @@ class PufferFish extends Enemy {
   angle;
   angularSpeed;
 
+  /**
+   * Creates a puffer fish enemy with randomized elliptical movement.
+   * @param {*} position_x
+   * @param {*} position_y
+   */
   constructor(position_x, position_y) {
     super();
     this.path = this.IMAGES_SWIM[this.randomElement][0];
@@ -81,11 +86,17 @@ class PufferFish extends Enemy {
     this.startAnimation(() => this.currentAnimation, 200);
   }
 
+  /**
+   * Preloads swim and death image sequences for this puffer variant.
+   */
   loadEnemyImages() {
     this.loadImages(this.randomImagesSwimArray);
     this.loadImages(this.randomImagesDieArray);
   }
 
+  /**
+   * Starts circular-like movement updates while gameplay is active.
+   */
   moveAround() {
     setInterval(() => {
       if (!this.world || this.world.gameState !== "running" || this.isStunned)
