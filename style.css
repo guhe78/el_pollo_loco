@@ -144,11 +144,7 @@ body > .main-headline {
 #game-container {
   position: relative;
 
-  width: min(
-    var(--game-base-width),
-    calc(100vw - 16px),
-    calc((100dvh - 16px) * 1.5)
-  );
+  width: min(var(--game-base-width), calc(100vw - 16px));
 
   aspect-ratio: var(--game-aspect);
   margin: 16px auto 0;
@@ -223,15 +219,16 @@ body:not(.game-running) #startgame-overlay {
 }
 
 body.game-running {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body.game-running:not(.mode-fullscreen):not(.is-mobile) #game-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0;
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  margin: 16px auto 0;
   z-index: 90;
 }
 
