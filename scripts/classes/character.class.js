@@ -237,10 +237,7 @@ class Character extends MovableObject {
 
     const section = this.world.currentSection;
     const minX = section.startX;
-    const maxX = Math.max(
-      minX,
-      section.endX + this.cameraOffsetX - this.world.canvas.width,
-    );
+    const maxX = Math.max(minX, section.endX - this.width);
 
     return { minX, maxX };
   }
