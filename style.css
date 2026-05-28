@@ -210,10 +210,10 @@ body:not(.game-running) #canvas {
 }
 
 body:not(.game-running) #startgame-overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
 
-  z-index: 180;
+  z-index: 100;
 
   display: flex;
   justify-content: center;
@@ -261,13 +261,13 @@ body.game-running .rotate-hint {
 #gameover-overlay,
 #victory-overlay,
 #howto-overlay {
-  background: var(--overlay-dark);
+  background: transparent;
 }
 
 #settings-overlay {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  background: var(--overlay-dark);
+  background: transparent;
 }
 
 #startgame-overlay {
@@ -476,12 +476,6 @@ body.game-running .rotate-hint {
 
 .start-menu,
 .howto-menu {
-  width: 720px;
-  height: 480px;
-
-  min-height: 480px;
-  max-height: 480px;
-
   align-items: center;
 }
 
@@ -585,6 +579,45 @@ body.game-running .rotate-hint {
 ========================================================= */
 
 @media (orientation: portrait) and (max-width: 1024px) {
+  .overlay,
+  #settings-overlay,
+  body:not(.game-running) #startgame-overlay {
+    position: fixed;
+    inset: 0;
+  }
+
+  .menu {
+    width: min(94vw, 720px);
+    height: min(92dvh, 720px);
+    min-height: 0;
+    max-height: 92dvh;
+    padding: 20px 18px;
+  }
+
+  .howto-menu {
+    justify-content: flex-start;
+    gap: 8px;
+    overflow-y: auto;
+  }
+
+  .howto-menu h2 {
+    font-size: clamp(1.1rem, 5.5vw, 1.8rem);
+  }
+
+  .howto-menu h3 {
+    font-size: clamp(0.95rem, 4.4vw, 1.2rem);
+  }
+
+  .howto-menu li,
+  .howto-menu p {
+    font-size: clamp(0.82rem, 3.4vw, 1rem);
+    line-height: 1.2;
+  }
+
+  .howto-menu ul {
+    padding-left: 22px;
+  }
+
   body.game-running #game-container {
     display: none;
   }
@@ -603,22 +636,6 @@ body.game-running .rotate-hint {
 ========================================================= */
 
 @media (max-width: 1024px) {
-  .howto-menu {
-    width: min(92vw, 720px);
-
-    height: auto;
-    max-height: 100dvh;
-    min-height: 0;
-
-    padding: 20px;
-
-    justify-content: flex-start;
-
-    overflow-y: auto;
-
-    border-radius: 0;
-  }
-
   .howto-menu h2 {
     font-size: clamp(1.3rem, 5vw, 2rem);
   }
