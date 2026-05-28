@@ -142,7 +142,8 @@ class Endboss extends Enemy {
       return this.startX;
     }
 
-    return section.startX;
+    const leftVisibleX = this.getLeftVisibleX();
+    return Math.max(section.startX, leftVisibleX);
   }
 
   getRetreatTargetX() {
@@ -179,5 +180,13 @@ class Endboss extends Enemy {
     const minY = 0;
     const maxY = this.world.canvas.height - this.height;
     return { minY, maxY };
+  }
+
+  getLeftVisibleX() {
+    if (!this.world) {
+      return this.startX;
+    }
+
+    return -this.world.camera_x;
   }
 }
