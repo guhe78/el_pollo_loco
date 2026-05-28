@@ -76,7 +76,7 @@ class Endboss extends Enemy {
     this.moveUpAndDown();
     this.offset = {
       top: 90,
-      bottom: 80,
+      bottom: 20,
       right: 20,
       left: 20,
     };
