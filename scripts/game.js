@@ -5,6 +5,9 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 
+/**
+ * Initializes canvas, world and control systems.
+ */
 function loadCanvas() {
   canvas = document.getElementById("canvas");
   applyDisplayMode();
@@ -125,18 +128,33 @@ document.addEventListener("keyup", (event) => {
   }
 });
 
+/**
+ * Returns persisted display mode.
+ * @returns {*} Result value.
+ */
 function getDisplayMode() {
   return localStorage.getItem(DISPLAY_MODE_KEY) || "standard";
 }
 
+/**
+ * Persists selected display mode.
+ * @param {*} mode
+ */
 function setDisplayMode(mode) {
   localStorage.setItem(DISPLAY_MODE_KEY, mode);
 }
 
+/**
+ * Detects whether current device uses coarse pointer input.
+ * @returns {*} Result value.
+ */
 function isMobileDevice() {
   return window.matchMedia("(pointer: coarse)").matches;
 }
 
+/**
+ * Applies display mode CSS classes to the page.
+ */
 function applyDisplayMode() {
   const isMobile = isMobileDevice();
   const mode = getDisplayMode();
@@ -148,19 +166,33 @@ function applyDisplayMode() {
   );
 }
 
+/**
+ * Returns persisted sound setting.
+ * @returns {*} Result value.
+ */
 function getSoundEnabled() {
   return localStorage.getItem(SOUND_ENABLED_KEY) !== "false";
 }
 
+/**
+ * Persists sound enabled state.
+ * @param {*} enabled
+ */
 function setSoundEnabled(enabled) {
   localStorage.setItem(SOUND_ENABLED_KEY, String(enabled));
 }
 
+/**
+ * Applies current sound setting to active world instance.
+ */
 function applySoundMode() {
   if (!world) return;
   world.setSoundEnabled(getSoundEnabled());
 }
 
+/**
+ * Wires mobile control buttons to keyboard state.
+ */
 function setupMobileControls() {
   const pauseBtn = document.getElementById("mobile-pause-btn");
   if (pauseBtn) {
@@ -179,6 +211,11 @@ function setupMobileControls() {
   bindHoldControl("mobile-slap-btn", "SPACE");
 }
 
+/**
+ * Binds a press-and-hold mobile button to a keyboard flag.
+ * @param {*} buttonId
+ * @param {*} keyName
+ */
 function bindHoldControl(buttonId, keyName) {
   const button = document.getElementById(buttonId);
   if (!button) return;

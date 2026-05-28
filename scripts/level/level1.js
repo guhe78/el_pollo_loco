@@ -29,6 +29,10 @@ const endboss = new Endboss(
   120,
 );
 
+/**
+ * Builds the full level definition.
+ * @returns {*} Result value.
+ */
 function createLevel() {
   return new Level([
     createFirstSection(),
@@ -37,6 +41,10 @@ function createLevel() {
   ]);
 }
 
+/**
+ * Creates the first section with puffer enemies and coins.
+ * @returns {*} Result value.
+ */
 function createFirstSection() {
   return new Section(
     sectionOneStartX,
@@ -51,6 +59,10 @@ function createFirstSection() {
   );
 }
 
+/**
+ * Creates the second section with jelly enemies and poison.
+ * @returns {*} Result value.
+ */
 function createSecondSection() {
   return new Section(
     sectionTwoStartX,
@@ -65,6 +77,10 @@ function createSecondSection() {
   );
 }
 
+/**
+ * Creates the endboss section.
+ * @returns {*} Result value.
+ */
 function createEndbossSection() {
   return new Section(
     endbossSectionStartX,
@@ -80,6 +96,13 @@ function createEndbossSection() {
   );
 }
 
+/**
+ * Creates section backgrounds and separator barrier.
+ * @param {*} sectionLength
+ * @param {*} startX
+ * @param {*} backgroundsArray
+ * @returns {*} Result value.
+ */
 function createSectionBackgrounds(sectionLength, startX, backgroundsArray) {
   return [
     ...createBackgrounds(sectionLength, startX, backgroundsArray),
@@ -87,10 +110,23 @@ function createSectionBackgrounds(sectionLength, startX, backgroundsArray) {
   ];
 }
 
+/**
+ * Creates a section separator barrier object.
+ * @param {*} startX
+ * @param {*} sectionLength
+ * @returns {*} Result value.
+ */
 function createSectionBarrier(startX, sectionLength) {
   return new Barrier(separatorPath, startX + sectionLength - 300, 500, 480);
 }
 
+/**
+ * Creates tiled parallax backgrounds for one section.
+ * @param {*} sectionLength
+ * @param {*} startX
+ * @param {*} backgroundsArray
+ * @returns {*} Result value.
+ */
 function createBackgrounds(sectionLength, startX, backgroundsArray) {
   const backgrounds = [];
   const tileCount = Math.ceil(sectionLength / BG_TILE_WIDTH);
@@ -106,11 +142,24 @@ function createBackgrounds(sectionLength, startX, backgroundsArray) {
   return backgrounds;
 }
 
+/**
+ * Calculates width of a single background tile.
+ * @param {*} sectionLength
+ * @param {*} index
+ * @returns {*} Result value.
+ */
 function getBackgroundTileWidth(sectionLength, index) {
   const remainingWidth = sectionLength - index * BG_TILE_WIDTH;
   return Math.min(BG_TILE_WIDTH, remainingWidth);
 }
 
+/**
+ * Creates one complete set of background layers for a tile slot.
+ * @param {*} backgroundsArray
+ * @param {*} positionX
+ * @param {*} tileWidth
+ * @returns {*} Result value.
+ */
 function createBackgroundTile(backgroundsArray, positionX, tileWidth) {
   const backgrounds = [
     new BackgroundWater(backgroundsArray[0], positionX),
@@ -126,6 +175,14 @@ function createBackgroundTile(backgroundsArray, positionX, tileWidth) {
   return backgrounds;
 }
 
+/**
+ * Creates enemies of a given type for one section.
+ * @param {*} sort
+ * @param {*} count
+ * @param {*} startX
+ * @param {*} sectionLength
+ * @returns {*} Result value.
+ */
 function createEnemies(sort, count, startX, sectionLength) {
   const enemies = [];
   const enemyArea = getEnemySpawnArea(count, startX, sectionLength);
@@ -140,6 +197,13 @@ function createEnemies(sort, count, startX, sectionLength) {
   return enemies;
 }
 
+/**
+ * Computes enemy spawn area values.
+ * @param {*} count
+ * @param {*} startX
+ * @param {*} sectionLength
+ * @returns {*} Result value.
+ */
 function getEnemySpawnArea(count, startX, sectionLength) {
   const minX = startX + 500;
   const maxX = startX + sectionLength - 300;
@@ -149,10 +213,23 @@ function getEnemySpawnArea(count, startX, sectionLength) {
   };
 }
 
+/**
+ * Calculates x-position of one enemy spawn.
+ * @param {*} enemyArea
+ * @param {*} index
+ * @returns {*} Result value.
+ */
 function getEnemySpawnX(enemyArea, index) {
   return enemyArea.minX + index * enemyArea.spacing + randomNumber(120) - 60;
 }
 
+/**
+ * Creates an enemy instance based on requested type.
+ * @param {*} sort
+ * @param {*} position_x
+ * @param {*} position_y
+ * @returns {*} Result value.
+ */
 function createEnemy(sort, position_x, position_y) {
   if (sort === "puffer") {
     return new PufferFish(position_x, position_y);
@@ -163,6 +240,14 @@ function createEnemy(sort, position_x, position_y) {
   return null;
 }
 
+/**
+ * Creates collectibles of a given type for one section.
+ * @param {*} sort
+ * @param {*} count
+ * @param {*} startX
+ * @param {*} sectionLength
+ * @returns {*} Result value.
+ */
 function createCollectibles(sort, count, startX, sectionLength) {
   const collectibles = [];
   const spawnArea = getCollectibleSpawnArea(startX, sectionLength);
@@ -177,6 +262,12 @@ function createCollectibles(sort, count, startX, sectionLength) {
   return collectibles;
 }
 
+/**
+ * Computes collectible spawn area values.
+ * @param {*} startX
+ * @param {*} sectionLength
+ * @returns {*} Result value.
+ */
 function getCollectibleSpawnArea(startX, sectionLength) {
   return {
     minX: startX + 120,
@@ -184,6 +275,13 @@ function getCollectibleSpawnArea(startX, sectionLength) {
   };
 }
 
+/**
+ * Creates a collectible instance based on requested type.
+ * @param {*} sort
+ * @param {*} position_x
+ * @param {*} position_y
+ * @returns {*} Result value.
+ */
 function createCollectible(sort, position_x, position_y) {
   if (sort === "coins") {
     return new Coins(position_x, position_y);
@@ -194,6 +292,11 @@ function createCollectible(sort, position_x, position_y) {
   return null;
 }
 
+/**
+ * Returns a random integer within range starting at zero.
+ * @param {*} range
+ * @returns {*} Result value.
+ */
 function randomNumber(range) {
   return parseInt(Math.random() * range);
 }
