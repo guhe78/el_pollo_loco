@@ -353,8 +353,14 @@ class World {
     const targetY = endboss.position_y;
     endboss.position_y = -endboss.height;
     endboss.setAnimation(endboss.IMAGES_INTRO);
-    const minCameraX = Math.round(
+    const levelMinCameraX = Math.round(
       Math.min(0, -this.level.levelEndX + this.canvas.width),
+    );
+    const sectionMinCameraX = Math.round(
+      Math.min(0, -this.currentSection.endX + this.canvas.width),
+    );
+    const sectionMaxCameraX = Math.round(
+      Math.min(0, -this.currentSection.startX),
     );
 
     const rawEndbossCameraX = Math.round(
@@ -363,9 +369,13 @@ class World {
         -endboss.position_x + this.canvas.width / 2 - endboss.width / 2,
       ),
     );
-    const endbossCameraX = Math.max(minCameraX, rawEndbossCameraX);
-    const characterCameraX = Math.round(
+    const endbossCameraX = Math.max(levelMinCameraX, rawEndbossCameraX);
+    const rawCharacterCameraX = Math.round(
       Math.min(0, -this.character.position_x + this.character.cameraOffsetX),
+    );
+    const characterCameraX = Math.max(
+      sectionMinCameraX,
+      Math.min(sectionMaxCameraX, rawCharacterCameraX),
     );
 
     const panToEndboss = setInterval(() => {
