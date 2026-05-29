@@ -201,7 +201,7 @@ body.game-running .rotate-hint {
 
   border-radius: var(--panel-radius);
 
-  color: var(--color-primary);
+  color: var(--color-font);
 
   background:
     linear-gradient(var(--menu-overlay-top), var(--menu-overlay-bottom)),

@@ -10,9 +10,7 @@ function startMenuTemplate() {
       <span>Sharkie</span><span> the </span><span>shark</span>
     </h1>
         <button id="start-btn" class="button">Spiel starten</button>
-          <div class="small-buttons-container">
             ${settingsHowtoTemplate()}
-          </div>
       </div>
     </div>
   `;
@@ -32,9 +30,7 @@ function pauseMenuTemplate() {
         <h2 class="text-kontur">Pause Menu</h2>
         <button id="resume-btn" class="button">Spiel fortsetzen</button>
           ${menuActionsTemplate()}
-          <div class="small-buttons-container">
-            ${settingsHowtoTemplate()}
-          </div>
+          ${settingsHowtoTemplate()}
       </div>
     </div>
   `;
@@ -98,8 +94,13 @@ function victoryTransitionTemplate() {
  */
 function settingsHowtoTemplate() {
   return `
-    <button id="settings-btn" class="button settings-btn">⚙️</button>
-    <button id="howto-btn" class="button howto-btn">❓</button>
+  <div class="small-buttons-container">
+    <div class="settings-howto">
+      <button id="settings-btn" class="button settings-btn">⚙️</button>
+      <button id="howto-btn" class="button howto-btn">❓</button>
+    </div>
+      <button id="impressum-btn" class="button impressum-btn">impressum</button>
+  </div>
   `;
 }
 
@@ -152,9 +153,9 @@ function howToMenuTemplate() {
         </ul>
         <h3>Ziele im Level</h3>
         <ul>
-          <li>Abschnitt 1: Münzen sammeln</li>
-          <li>Abschnitt 2: Giftflaschen sammeln</li>
-          <li>Gegner und Items geben Punkte.</li>
+          <li>Abschnitt 1: Gold, Gold, Gold! Münzen sammeln. Pro Flasche gibt es Punkte.</li>
+          <li>Abschnitt 2: Halte die Umwelt sauber! Giftflaschen sammeln. Pro Flasche gibt es Punkte.</li>
+          <li>Gegner und Items geben Punkte. Die Items haben keine weitere Funktion, nur Punkte</li>
         </ul>
         <h3>Endboss</h3>
         <ul>
@@ -177,5 +178,26 @@ function menuActionsTemplate() {
   return `
     <button id="restart-btn" class="button">Neustart</button>
     <button id="mainmenu-btn" class="button">Spiel beenden</button>
+  `;
+}
+
+/**
+ * Returns HTML template for the impressum overlay.
+ * @returns {*} Result value.
+ */
+function impressumMenuTemplate() {
+  return `
+    <div id="impressum-overlay" class="overlay">
+      <div class="menu howto-menu text-kontur">
+        <h2>Impressum</h2>
+        <p>Günter Heldt<br>
+        c/o COCENTER<br>
+        Koppoldstr. 1<br>
+        86551 Aichach</p>
+        <p>Kontakt:<br>
+        E-Mail: g.heldt@web.de</p>
+        <button id="back-impressum-btn" class="button">Zurück</button>
+      </div>
+    </div>
   `;
 }

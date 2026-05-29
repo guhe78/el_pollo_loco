@@ -78,6 +78,17 @@ class WorldStateController {
   }
 
   /**
+   * Opens impressum overlay and stores return state.
+   */
+  showImpressum() {
+    const w = this.world;
+    if (w.gameState === "paused" || w.gameState === "startMenu") {
+      w.menuReturnState = w.gameState;
+    }
+    this.setGameState("impressum");
+  }
+
+  /**
    * Closes current overlay and returns to previous menu state.
    */
   closeOverlayMenu() {

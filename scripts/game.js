@@ -51,7 +51,17 @@ document.addEventListener("click", async (event) => {
     return;
   }
 
+  if (target.id === "impressum-btn") {
+    world.showImpressum();
+    return;
+  }
+
   if (target.id === "back-btn") {
+    world.closeOverlayMenu();
+    return;
+  }
+
+  if (target.id === "back-impressum-btn") {
     world.closeOverlayMenu();
     return;
   }

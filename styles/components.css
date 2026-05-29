@@ -44,8 +44,15 @@
 
 .small-buttons-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  gap: 12px;
+  gap: 36px;
+}
+
+.settings-howto {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
 }
 
 /* =========================================================

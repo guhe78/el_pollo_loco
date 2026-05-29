@@ -17,6 +17,8 @@
   --color-primary: blue;
   --color-secondary: lightblue;
   --color-accent: #3ec5ff;
+  --color-font: rgb(177, 177, 255);
+  --color-font-border: #0f0f0f;
 
   --overlay-dark: rgba(0, 0, 0, 0.65);
   --overlay-rotate: rgba(0, 0, 0, 0.85);
@@ -42,7 +44,7 @@ body {
 
 body {
   font-family: "LuckiestGuy-Regular";
-  color: var(--color-accent);
+  font-size: 20px;
 
   display: flex;
   flex-direction: column;
@@ -87,6 +89,5 @@ h3 {
 }
 
 .text-kontur {
-  color: blue;
-  -webkit-text-stroke: 1px lightskyblue;
+  -webkit-text-stroke: 1px var(--color-font-border);
 }

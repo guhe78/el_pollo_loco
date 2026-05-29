@@ -6,4 +6,5 @@ const states = {
   victory: victoryMenuTemplate,
   howto: howToMenuTemplate,
   settings: settingsMenuTemplate,
+  impressum: impressumMenuTemplate,
 };

@@ -238,6 +238,13 @@ class World {
   }
 
   /**
+   * Opens impressum overlay and stores return state.
+   */
+  showImpressum() {
+    this.stateController.showImpressum();
+  }
+
+  /**
    * Closes current overlay and returns to previous menu state.
    */
   closeOverlayMenu() {
