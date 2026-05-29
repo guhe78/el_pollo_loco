@@ -40,6 +40,9 @@ class CharacterCombatController {
   startSlapAttack(attack) {
     const c = this.character;
     c.isAttacking = true;
+    c.currentAnimation = c.IMAGES_ATTACK;
+    c.currentImage = 0;
+    c.image = c.imageCache[c.IMAGES_ATTACK[0]];
     c.lastSlapStartedAt = attack.startedAt;
     c.slapImpactReadyAt = c.lastSlapStartedAt + c.slapImpactDelayMs;
     c.position_x += attack.delta;

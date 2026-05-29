@@ -49,9 +49,6 @@ class WorldStateController {
    */
   victory() {
     const w = this.world;
-    w.character.isAttacking = false;
-    w.character.isThrowing = false;
-    w.character.setAnimation(w.character.IMAGES_IDLE);
     this.setGameState("victoryTransition");
     setTimeout(() => {
       this.setGameState("victory");
