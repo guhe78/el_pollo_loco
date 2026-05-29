@@ -8,14 +8,7 @@ class Section {
    * @param {*} collectibles
    * @param {*} endboss
    */
-  constructor(
-    startX,
-    length,
-    backgrounds,
-    enemies = [],
-    collectibles = [],
-    endboss = null,
-  ) {
+  constructor(startX, length, backgrounds, enemies = [], collectibles = [], endboss = null) {
     this.startX = startX;
     this.length = length;
     this.endX = startX + length;

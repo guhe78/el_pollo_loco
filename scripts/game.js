@@ -110,8 +110,7 @@ function bindClick(buttonId, handler) {
  */
 function handleDisplayToggle() {
   if (!isMobileDevice()) {
-    const nextMode =
-      getDisplayMode() === "fullscreen" ? "standard" : "fullscreen";
+    const nextMode = getDisplayMode() === "fullscreen" ? "standard" : "fullscreen";
     setDisplayMode(nextMode);
     if (world.menuReturnState === "paused") {
       applyDisplayMode();
@@ -162,10 +161,7 @@ function applyDisplayMode() {
   const mode = getDisplayMode();
 
   document.body.classList.toggle("is-mobile", isMobile);
-  document.body.classList.toggle(
-    "mode-fullscreen",
-    isMobile || mode === "fullscreen",
-  );
+  document.body.classList.toggle("mode-fullscreen", isMobile || mode === "fullscreen");
 }
 
 /**

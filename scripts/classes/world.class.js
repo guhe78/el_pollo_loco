@@ -14,9 +14,7 @@ class World {
   menuReturnState = "startMenu";
   soundEnabled = true;
   splashSound = new Audio("assets/audio/splash.mp3");
-  backgroundMusic = new Audio(
-    "assets/music/moodmode-game-8-bit-on-short-278081.mp3",
-  );
+  backgroundMusic = new Audio("assets/music/moodmode-game-8-bit-on-short-278081.mp3");
   renderController;
   collisionController;
   endbossIntroController;
@@ -178,12 +176,9 @@ class World {
     const sections = this.level.sections;
     const previousSection = this.currentSection;
     const lastSection = sections[sections.length - 1];
-    const sectionAtX = sections.find(
-      (section) => x >= section.startX && x < section.endX,
-    );
+    const sectionAtX = sections.find((section) => x >= section.startX && x < section.endX);
 
-    this.currentSection =
-      x >= lastSection.startX ? lastSection : sectionAtX || this.currentSection;
+    this.currentSection = x >= lastSection.startX ? lastSection : sectionAtX || this.currentSection;
 
     if (
       previousSection !== this.currentSection &&

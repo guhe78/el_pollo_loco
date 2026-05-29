@@ -27,13 +27,7 @@ class EndbossLifeBar extends LifeBar {
     ctx.translate(centerX, centerY);
     ctx.scale(-1, 1);
     ctx.filter = "hue-rotate(140deg) saturate(1.35) brightness(1.05)";
-    ctx.drawImage(
-      this.image,
-      -this.width / 2,
-      -this.height / 2,
-      this.width,
-      this.height,
-    );
+    ctx.drawImage(this.image, -this.width / 2, -this.height / 2, this.width, this.height);
     ctx.filter = "none";
     ctx.restore();
   }

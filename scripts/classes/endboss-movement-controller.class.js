@@ -12,10 +12,8 @@ class EndbossMovementController {
    */
   updateMovementState() {
     if (this.shouldSkipMovement()) return;
-    if (this.endboss.movementState === "floating")
-      return this.handleFloatingMovement();
-    if (this.endboss.movementState === "attacking")
-      return this.handleAttackMovement();
+    if (this.endboss.movementState === "floating") return this.handleFloatingMovement();
+    if (this.endboss.movementState === "attacking") return this.handleAttackMovement();
     if (this.endboss.movementState === "returning") this.handleReturnMovement();
   }
 

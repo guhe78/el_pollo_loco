@@ -61,13 +61,9 @@ class MovableObject extends DrawableObject {
       this.position_y + this.height - this.offset.bottom >
         movableObject.position_y + movableObject.offset.top &&
       this.position_x + this.offset.left <
-        movableObject.position_x +
-          movableObject.width -
-          movableObject.offset.right &&
+        movableObject.position_x + movableObject.width - movableObject.offset.right &&
       this.position_y + this.offset.top <
-        movableObject.position_y +
-          movableObject.height -
-          movableObject.offset.bottom
+        movableObject.position_y + movableObject.height - movableObject.offset.bottom
     );
   }
 
@@ -150,8 +146,7 @@ class MovableObject extends DrawableObject {
    */
   shouldBeRemoved() {
     return (
-      this.removeStartedAt !== null &&
-      Date.now() - this.removeStartedAt >= this.removeDuration
+      this.removeStartedAt !== null && Date.now() - this.removeStartedAt >= this.removeDuration
     );
   }
 }

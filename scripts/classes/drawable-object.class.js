@@ -48,13 +48,7 @@ class DrawableObject {
    * @param {*} ctx
    */
   draw(ctx) {
-    ctx.drawImage(
-      this.image,
-      this.position_x,
-      this.position_y,
-      this.width,
-      this.height,
-    );
+    ctx.drawImage(this.image, this.position_x, this.position_y, this.width, this.height);
   }
 
   /**
@@ -62,21 +56,11 @@ class DrawableObject {
    * @param {*} ctx
    */
   drawFrame(ctx) {
-    if (
-      this instanceof Character ||
-      this instanceof Enemy ||
-      this instanceof Endboss
-    ) {
+    if (this instanceof Character || this instanceof Enemy || this instanceof Endboss) {
       ctx.beginPath();
       ctx.lineWidth = "5";
       ctx.strokeStyle = "blue";
-      ctx.roundRect(
-        this.position_x,
-        this.position_y,
-        this.width,
-        this.height,
-        [100],
-      );
+      ctx.roundRect(this.position_x, this.position_y, this.width, this.height, [100]);
     }
   }
 }

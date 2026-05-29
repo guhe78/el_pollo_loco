@@ -99,8 +99,7 @@ class PufferFish extends Enemy {
    */
   moveAround() {
     setInterval(() => {
-      if (!this.world || this.world.gameState !== "running" || this.isStunned)
-        return;
+      if (!this.world || this.world.gameState !== "running" || this.isStunned) return;
 
       this.angle += this.angularSpeed;
       this.position_x = this.centerX + Math.cos(this.angle) * this.radiusX;

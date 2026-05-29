@@ -129,8 +129,7 @@ function settingsMenuTemplate() {
   const soundEnabled = localStorage.getItem("soundEnabled") !== "false";
   const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
-  const displayLabel =
-    mode === "fullscreen" ? "Bildgröße: Vollbild" : "Bildgröße: Standard";
+  const displayLabel = mode === "fullscreen" ? "Bildgröße: Vollbild" : "Bildgröße: Standard";
   const displayButtons = isMobile
     ? "<p>Auf Mobilgeräten ist Vollbild immer aktiv.</p>"
     : `<button id="display-toggle-btn" class="button">${displayLabel}</button>`;

@@ -46,12 +46,8 @@ class WorldEndbossIntroController {
     const capAtZero = (value) => Math.round(Math.min(0, value));
     const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
-    const levelMinCameraX = capAtZero(
-      -world.level.levelEndX + world.canvas.width,
-    );
-    const sectionMinCameraX = capAtZero(
-      -world.currentSection.endX + world.canvas.width,
-    );
+    const levelMinCameraX = capAtZero(-world.level.levelEndX + world.canvas.width);
+    const sectionMinCameraX = capAtZero(-world.currentSection.endX + world.canvas.width);
     const sectionMaxCameraX = capAtZero(-world.currentSection.startX);
     const rawEndbossCameraX = capAtZero(
       -endboss.position_x + world.canvas.width / 2 - endboss.width / 2,
@@ -62,11 +58,7 @@ class WorldEndbossIntroController {
 
     return {
       endbossCameraX: Math.max(levelMinCameraX, rawEndbossCameraX),
-      characterCameraX: clamp(
-        rawCharacterCameraX,
-        sectionMinCameraX,
-        sectionMaxCameraX,
-      ),
+      characterCameraX: clamp(rawCharacterCameraX, sectionMinCameraX, sectionMaxCameraX),
     };
   }
 
@@ -91,10 +83,7 @@ class WorldEndbossIntroController {
    * @param {*} index
    */
   setEndbossIntroFrame(endboss, index) {
-    const frameIndex = Math.max(
-      0,
-      Math.min(index, endboss.IMAGES_INTRO.length - 1),
-    );
+    const frameIndex = Math.max(0, Math.min(index, endboss.IMAGES_INTRO.length - 1));
     endboss.currentImage = frameIndex;
     endboss.image = endboss.imageCache[endboss.IMAGES_INTRO[frameIndex]];
   }
@@ -152,11 +141,9 @@ class WorldEndbossIntroController {
    * @param {*} introDiveY
    */
   updateEndbossDiveFrame(endboss, introDiveY) {
-    const fallProgress =
-      (endboss.position_y + endboss.height) / (introDiveY + endboss.height);
+    const fallProgress = (endboss.position_y + endboss.height) / (introDiveY + endboss.height);
     const introFrameIndex = Math.floor(
-      Math.max(0, Math.min(1, fallProgress)) *
-        (endboss.IMAGES_INTRO.length - 1),
+      Math.max(0, Math.min(1, fallProgress)) * (endboss.IMAGES_INTRO.length - 1),
     );
     this.setEndbossIntroFrame(endboss, introFrameIndex);
   }

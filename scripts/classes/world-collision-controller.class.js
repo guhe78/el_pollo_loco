@@ -18,9 +18,7 @@ class WorldCollisionController {
     });
 
     this.handleEndbossCollision();
-    w.currentSection.enemies = w.currentSection.enemies.filter(
-      (enemy) => !enemy.shouldBeRemoved(),
-    );
+    w.currentSection.enemies = w.currentSection.enemies.filter((enemy) => !enemy.shouldBeRemoved());
   }
 
   /**
@@ -80,11 +78,7 @@ class WorldCollisionController {
    */
   handleEnemySlapKill(enemy) {
     const w = this.world;
-    if (
-      enemy.isPendingSlapKill ||
-      enemy.isDead() ||
-      enemy.removeStartedAt !== null
-    ) {
+    if (enemy.isPendingSlapKill || enemy.isDead() || enemy.removeStartedAt !== null) {
       return;
     }
 
@@ -129,9 +123,7 @@ class WorldCollisionController {
    */
   resetPendingSlapHitAfterAttack(endboss) {
     const w = this.world;
-    const attackDuration = w.character.calculateAnimationDuration(
-      w.character.IMAGES_ATTACK,
-    );
+    const attackDuration = w.character.calculateAnimationDuration(w.character.IMAGES_ATTACK);
     setTimeout(() => {
       endboss.isPendingSlapHit = false;
     }, attackDuration);
@@ -165,9 +157,7 @@ class WorldCollisionController {
       }
     });
 
-    w.throwableObjects = w.throwableObjects.filter(
-      (object) => !object.shouldBeRemoved(),
-    );
+    w.throwableObjects = w.throwableObjects.filter((object) => !object.shouldBeRemoved());
   }
 
   /**
@@ -226,12 +216,11 @@ class WorldCollisionController {
    */
   checkCollectItems() {
     const world = this.world;
-    world.currentSection.collectibles.forEach((item) =>
-      this.handleCollectiblePickup(item),
-    );
+    world.currentSection.collectibles.forEach((item) => this.handleCollectiblePickup(item));
 
-    world.currentSection.collectibles =
-      world.currentSection.collectibles.filter((item) => !item.isCollected);
+    world.currentSection.collectibles = world.currentSection.collectibles.filter(
+      (item) => !item.isCollected,
+    );
   }
 
   /**

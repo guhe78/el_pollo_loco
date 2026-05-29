@@ -37,17 +37,13 @@ class WorldRenderController {
     const w = this.world;
     w.level.sections.forEach((section) => {
       this.drawArrayToMap(
-        section.backgrounds.filter(
-          (background) => !(background instanceof Barrier),
-        ),
+        section.backgrounds.filter((background) => !(background instanceof Barrier)),
       );
     });
 
     w.level.sections.forEach((section) => {
       this.drawArrayToMap(
-        section.backgrounds.filter(
-          (background) => background instanceof Barrier,
-        ),
+        section.backgrounds.filter((background) => background instanceof Barrier),
       );
     });
   }

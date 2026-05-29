@@ -29,11 +29,7 @@ const separatorPath = "assets/img/Background/Barrier/3.png";
  * @returns {*} Result value.
  */
 function createLevel() {
-  return new Level([
-    createFirstSection(),
-    createSecondSection(),
-    createEndbossSection(),
-  ]);
+  return new Level([createFirstSection(), createSecondSection(), createEndbossSection()]);
 }
 
 /**
@@ -52,11 +48,7 @@ function createFirstSection() {
   return new Section(
     sectionOneStartX,
     sectionOneLength,
-    createSectionBackgrounds(
-      sectionOneLength,
-      sectionOneStartX,
-      backgroundsLightSection,
-    ),
+    createSectionBackgrounds(sectionOneLength, sectionOneStartX, backgroundsLightSection),
     createEnemies("puffer", 10, sectionOneStartX, sectionOneLength),
     createCollectibles("coins", 5, sectionOneStartX, sectionOneLength),
   );
@@ -70,11 +62,7 @@ function createSecondSection() {
   return new Section(
     sectionTwoStartX,
     sectionTwoLength,
-    createSectionBackgrounds(
-      sectionTwoLength,
-      sectionTwoStartX,
-      backgroundsDarkSection,
-    ),
+    createSectionBackgrounds(sectionTwoLength, sectionTwoStartX, backgroundsDarkSection),
     createEnemies("jelly", 10, sectionTwoStartX, sectionTwoLength),
     createCollectibles("poison", 5, sectionTwoStartX, sectionTwoLength),
   );
@@ -88,11 +76,7 @@ function createEndbossSection() {
   return new Section(
     endbossSectionStartX,
     endbossSectionLength,
-    createBackgrounds(
-      endbossSectionLength,
-      endbossSectionStartX,
-      backgroundsDarkSection,
-    ),
+    createBackgrounds(endbossSectionLength, endbossSectionStartX, backgroundsDarkSection),
     [],
     [],
     createEndboss(),
@@ -137,9 +121,7 @@ function createBackgrounds(sectionLength, startX, backgroundsArray) {
   for (let i = 0; i < tileCount; i++) {
     const tileX = startX + i * bgTileWidth;
     const tileWidth = getBackgroundTileWidth(sectionLength, i);
-    backgrounds.push(
-      ...createBackgroundTile(backgroundsArray, tileX, tileWidth),
-    );
+    backgrounds.push(...createBackgroundTile(backgroundsArray, tileX, tileWidth));
   }
 
   return backgrounds;

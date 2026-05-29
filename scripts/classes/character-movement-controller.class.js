@@ -103,9 +103,7 @@ class CharacterMovementController {
    */
   isEndbossFightActive() {
     const c = this.character;
-    return Boolean(
-      c.world?.currentSection?.endboss && c.world.endbossIntroDone,
-    );
+    return Boolean(c.world?.currentSection?.endboss && c.world.endbossIntroDone);
   }
 
   /**
@@ -114,8 +112,7 @@ class CharacterMovementController {
    */
   getHorizontalBounds() {
     const c = this.character;
-    const defaultMaxX =
-      c.world.level.levelEndX + c.cameraOffsetX - c.world.canvas.width;
+    const defaultMaxX = c.world.level.levelEndX + c.cameraOffsetX - c.world.canvas.width;
 
     if (!this.isEndbossFightActive()) {
       return { minX: 0, maxX: defaultMaxX };
@@ -132,9 +129,7 @@ class CharacterMovementController {
    */
   updateCameraPosition() {
     const c = this.character;
-    const targetCamera = Math.round(
-      Math.min(0, -c.position_x + c.cameraOffsetX),
-    );
+    const targetCamera = Math.round(Math.min(0, -c.position_x + c.cameraOffsetX));
     c.world.camera_x = targetCamera;
 
     if (this.isEndbossFightActive()) {
@@ -150,15 +145,10 @@ class CharacterMovementController {
     const section = c.world.currentSection;
     if (!section) return;
 
-    const minCameraX = Math.round(
-      Math.min(0, -section.endX + c.world.canvas.width),
-    );
+    const minCameraX = Math.round(Math.min(0, -section.endX + c.world.canvas.width));
     const maxCameraX = Math.round(Math.min(0, -section.startX));
 
-    c.world.camera_x = Math.max(
-      minCameraX,
-      Math.min(maxCameraX, c.world.camera_x),
-    );
+    c.world.camera_x = Math.max(minCameraX, Math.min(maxCameraX, c.world.camera_x));
   }
 
   /**

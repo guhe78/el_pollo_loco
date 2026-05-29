@@ -13,9 +13,6 @@ class Level {
    * @returns {*} Result value.
    */
   calculateLevelEndX() {
-    return this.sections.reduce(
-      (maxEndX, section) => Math.max(maxEndX, section.endX),
-      0,
-    );
+    return this.sections.reduce((maxEndX, section) => Math.max(maxEndX, section.endX), 0);
   }
 }
