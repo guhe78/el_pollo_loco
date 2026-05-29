@@ -120,8 +120,16 @@ class Endboss extends Enemy {
    * Starts the continuous movement update loop.
    */
   moveUpAndDown() {
-    setInterval(() => {
+    this.interval = setInterval(() => {
       this.movementController.updateMovementState();
     }, 1000 / 60);
+  }
+
+  /**
+   * Stops endboss animation and movement intervals.
+   */
+  stop() {
+    clearInterval(this.animationInterval);
+    clearInterval(this.interval);
   }
 }

@@ -128,6 +128,9 @@ class World {
     this.isEndbossIntroActive = false;
     this.endbossIntroDone = false;
     this.character.stop();
+    this.level?.sections?.forEach((section) => {
+      section.endboss?.stop();
+    });
     this.camera_x = 0;
     this.level = createLevel();
     this.character = new Character();
