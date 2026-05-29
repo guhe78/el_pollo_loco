@@ -52,7 +52,7 @@ class WorldStateController {
     this.setGameState("victoryTransition");
     setTimeout(() => {
       this.setGameState("victory");
-    }, 3000);
+    }, 5000);
   }
 
   /**
@@ -173,7 +173,7 @@ class WorldStateController {
    * @returns {*} Result value.
    */
   shouldHideOverlay(state) {
-    return state === "running" || state === "victoryTransition";
+    return state === "running";
   }
 
   /**

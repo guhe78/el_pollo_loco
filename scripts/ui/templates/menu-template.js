@@ -77,6 +77,22 @@ function victoryMenuTemplate() {
 }
 
 /**
+ * Returns HTML template for the short victory transition image.
+ * @returns {*} Result value.
+ */
+function victoryTransitionTemplate() {
+  return `
+    <div id="victory-transition-overlay" class="overlay victory-transition-overlay">
+      <img
+        src="assets/img/Botones/Tittles/You win/Mesa de trabajo 1.png"
+        alt="Victory"
+        class="victory-transition-image"
+      />
+    </div>
+  `;
+}
+
+/**
  * Returns HTML snippet for settings and help shortcut buttons.
  * @returns {*} Result value.
  */

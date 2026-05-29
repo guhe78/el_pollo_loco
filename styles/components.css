@@ -175,6 +175,28 @@
   font-size: 20px;
 }
 
+.victory-transition-overlay {
+  pointer-events: none;
+}
+
+.victory-transition-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: victoryTransitionIn 280ms ease-out;
+}
+
+@keyframes victoryTransitionIn {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* =========================================================
    How-To Menu Scrollbar
 ========================================================= */
