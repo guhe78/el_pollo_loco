@@ -78,7 +78,6 @@
   border-radius: 50%;
 
   padding: 0;
-  line-height: 1;
   text-align: center;
 
   background: rgba(0, 0, 180, 0.5);
@@ -109,15 +108,16 @@
     box-shadow: 0 0 0 2px rgba(173, 216, 230, 0.35);
   }
 
-  #mobile-up-btn,
-  #mobile-down-btn {
-    padding-top: 3px;
+  #mobile-throw-btn,
+  #mobile-slap-btn {
+    padding-top: 6px;
   }
 
-  #mobile-throw-btn,
-  #mobile-slap-btn,
-  #mobile-pause-btn {
-    padding-top: 3px;
+  #mobile-up-btn,
+  #mobile-down-btn,
+  #mobile-left-btn,
+  #mobile-right-btn {
+    padding: 0;
   }
 
   .mobile-btn-pause {
