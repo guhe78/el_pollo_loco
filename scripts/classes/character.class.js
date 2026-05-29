@@ -93,6 +93,8 @@ class Character extends MovableObject {
   slapImpactReadyAt = 0;
   lastSlapSoundEndsAt = 0;
   slapSoundFallbackDurationMs = 450;
+  slapInputLocked = false;
+  throwInputLocked = false;
   highscore = 0;
   movementController;
   combatController;
@@ -178,13 +180,29 @@ class Character extends MovableObject {
    * Handles slap and bubble attack inputs.
    */
   handleCombatActions() {
-    if (this.world.keyboard.SPACE && this.canMove()) {
-      this.combatController.applySlapAttack();
-      this.world.keyboard.SPACE = false;
+    const isSpaceDown = this.world.keyboard.SPACE;
+    if (!isSpaceDown) {
+      this.slapInputLocked = false;
     }
 
-    if (this.world.keyboard.THROW && !this.isThrowing && this.canMove()) {
+    if (isSpaceDown && !this.slapInputLocked && this.canMove()) {
+      this.combatController.applySlapAttack();
+      this.slapInputLocked = true;
+    }
+
+    const isThrowDown = this.world.keyboard.THROW;
+    if (!isThrowDown) {
+      this.throwInputLocked = false;
+    }
+
+    if (
+      isThrowDown &&
+      !this.throwInputLocked &&
+      !this.isThrowing &&
+      this.canMove()
+    ) {
       this.combatController.applyBubbleAttack();
+      this.throwInputLocked = true;
     }
   }
 
@@ -202,6 +220,24 @@ class Character extends MovableObject {
    */
   changeAnimation(isMoving) {
     this.setCurrentAnimation(isMoving);
+  }
+
+  /**
+   * Plays one-shot slap frames without looping.
+   * @param {*} images
+   */
+  playAnimation(images) {
+    if (images === this.IMAGES_ATTACK) {
+      const i = Math.min(this.currentImage, images.length - 1);
+      const path = images[i];
+      this.image = this.imageCache[path];
+      if (this.currentImage < images.length - 1) {
+        this.currentImage++;
+      }
+      return;
+    }
+
+    super.playAnimation(images);
   }
 
   /**
