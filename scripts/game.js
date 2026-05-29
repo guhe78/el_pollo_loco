@@ -4,6 +4,15 @@ const soundEnabledKey = "soundEnabled";
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let menuClickHandler;
+const KEY_BINDINGS = {
+  Space: "SPACE",
+  ArrowLeft: "LEFT",
+  ArrowRight: "RIGHT",
+  ArrowUp: "UP",
+  ArrowDown: "DOWN",
+  KeyD: "THROW",
+};
 
 /**
  * Initializes canvas, world and control systems.
@@ -21,88 +30,89 @@ function loadCanvas() {
  * Wires keyboard events to the keyboard state and world activity registration.
  * Also toggles pause on Escape key.
  */
-document.addEventListener("keydown", (event) => {
-  world?.character?.registerActivity();
-
-  if (event.code === "Space") {
-    keyboard.SPACE = true;
-  }
-  if (event.code === "ArrowLeft") {
-    keyboard.LEFT = true;
-  }
-  if (event.code === "ArrowRight") {
-    keyboard.RIGHT = true;
-  }
-  if (event.code === "ArrowUp") {
-    keyboard.UP = true;
-  }
-  if (event.code === "ArrowDown") {
-    keyboard.DOWN = true;
-  }
-  if (event.code === "KeyD") {
-    keyboard.THROW = true;
-  }
-  if (event.code === "Escape") {
-    world.togglePause();
-  }
-});
+document.addEventListener("keydown", handleKeydown);
 
 /**
  * Wires keyboard key releases to the keyboard state.
  * Also prevents default behavior for the keys used in the game to avoid unwanted scrolling, etc.
  */
-document.addEventListener("keyup", (event) => {
-  if (event.code === "Space") {
-    keyboard.SPACE = false;
+document.addEventListener("keyup", handleKeyup);
+
+/**
+ * Handles keydown updates for keyboard state and pause toggle.
+ * @param {*} event
+ */
+function handleKeydown(event) {
+  world?.character?.registerActivity();
+
+  if (event.code === "Escape") {
+    world.togglePause();
+    return;
   }
-  if (event.code === "ArrowLeft") {
-    keyboard.LEFT = false;
-  }
-  if (event.code === "ArrowRight") {
-    keyboard.RIGHT = false;
-  }
-  if (event.code === "ArrowUp") {
-    keyboard.UP = false;
-  }
-  if (event.code === "ArrowDown") {
-    keyboard.DOWN = false;
-  }
-  if (event.code === "KeyD") {
-    keyboard.THROW = false;
-  }
-});
+
+  updateKeyboardFromEvent(event.code, true);
+}
+
+/**
+ * Handles keyup updates for keyboard state.
+ * @param {*} event
+ */
+function handleKeyup(event) {
+  updateKeyboardFromEvent(event.code, false);
+}
+
+/**
+ * Maps browser key codes to game keyboard flags.
+ * @param {*} code
+ * @param {*} isPressed
+ */
+function updateKeyboardFromEvent(code, isPressed) {
+  const keyName = KEY_BINDINGS[code];
+  if (!keyName) return;
+  keyboard[keyName] = isPressed;
+}
 
 /**
  * Wires menu buttons to their actions.
  */
 function setupMenuControls() {
-  bindClick("settings-btn", () => world.showSettings());
-  bindClick("start-btn", () => {
-    applyDisplayMode();
-    world.startGame();
-  });
-  bindClick("resume-btn", () => world.startGame());
-  bindClick("restart-btn", () => world.restartGame());
-  bindClick("mainmenu-btn", () => world.abortGameToMenu());
-  bindClick("howto-btn", () => world.showHowTo());
-  bindClick("impressum-btn", () => world.showImpressum());
-  bindClick("back-btn", () => world.closeOverlayMenu());
-  bindClick("back-impressum-btn", () => world.closeOverlayMenu());
-  bindClick("display-toggle-btn", handleDisplayToggle);
-  bindClick("sound-toggle-btn", handleSoundToggle);
-  bindClick("back-settings-btn", () => world.closeOverlayMenu());
-}
+  const overlay = document.getElementById("game-overlay");
+  if (!overlay) return;
 
-/**
- * Binds a click handler to a button if it exists.
- * @param {*} buttonId
- * @param {*} handler
- */
-function bindClick(buttonId, handler) {
-  const button = document.getElementById(buttonId);
-  if (!button) return;
+  if (menuClickHandler) {
+    overlay.removeEventListener("click", menuClickHandler);
+  }
 
-  button.addEventListener("click", handler);
+  menuClickHandler = (event) => {
+    const button = event.target.closest("button[id]");
+    if (!button || !overlay.contains(button)) return;
+
+    const actions = {
+      "settings-btn": () => world.showSettings(),
+      "start-btn": () => {
+        applyDisplayMode();
+        world.startGame();
+      },
+      "resume-btn": () => world.startGame(),
+      "restart-btn": () => world.restartGame(),
+      "mainmenu-btn": () => world.abortGameToMenu(),
+      "howto-btn": () => world.showHowTo(),
+      "impressum-btn": () => world.showImpressum(),
+      "back-btn": () => world.closeOverlayMenu(),
+      "back-impressum-btn": () => world.closeOverlayMenu(),
+      "display-toggle-btn": handleDisplayToggle,
+      "sound-toggle-btn": handleSoundToggle,
+      "back-settings-btn": () => world.closeOverlayMenu(),
+    };
+
+    const action = actions[button.id];
+    if (!action) return;
+
+    event.preventDefault();
+    action();
+  };
+
+  overlay.addEventListener("click", menuClickHandler);
 }
 
 /**
@@ -112,9 +122,7 @@ function handleDisplayToggle() {
   if (!isMobileDevice()) {
     const nextMode = getDisplayMode() === "fullscreen" ? "standard" : "fullscreen";
     setDisplayMode(nextMode);
-    if (world.menuReturnState === "paused") {
-      applyDisplayMode();
-    }
+    applyDisplayMode();
   }
 
   world.setGameState("settings");

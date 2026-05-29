@@ -8,7 +8,7 @@
   justify-content: center;
 
   width: min(100%, 200px);
-  height: 56px;
+  height: 36px;
 
   padding-top: 8px;
   padding-inline: 12px;
@@ -18,10 +18,10 @@
   box-sizing: border-box;
 
   font-family: "LuckiestGuy-Regular";
-  font-size: 20px;
+  font-size: 18px;
 
   background-color: var(--color-primary);
-  color: var(--color-secondary);
+  color: white;
 }
 
 .menu .button:hover,
@@ -35,18 +35,27 @@
   width: 50px;
   height: 50px;
 
-  padding-top: 1px;
+  padding-top: 3px;
 
   border-radius: 50%;
-
-  text-indent: 2px;
 }
 
 .small-buttons-container {
   display: flex;
   flex-direction: column;
+  width: min(100%, 200px);
+  align-items: center;
   justify-content: center;
   gap: 36px;
+}
+
+.impressum-btn {
+  width: 100%;
+}
+
+#display-toggle-btn,
+#sound-toggle-btn {
+  width: 100%;
 }
 
 .settings-howto {
@@ -182,6 +191,19 @@
 
 .ingame-menu .button {
   font-size: 20px;
+}
+
+.settings-option {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 200px);
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-option-label {
+  font-size: 22px;
+  line-height: 1;
 }
 
 .victory-transition-overlay {

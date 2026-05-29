@@ -26,7 +26,7 @@ class ThrowableObject extends MovableObject {
     this.position_x = position_x;
     this.position_y = position_y;
     this.direction = direction;
-    this.speedX = 40 * direction;
+    this.speedX = 28 * direction;
     this.otherDirection = direction < 0;
     this.removeDuration = 0;
 

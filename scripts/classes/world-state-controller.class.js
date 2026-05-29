@@ -13,6 +13,7 @@ class WorldStateController {
   startGame() {
     const w = this.world;
     this.setGameState("running");
+    this.setSoundEnabled(w.soundEnabled);
     w.overlayManager.hide();
   }
 
@@ -25,6 +26,7 @@ class WorldStateController {
       this.setGameState("paused");
     } else if (w.gameState === "paused") {
       this.setGameState("running");
+      this.setSoundEnabled(w.soundEnabled);
     }
   }
 

@@ -129,17 +129,26 @@ function settingsMenuTemplate() {
   const soundEnabled = localStorage.getItem("soundEnabled") !== "false";
   const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
-  const displayLabel = mode === "fullscreen" ? "Bildgröße: Vollbild" : "Bildgröße: Standard";
-  const displayButtons = isMobile
-    ? "<p>Auf Mobilgeräten ist Vollbild immer aktiv.</p>"
-    : `<button id="display-toggle-btn" class="button">${displayLabel}</button>`;
-  const soundLabel = soundEnabled ? "Sound: AN" : "Sound: AUS";
+  const displayButtonLabel = mode === "fullscreen" ? "ist Vollbild" : "ist Standard";
+  const displayControl = isMobile
+    ? `<div class="settings-option">
+         <p class="settings-option-label text-kontur">Bildgröße</p>
+         <p>Auf Mobilgeräten ist Vollbild immer aktiv.</p>
+       </div>`
+    : `<div class="settings-option">
+         <p class="settings-option-label text-kontur">Bildgröße</p>
+         <button id="display-toggle-btn" class="button">${displayButtonLabel}</button>
+       </div>`;
+  const soundButtonLabel = soundEnabled ? "ist An" : "ist Aus";
 
   return `<div id="settings-overlay" class="overlay">    
           <div class="menu ingame-menu">      
             <h2 class="text-kontur">Einstellungen</h2>      
-              ${displayButtons}      
-              <button id="sound-toggle-btn" class="button">${soundLabel}</button>      
+              ${displayControl}      
+              <div class="settings-option">
+                <p class="settings-option-label text-kontur">Sound</p>
+                <button id="sound-toggle-btn" class="button">${soundButtonLabel}</button>
+              </div>
               <button id="back-settings-btn" class="button">Zurück</button>    
           </div>  
         </div> `;

@@ -17,7 +17,7 @@
   --color-primary: blue;
   --color-secondary: lightblue;
   --color-accent: #3ec5ff;
-  --color-font: rgb(177, 177, 255);
+  --color-font: white;
   --color-font-border: #0f0f0f;
 
   --overlay-dark: rgba(0, 0, 0, 0.65);
@@ -65,10 +65,7 @@ body::before {
   position: fixed;
   inset: -10px;
 
-  background: url("../assets/images/main_background.jpg");
-  background-size: cover;
-
-  filter: blur(4px);
+  background-color: lightblue;
   z-index: -1;
 }
 
