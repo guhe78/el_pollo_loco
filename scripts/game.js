@@ -94,6 +94,8 @@ document.addEventListener("click", async (event) => {
 });
 
 document.addEventListener("keydown", (event) => {
+  world?.character?.registerActivity();
+
   if (event.code === "Space") {
     keyboard.SPACE = true;
   }
@@ -233,6 +235,7 @@ function bindHoldControl(buttonId, keyName) {
   const press = (event) => {
     event.preventDefault();
     event.stopPropagation();
+    world?.character?.registerActivity();
     keyboard[keyName] = true;
   };
 

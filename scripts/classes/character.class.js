@@ -19,6 +19,21 @@ class Character extends MovableObject {
     "assets/img/Sharkie/1.IDLE/17.png",
     "assets/img/Sharkie/1.IDLE/18.png",
   ];
+  IMAGES_SLEEPING = [
+    "assets/img/Sharkie/2.Long_IDLE/I2.png",
+    "assets/img/Sharkie/2.Long_IDLE/I3.png",
+    "assets/img/Sharkie/2.Long_IDLE/I4.png",
+    "assets/img/Sharkie/2.Long_IDLE/I5.png",
+    "assets/img/Sharkie/2.Long_IDLE/I6.png",
+    "assets/img/Sharkie/2.Long_IDLE/I7.png",
+    "assets/img/Sharkie/2.Long_IDLE/I8.png",
+    "assets/img/Sharkie/2.Long_IDLE/I9.png",
+    "assets/img/Sharkie/2.Long_IDLE/I10.png",
+    "assets/img/Sharkie/2.Long_IDLE/I11.png",
+    "assets/img/Sharkie/2.Long_IDLE/I12.png",
+    "assets/img/Sharkie/2.Long_IDLE/I13.png",
+    "assets/img/Sharkie/2.Long_IDLE/I14.png",
+  ];
   IMAGES_SWIM = [
     "assets/img/Sharkie/3.Swim/1.png",
     "assets/img/Sharkie/3.Swim/2.png",
@@ -96,6 +111,8 @@ class Character extends MovableObject {
   slapInputLocked = false;
   throwInputLocked = false;
   highscore = 0;
+  sleepDelayMs = 10000;
+  lastActivityAt = Date.now();
   movementController;
   combatController;
 
@@ -130,6 +147,7 @@ class Character extends MovableObject {
    */
   loadCharacterImages() {
     this.loadImages(this.IMAGES_IDLE);
+    this.loadImages(this.IMAGES_SLEEPING);
     this.loadImages(this.IMAGES_SWIM);
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_BUBBLE);
@@ -155,6 +173,9 @@ class Character extends MovableObject {
 
     const bounds = this.movementController.getMovementBounds();
     const isMoving = this.movementController.handleMovement(bounds);
+    if (isMoving) {
+      this.registerActivity();
+    }
 
     this.handleCombatActions();
     this.movementController.updateSectionCamera();
@@ -237,6 +258,19 @@ class Character extends MovableObject {
       return;
     }
 
+    if (images === this.IMAGES_SLEEPING) {
+      const tailLength = Math.min(5, images.length);
+      const tailStart = images.length - tailLength;
+      const i =
+        this.currentImage < images.length
+          ? this.currentImage
+          : tailStart + ((this.currentImage - images.length) % tailLength);
+      const path = images[i];
+      this.image = this.imageCache[path];
+      this.currentImage++;
+      return;
+    }
+
     super.playAnimation(images);
   }
 
@@ -250,8 +284,33 @@ class Character extends MovableObject {
     if (this.isAttacking) return this.setAnimation(this.IMAGES_ATTACK);
     if (this.isThrowing) return this.setAnimation(this.IMAGES_BUBBLE);
     if (isMoving) return this.setAnimation(this.IMAGES_SWIM);
+    if (this.shouldSleep()) return this.setAnimation(this.IMAGES_SLEEPING);
 
     this.setAnimation(this.IMAGES_IDLE);
+  }
+
+  /**
+   * Stores activity timestamp to keep character awake.
+   */
+  registerActivity() {
+    this.lastActivityAt = Date.now();
+  }
+
+  /**
+   * Checks whether inactivity reached the sleep threshold.
+   * @returns {boolean} True when sleep animation should be used.
+   */
+  shouldSleep() {
+    return Date.now() - this.lastActivityAt >= this.sleepDelayMs;
+  }
+
+  /**
+   * Applies damage and wakes character if sleeping.
+   * @param {*} damagePoints
+   */
+  hit(damagePoints) {
+    this.registerActivity();
+    super.hit(damagePoints);
   }
 
   /**
