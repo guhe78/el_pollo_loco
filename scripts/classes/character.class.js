@@ -1,70 +1,70 @@
 class Character extends MovableObject {
   IMAGES_IDLE = [
-    "../../assets/img/Sharkie/1.IDLE/1.png",
-    "../../assets/img/Sharkie/1.IDLE/2.png",
-    "../../assets/img/Sharkie/1.IDLE/3.png",
-    "../../assets/img/Sharkie/1.IDLE/4.png",
-    "../../assets/img/Sharkie/1.IDLE/5.png",
-    "../../assets/img/Sharkie/1.IDLE/6.png",
-    "../../assets/img/Sharkie/1.IDLE/7.png",
-    "../../assets/img/Sharkie/1.IDLE/8.png",
-    "../../assets/img/Sharkie/1.IDLE/9.png",
-    "../../assets/img/Sharkie/1.IDLE/10.png",
-    "../../assets/img/Sharkie/1.IDLE/11.png",
-    "../../assets/img/Sharkie/1.IDLE/12.png",
-    "../../assets/img/Sharkie/1.IDLE/13.png",
-    "../../assets/img/Sharkie/1.IDLE/14.png",
-    "../../assets/img/Sharkie/1.IDLE/15.png",
-    "../../assets/img/Sharkie/1.IDLE/16.png",
-    "../../assets/img/Sharkie/1.IDLE/17.png",
-    "../../assets/img/Sharkie/1.IDLE/18.png",
+    "assets/img/Sharkie/1.IDLE/1.png",
+    "assets/img/Sharkie/1.IDLE/2.png",
+    "assets/img/Sharkie/1.IDLE/3.png",
+    "assets/img/Sharkie/1.IDLE/4.png",
+    "assets/img/Sharkie/1.IDLE/5.png",
+    "assets/img/Sharkie/1.IDLE/6.png",
+    "assets/img/Sharkie/1.IDLE/7.png",
+    "assets/img/Sharkie/1.IDLE/8.png",
+    "assets/img/Sharkie/1.IDLE/9.png",
+    "assets/img/Sharkie/1.IDLE/10.png",
+    "assets/img/Sharkie/1.IDLE/11.png",
+    "assets/img/Sharkie/1.IDLE/12.png",
+    "assets/img/Sharkie/1.IDLE/13.png",
+    "assets/img/Sharkie/1.IDLE/14.png",
+    "assets/img/Sharkie/1.IDLE/15.png",
+    "assets/img/Sharkie/1.IDLE/16.png",
+    "assets/img/Sharkie/1.IDLE/17.png",
+    "assets/img/Sharkie/1.IDLE/18.png",
   ];
   IMAGES_SWIM = [
-    "../../assets/img/Sharkie/3.Swim/1.png",
-    "../../assets/img/Sharkie/3.Swim/2.png",
-    "../../assets/img/Sharkie/3.Swim/3.png",
-    "../../assets/img/Sharkie/3.Swim/4.png",
-    "../../assets/img/Sharkie/3.Swim/5.png",
-    "../../assets/img/Sharkie/3.Swim/6.png",
+    "assets/img/Sharkie/3.Swim/1.png",
+    "assets/img/Sharkie/3.Swim/2.png",
+    "assets/img/Sharkie/3.Swim/3.png",
+    "assets/img/Sharkie/3.Swim/4.png",
+    "assets/img/Sharkie/3.Swim/5.png",
+    "assets/img/Sharkie/3.Swim/6.png",
   ];
   IMAGES_ATTACK = [
-    "../../assets/img/Sharkie/4.Attack/Fin slap/1.png",
-    "../../assets/img/Sharkie/4.Attack/Fin slap/2.png",
-    "../../assets/img/Sharkie/4.Attack/Fin slap/3.png",
-    "../../assets/img/Sharkie/4.Attack/Fin slap/4.png",
-    "../../assets/img/Sharkie/4.Attack/Fin slap/5.png",
-    "../../assets/img/Sharkie/4.Attack/Fin slap/6.png",
-    "../../assets/img/Sharkie/4.Attack/Fin slap/7.png",
-    "../../assets/img/Sharkie/4.Attack/Fin slap/8.png",
+    "assets/img/Sharkie/4.Attack/Fin slap/1.png",
+    "assets/img/Sharkie/4.Attack/Fin slap/2.png",
+    "assets/img/Sharkie/4.Attack/Fin slap/3.png",
+    "assets/img/Sharkie/4.Attack/Fin slap/4.png",
+    "assets/img/Sharkie/4.Attack/Fin slap/5.png",
+    "assets/img/Sharkie/4.Attack/Fin slap/6.png",
+    "assets/img/Sharkie/4.Attack/Fin slap/7.png",
+    "assets/img/Sharkie/4.Attack/Fin slap/8.png",
   ];
   IMAGES_BUBBLE = [
-    "../../assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png",
-    "../../assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png",
-    "../../assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png",
-    "../../assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png",
-    "../../assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png",
-    "../../assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png",
-    "../../assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png",
-    "../../assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png",
+    "assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png",
+    "assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png",
+    "assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png",
+    "assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png",
+    "assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png",
+    "assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png",
+    "assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png",
+    "assets/img/Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png",
   ];
   IMAGES_HURT_ELECTRO = [
-    "../../assets/img/Sharkie/5.Hurt/2.Electric shock/1.png",
-    "../../assets/img/Sharkie/5.Hurt/2.Electric shock/2.png",
-    "../../assets/img/Sharkie/5.Hurt/2.Electric shock/3.png",
+    "assets/img/Sharkie/5.Hurt/2.Electric shock/1.png",
+    "assets/img/Sharkie/5.Hurt/2.Electric shock/2.png",
+    "assets/img/Sharkie/5.Hurt/2.Electric shock/3.png",
   ];
   IMAGES_DEAD_ELECTRO = [
-    "../../assets/img/Sharkie/6.dead/2.Electro_shock/1.png",
-    "../../assets/img/Sharkie/6.dead/2.Electro_shock/2.png",
-    "../../assets/img/Sharkie/6.dead/2.Electro_shock/3.png",
-    "../../assets/img/Sharkie/6.dead/2.Electro_shock/4.png",
-    "../../assets/img/Sharkie/6.dead/2.Electro_shock/5.png",
-    "../../assets/img/Sharkie/6.dead/2.Electro_shock/6.png",
-    "../../assets/img/Sharkie/6.dead/2.Electro_shock/7.png",
-    "../../assets/img/Sharkie/6.dead/2.Electro_shock/8.png",
-    "../../assets/img/Sharkie/6.dead/2.Electro_shock/9.png",
-    "../../assets/img/Sharkie/6.dead/2.Electro_shock/10.png",
+    "assets/img/Sharkie/6.dead/2.Electro_shock/1.png",
+    "assets/img/Sharkie/6.dead/2.Electro_shock/2.png",
+    "assets/img/Sharkie/6.dead/2.Electro_shock/3.png",
+    "assets/img/Sharkie/6.dead/2.Electro_shock/4.png",
+    "assets/img/Sharkie/6.dead/2.Electro_shock/5.png",
+    "assets/img/Sharkie/6.dead/2.Electro_shock/6.png",
+    "assets/img/Sharkie/6.dead/2.Electro_shock/7.png",
+    "assets/img/Sharkie/6.dead/2.Electro_shock/8.png",
+    "assets/img/Sharkie/6.dead/2.Electro_shock/9.png",
+    "assets/img/Sharkie/6.dead/2.Electro_shock/10.png",
   ];
-  path = "../../assets/img/Sharkie/1.IDLE/1.png";
+  path = "assets/img/Sharkie/1.IDLE/1.png";
   position_x = 50;
   position_y = 150;
   width;
@@ -83,11 +83,11 @@ class Character extends MovableObject {
   cameraOffsetY = 100;
   edgeReachBottom = 45;
   edgeReachTop = 100;
-  blubSound = new Audio("../../assets/audio/blubb.mp3");
-  slapSound = new Audio("../../assets/audio/slap.mp3");
-  auaSound = new Audio("../../assets/audio/aua.mp3");
-  blingSound = new Audio("../../assets/audio/bling.mp3");
-  hitSound = new Audio("../../assets/audio/hit.mp3");
+  blubSound = new Audio("assets/audio/blubb.mp3");
+  slapSound = new Audio("assets/audio/slap.mp3");
+  auaSound = new Audio("assets/audio/aua.mp3");
+  blingSound = new Audio("assets/audio/bling.mp3");
+  hitSound = new Audio("assets/audio/hit.mp3");
   lastSlapStartedAt = 0;
   slapImpactDelayMs = 220;
   slapImpactReadyAt = 0;

@@ -1,42 +1,42 @@
 class PufferFish extends Enemy {
   IMAGES_SWIM = [
     [
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition1.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition2.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition3.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition4.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition5.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition1.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition2.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition3.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition4.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/1.transition5.png",
     ],
     [
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition1.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition2.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition3.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition4.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition5.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition1.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition2.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition3.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition4.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/2.transition5.png",
     ],
     [
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition1.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition2.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition3.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition4.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition5.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition1.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition2.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition3.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition4.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/2.transition/3.transition5.png",
     ],
   ];
   IMAGES_DIE = [
     [
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 1 (can animate by going up).png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 2 (can animate by going down to the floor after the Fin Slap attack).png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 3 (can animate by going down to the floor after the Fin Slap attack).png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 1 (can animate by going up).png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 2 (can animate by going down to the floor after the Fin Slap attack).png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/1.Dead 3 (can animate by going down to the floor after the Fin Slap attack).png",
     ],
     [
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/2.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/2.3.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/2.2.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/2.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/2.3.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/2.2.png",
     ],
     [
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/3.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/3.3.png",
-      "../../assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/3.2.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/3.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/3.3.png",
+      "assets/img/Enemy/1.Puffer fish (3 color options)/4.DIE/3.2.png",
     ],
   ];
   path;

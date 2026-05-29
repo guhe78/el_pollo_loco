@@ -2,12 +2,12 @@ class CoinBar extends StatusBar {
   position_x;
   position_y;
   IMAGES_COINBAR = [
-    "../../assets/img/Marcadores/Purple/100__1.png",
-    "../../assets/img/Marcadores/Purple/80_ _1.png",
-    "../../assets/img/Marcadores/Purple/60_ _1.png",
-    "../../assets/img/Marcadores/Purple/40_ _1.png",
-    "../../assets/img/Marcadores/Purple/20_ .png",
-    "../../assets/img/Marcadores/Purple/0_ _1.png",
+    "assets/img/Marcadores/Purple/100__1.png",
+    "assets/img/Marcadores/Purple/80_ _1.png",
+    "assets/img/Marcadores/Purple/60_ _1.png",
+    "assets/img/Marcadores/Purple/40_ _1.png",
+    "assets/img/Marcadores/Purple/20_ .png",
+    "assets/img/Marcadores/Purple/0_ _1.png",
   ];
   path = this.IMAGES_COINBAR[0];
   position_x = 10;

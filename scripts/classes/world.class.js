@@ -13,7 +13,7 @@ class World {
   endbossIntroDone = false;
   menuReturnState = "startMenu";
   soundEnabled = true;
-  splashSound = new Audio("../../assets/audio/splash.mp3");
+  splashSound = new Audio("assets/audio/splash.mp3");
   backgroundMusic = new Audio(
     "assets/music/moodmode-game-8-bit-on-short-278081.mp3",
   );

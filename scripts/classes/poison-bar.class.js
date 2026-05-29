@@ -2,12 +2,12 @@ class PoisonBar extends StatusBar {
   position_x;
   position_y;
   IMAGES_POISONBAR = [
-    "../../assets/img/Marcadores/Purple/100_.png",
-    "../../assets/img/Marcadores/Purple/80_.png",
-    "../../assets/img/Marcadores/Purple/60_.png",
-    "../../assets/img/Marcadores/Purple/40_.png",
-    "../../assets/img/Marcadores/Purple/20_.png",
-    "../../assets/img/Marcadores/Purple/0_.png",
+    "assets/img/Marcadores/Purple/100_.png",
+    "assets/img/Marcadores/Purple/80_.png",
+    "assets/img/Marcadores/Purple/60_.png",
+    "assets/img/Marcadores/Purple/40_.png",
+    "assets/img/Marcadores/Purple/20_.png",
+    "assets/img/Marcadores/Purple/0_.png",
   ];
   path = this.IMAGES_POISONBAR[0];
   position_x = 10;
