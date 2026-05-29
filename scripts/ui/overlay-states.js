@@ -1,6 +1,7 @@
 const states = {
   startMenu: startMenuTemplate,
   paused: pauseMenuTemplate,
+  gameoverTransition: gameOverTransitionTemplate,
   gameover: gameOverMenuTemplate,
   victoryTransition: victoryTransitionTemplate,
   victory: victoryMenuTemplate,

@@ -258,6 +258,16 @@ class Character extends MovableObject {
       return;
     }
 
+    if (images === this.IMAGES_DEAD_ELECTRO) {
+      const i = Math.min(this.currentImage, images.length - 1);
+      const path = images[i];
+      this.image = this.imageCache[path];
+      if (this.currentImage < images.length - 1) {
+        this.currentImage++;
+      }
+      return;
+    }
+
     if (images === this.IMAGES_SLEEPING) {
       const tailLength = Math.min(5, images.length);
       const tailStart = images.length - tailLength;

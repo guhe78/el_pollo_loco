@@ -39,9 +39,21 @@ class WorldStateController {
    * Triggers delayed game-over state.
    */
   gameOver() {
+    const w = this.world;
+    if (w.gameState === "gameoverTransition" || w.gameState === "gameover") {
+      return;
+    }
+
+    const deathAnimationDuration = w.character.calculateAnimationDuration(
+      w.character.IMAGES_DEAD_ELECTRO,
+    );
+
     setTimeout(() => {
-      this.setGameState("gameover");
-    }, 3000);
+      this.setGameState("gameoverTransition");
+      setTimeout(() => {
+        this.setGameState("gameover");
+      }, 3000);
+    }, deathAnimationDuration);
   }
 
   /**
@@ -174,7 +186,10 @@ class WorldStateController {
    */
   isGameScreenState(state) {
     return (
-      state === "running" || state === "paused" || state === "victoryTransition"
+      state === "running" ||
+      state === "paused" ||
+      state === "victoryTransition" ||
+      state === "gameoverTransition"
     );
   }
 

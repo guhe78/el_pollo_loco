@@ -89,6 +89,22 @@ function victoryTransitionTemplate() {
 }
 
 /**
+ * Returns HTML template for the short game-over transition image.
+ * @returns {*} Result value.
+ */
+function gameOverTransitionTemplate() {
+  return `
+    <div id="gameover-transition-overlay" class="overlay victory-transition-overlay">
+      <img
+        src="assets/img/Botones/Tittles/Game Over/Recurso 9.png"
+        alt="Game Over"
+        class="victory-transition-image"
+      />
+    </div>
+  `;
+}
+
+/**
  * Returns HTML snippet for settings and help shortcut buttons.
  * @returns {*} Result value.
  */
