@@ -42,26 +42,30 @@ class WorldEndbossIntroController {
    * @returns {*} Result value.
    */
   getEndbossIntroCameraTargets(endboss) {
-    const w = this.world;
-    const levelMinCameraX = Math.round(
-      Math.min(0, -w.level.levelEndX + w.canvas.width),
+    const { world } = this;
+    const capAtZero = (value) => Math.round(Math.min(0, value));
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+    const levelMinCameraX = capAtZero(
+      -world.level.levelEndX + world.canvas.width,
     );
-    const sectionMinCameraX = Math.round(
-      Math.min(0, -w.currentSection.endX + w.canvas.width),
+    const sectionMinCameraX = capAtZero(
+      -world.currentSection.endX + world.canvas.width,
     );
-    const sectionMaxCameraX = Math.round(Math.min(0, -w.currentSection.startX));
-    const rawEndbossCameraX = Math.round(
-      Math.min(0, -endboss.position_x + w.canvas.width / 2 - endboss.width / 2),
+    const sectionMaxCameraX = capAtZero(-world.currentSection.startX);
+    const rawEndbossCameraX = capAtZero(
+      -endboss.position_x + world.canvas.width / 2 - endboss.width / 2,
     );
-    const rawCharacterCameraX = Math.round(
-      Math.min(0, -w.character.position_x + w.character.cameraOffsetX),
+    const rawCharacterCameraX = capAtZero(
+      -world.character.position_x + world.character.cameraOffsetX,
     );
 
     return {
       endbossCameraX: Math.max(levelMinCameraX, rawEndbossCameraX),
-      characterCameraX: Math.max(
+      characterCameraX: clamp(
+        rawCharacterCameraX,
         sectionMinCameraX,
-        Math.min(sectionMaxCameraX, rawCharacterCameraX),
+        sectionMaxCameraX,
       ),
     };
   }

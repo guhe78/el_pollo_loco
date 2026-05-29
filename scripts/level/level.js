@@ -1,12 +1,12 @@
-const BG_TILE_WIDTH = Math.round(3840 / 2.25);
+const bgTileWidth = Math.round(3840 / 2.25);
 
-const SECTION_ONE_LENGTH = BG_TILE_WIDTH * 2;
-const SECTION_TWO_LENGTH = BG_TILE_WIDTH * 2;
-const ENDBOSS_SECTION_LENGTH = Math.round(BG_TILE_WIDTH * 0.65);
+const sectionOneLength = bgTileWidth * 2;
+const sectionTwoLength = bgTileWidth * 2;
+const endbossSectionLength = Math.round(bgTileWidth * 0.65);
 
 const sectionOneStartX = 0;
-const sectionTwoStartX = sectionOneStartX + SECTION_ONE_LENGTH;
-const endbossSectionStartX = sectionTwoStartX + SECTION_TWO_LENGTH;
+const sectionTwoStartX = sectionOneStartX + sectionOneLength;
+const endbossSectionStartX = sectionTwoStartX + sectionTwoLength;
 
 const backgroundsLightSection = [
   "assets/img/Background/Layers/5. Water/L.png",
@@ -41,7 +41,7 @@ function createLevel() {
  * @returns {*} Result value.
  */
 function createEndboss() {
-  return new Endboss(endbossSectionStartX + ENDBOSS_SECTION_LENGTH - 420, 120);
+  return new Endboss(endbossSectionStartX + endbossSectionLength - 420, 120);
 }
 
 /**
@@ -51,14 +51,14 @@ function createEndboss() {
 function createFirstSection() {
   return new Section(
     sectionOneStartX,
-    SECTION_ONE_LENGTH,
+    sectionOneLength,
     createSectionBackgrounds(
-      SECTION_ONE_LENGTH,
+      sectionOneLength,
       sectionOneStartX,
       backgroundsLightSection,
     ),
-    createEnemies("puffer", 10, sectionOneStartX, SECTION_ONE_LENGTH),
-    createCollectibles("coins", 5, sectionOneStartX, SECTION_ONE_LENGTH),
+    createEnemies("puffer", 10, sectionOneStartX, sectionOneLength),
+    createCollectibles("coins", 5, sectionOneStartX, sectionOneLength),
   );
 }
 
@@ -69,14 +69,14 @@ function createFirstSection() {
 function createSecondSection() {
   return new Section(
     sectionTwoStartX,
-    SECTION_TWO_LENGTH,
+    sectionTwoLength,
     createSectionBackgrounds(
-      SECTION_TWO_LENGTH,
+      sectionTwoLength,
       sectionTwoStartX,
       backgroundsDarkSection,
     ),
-    createEnemies("jelly", 10, sectionTwoStartX, SECTION_TWO_LENGTH),
-    createCollectibles("poison", 5, sectionTwoStartX, SECTION_TWO_LENGTH),
+    createEnemies("jelly", 10, sectionTwoStartX, sectionTwoLength),
+    createCollectibles("poison", 5, sectionTwoStartX, sectionTwoLength),
   );
 }
 
@@ -87,9 +87,9 @@ function createSecondSection() {
 function createEndbossSection() {
   return new Section(
     endbossSectionStartX,
-    ENDBOSS_SECTION_LENGTH,
+    endbossSectionLength,
     createBackgrounds(
-      ENDBOSS_SECTION_LENGTH,
+      endbossSectionLength,
       endbossSectionStartX,
       backgroundsDarkSection,
     ),
@@ -132,10 +132,10 @@ function createSectionBarrier(startX, sectionLength) {
  */
 function createBackgrounds(sectionLength, startX, backgroundsArray) {
   const backgrounds = [];
-  const tileCount = Math.ceil(sectionLength / BG_TILE_WIDTH);
+  const tileCount = Math.ceil(sectionLength / bgTileWidth);
 
   for (let i = 0; i < tileCount; i++) {
-    const tileX = startX + i * BG_TILE_WIDTH;
+    const tileX = startX + i * bgTileWidth;
     const tileWidth = getBackgroundTileWidth(sectionLength, i);
     backgrounds.push(
       ...createBackgroundTile(backgroundsArray, tileX, tileWidth),
@@ -152,8 +152,8 @@ function createBackgrounds(sectionLength, startX, backgroundsArray) {
  * @returns {*} Result value.
  */
 function getBackgroundTileWidth(sectionLength, index) {
-  const remainingWidth = sectionLength - index * BG_TILE_WIDTH;
-  return Math.min(BG_TILE_WIDTH, remainingWidth);
+  const remainingWidth = sectionLength - index * bgTileWidth;
+  return Math.min(bgTileWidth, remainingWidth);
 }
 
 /**

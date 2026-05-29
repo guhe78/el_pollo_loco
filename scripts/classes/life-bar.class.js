@@ -1,6 +1,4 @@
 class LifeBar extends StatusBar {
-  position_x;
-  position_y;
   IMAGES_LIFEBAR = [
     "assets/img/Marcadores/Purple/100_ .png",
     "assets/img/Marcadores/Purple/80_ .png",

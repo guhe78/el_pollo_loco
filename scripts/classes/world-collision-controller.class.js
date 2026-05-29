@@ -101,19 +101,34 @@ class WorldCollisionController {
    * @param {*} endboss
    */
   handleEndbossSlapHit(endboss) {
-    const w = this.world;
     if (endboss.isPendingSlapHit || endboss.isDead()) return;
 
     endboss.isPendingSlapHit = true;
     endboss.hit(10);
     this.playHitSoundAfterSlap();
+    this.finishEndbossIfDead(endboss);
+    this.resetPendingSlapHitAfterAttack(endboss);
+  }
 
-    if (endboss.isDead()) {
-      endboss.startDeath(endboss.IMAGES_DEAD);
-      w.character.highscore += 100;
-      w.victory();
-    }
+  /**
+   * Applies death/victory flow after a slap hit.
+   * @param {*} endboss
+   */
+  finishEndbossIfDead(endboss) {
+    if (!endboss.isDead()) return;
 
+    const w = this.world;
+    endboss.startDeath(endboss.IMAGES_DEAD);
+    w.character.highscore += 100;
+    w.victory();
+  }
+
+  /**
+   * Unlocks pending slap hit after one attack animation duration.
+   * @param {*} endboss
+   */
+  resetPendingSlapHitAfterAttack(endboss) {
+    const w = this.world;
     const attackDuration = w.character.calculateAnimationDuration(
       w.character.IMAGES_ATTACK,
     );
@@ -210,23 +225,32 @@ class WorldCollisionController {
    * Handles collectible pickups and inventory bars.
    */
   checkCollectItems() {
-    const w = this.world;
-    w.currentSection.collectibles.forEach((item) => {
-      if (w.character.isColliding(item)) {
-        if (item instanceof Coins) {
-          item.isCollected = true;
-          w.statusBars[2].setCoinPercentage(20);
-        } else if (item instanceof Poison) {
-          item.isCollected = true;
-          w.statusBars[1].setPoisonPercentage(20);
-        }
-        w.character.highscore += 5;
-        w.character.blingSound.play();
-      }
-    });
-
-    w.currentSection.collectibles = w.currentSection.collectibles.filter(
-      (item) => !item.isCollected,
+    const world = this.world;
+    world.currentSection.collectibles.forEach((item) =>
+      this.handleCollectiblePickup(item),
     );
+
+    world.currentSection.collectibles =
+      world.currentSection.collectibles.filter((item) => !item.isCollected);
+  }
+
+  /**
+   * Applies pickup effects for a single collectible on collision.
+   * @param {*} item
+   */
+  handleCollectiblePickup(item) {
+    const world = this.world;
+    if (!world.character.isColliding(item)) return;
+
+    if (item instanceof Coins) {
+      item.isCollected = true;
+      world.statusBars[2].setCoinPercentage(20);
+    } else if (item instanceof Poison) {
+      item.isCollected = true;
+      world.statusBars[1].setPoisonPercentage(20);
+    }
+
+    world.character.highscore += 5;
+    world.character.blingSound.play();
   }
 }

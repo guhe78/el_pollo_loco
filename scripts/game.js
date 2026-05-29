@@ -1,5 +1,5 @@
-const DISPLAY_MODE_KEY = "displayMode"; // "standard" | "fullscreen"
-const SOUND_ENABLED_KEY = "soundEnabled";
+const displayModeKey = "displayMode";
+const soundEnabledKey = "soundEnabled";
 
 let canvas;
 let world;
@@ -13,86 +13,14 @@ function loadCanvas() {
   applyDisplayMode();
   world = new World(canvas, keyboard);
   applySoundMode();
+  setupMenuControls();
   setupMobileControls();
 }
 
-document.addEventListener("click", async (event) => {
-  const target = event.target;
-  if (!(target instanceof HTMLElement)) return;
-
-  if (target.id === "settings-btn") {
-    world.showSettings();
-    return;
-  }
-
-  if (target.id === "start-btn") {
-    applyDisplayMode();
-    world.startGame();
-    return;
-  }
-
-  if (target.id === "resume-btn") {
-    world.startGame();
-    return;
-  }
-
-  if (target.id === "restart-btn") {
-    world.restartGame();
-    return;
-  }
-
-  if (target.id === "mainmenu-btn") {
-    world.abortGameToMenu();
-    return;
-  }
-
-  if (target.id === "howto-btn") {
-    world.showHowTo();
-    return;
-  }
-
-  if (target.id === "impressum-btn") {
-    world.showImpressum();
-    return;
-  }
-
-  if (target.id === "back-btn") {
-    world.closeOverlayMenu();
-    return;
-  }
-
-  if (target.id === "back-impressum-btn") {
-    world.closeOverlayMenu();
-    return;
-  }
-
-  if (target.id === "display-toggle-btn") {
-    if (!isMobileDevice()) {
-      const nextMode =
-        getDisplayMode() === "fullscreen" ? "standard" : "fullscreen";
-      setDisplayMode(nextMode);
-      if (world.menuReturnState === "paused") {
-        applyDisplayMode();
-      }
-    }
-    world.setGameState("settings");
-    return;
-  }
-
-  if (target.id === "sound-toggle-btn") {
-    const next = !getSoundEnabled();
-    setSoundEnabled(next);
-    applySoundMode();
-    world.setGameState("settings");
-    return;
-  }
-
-  if (target.id === "back-settings-btn") {
-    world.closeOverlayMenu();
-    return;
-  }
-});
-
+/**
+ * Wires keyboard events to the keyboard state and world activity registration.
+ * Also toggles pause on Escape key.
+ */
 document.addEventListener("keydown", (event) => {
   world?.character?.registerActivity();
 
@@ -119,6 +47,10 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+/**
+ * Wires keyboard key releases to the keyboard state.
+ * Also prevents default behavior for the keys used in the game to avoid unwanted scrolling, etc.
+ */
 document.addEventListener("keyup", (event) => {
   if (event.code === "Space") {
     keyboard.SPACE = false;
@@ -141,11 +73,69 @@ document.addEventListener("keyup", (event) => {
 });
 
 /**
+ * Wires menu buttons to their actions.
+ */
+function setupMenuControls() {
+  bindClick("settings-btn", () => world.showSettings());
+  bindClick("start-btn", () => {
+    applyDisplayMode();
+    world.startGame();
+  });
+  bindClick("resume-btn", () => world.startGame());
+  bindClick("restart-btn", () => world.restartGame());
+  bindClick("mainmenu-btn", () => world.abortGameToMenu());
+  bindClick("howto-btn", () => world.showHowTo());
+  bindClick("impressum-btn", () => world.showImpressum());
+  bindClick("back-btn", () => world.closeOverlayMenu());
+  bindClick("back-impressum-btn", () => world.closeOverlayMenu());
+  bindClick("display-toggle-btn", handleDisplayToggle);
+  bindClick("sound-toggle-btn", handleSoundToggle);
+  bindClick("back-settings-btn", () => world.closeOverlayMenu());
+}
+
+/**
+ * Binds a click handler to a button if it exists.
+ * @param {*} buttonId
+ * @param {*} handler
+ */
+function bindClick(buttonId, handler) {
+  const button = document.getElementById(buttonId);
+  if (!button) return;
+
+  button.addEventListener("click", handler);
+}
+
+/**
+ * Handles the display mode toggle action.
+ */
+function handleDisplayToggle() {
+  if (!isMobileDevice()) {
+    const nextMode =
+      getDisplayMode() === "fullscreen" ? "standard" : "fullscreen";
+    setDisplayMode(nextMode);
+    if (world.menuReturnState === "paused") {
+      applyDisplayMode();
+    }
+  }
+
+  world.setGameState("settings");
+}
+
+/**
+ * Handles the sound toggle action.
+ */
+function handleSoundToggle() {
+  setSoundEnabled(!getSoundEnabled());
+  applySoundMode();
+  world.setGameState("settings");
+}
+
+/**
  * Returns persisted display mode.
  * @returns {*} Result value.
  */
 function getDisplayMode() {
-  return localStorage.getItem(DISPLAY_MODE_KEY) || "standard";
+  return localStorage.getItem(displayModeKey) || "standard";
 }
 
 /**
@@ -153,7 +143,7 @@ function getDisplayMode() {
  * @param {*} mode
  */
 function setDisplayMode(mode) {
-  localStorage.setItem(DISPLAY_MODE_KEY, mode);
+  localStorage.setItem(displayModeKey, mode);
 }
 
 /**
@@ -183,7 +173,7 @@ function applyDisplayMode() {
  * @returns {*} Result value.
  */
 function getSoundEnabled() {
-  return localStorage.getItem(SOUND_ENABLED_KEY) !== "false";
+  return localStorage.getItem(soundEnabledKey) !== "false";
 }
 
 /**
@@ -191,7 +181,7 @@ function getSoundEnabled() {
  * @param {*} enabled
  */
 function setSoundEnabled(enabled) {
-  localStorage.setItem(SOUND_ENABLED_KEY, String(enabled));
+  localStorage.setItem(soundEnabledKey, String(enabled));
 }
 
 /**
@@ -238,27 +228,53 @@ function bindHoldControl(buttonId, keyName) {
   const button = document.getElementById(buttonId);
   if (!button) return;
 
-  button.addEventListener("contextmenu", (event) => {
-    event.preventDefault();
-  });
+  button.addEventListener("contextmenu", preventDefault);
+  button.addEventListener("pointerdown", createHoldHandler(keyName, true));
+  button.addEventListener("pointerup", createHoldHandler(keyName, false));
+  button.addEventListener("pointercancel", createHoldHandler(keyName, false));
+  button.addEventListener("pointerleave", createHoldHandler(keyName, false));
+}
 
-  const press = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    world?.character?.registerActivity();
-    keyboard[keyName] = true;
+/**
+ * Creates a hold handler for a keyboard flag.
+ * @param {*} keyName
+ * @param {*} isPressed
+ * @returns {*} Result value.
+ */
+function createHoldHandler(keyName, isPressed) {
+  return (event) => {
+    stopEvent(event);
+    if (isPressed) {
+      world?.character?.registerActivity();
+    }
+    setKeyboardState(keyName, isPressed);
   };
+}
 
-  const release = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    keyboard[keyName] = false;
-  };
+/**
+ * Sets a keyboard flag.
+ * @param {*} keyName
+ * @param {*} value
+ */
+function setKeyboardState(keyName, value) {
+  keyboard[keyName] = value;
+}
 
-  button.addEventListener("pointerdown", press);
-  button.addEventListener("pointerup", release);
-  button.addEventListener("pointercancel", release);
-  button.addEventListener("pointerleave", release);
+/**
+ * Prevents default behavior and stops bubbling.
+ * @param {*} event
+ */
+function stopEvent(event) {
+  event.preventDefault();
+  event.stopPropagation();
+}
+
+/**
+ * Prevents default browser behavior.
+ * @param {*} event
+ */
+function preventDefault(event) {
+  event.preventDefault();
 }
 
 /**

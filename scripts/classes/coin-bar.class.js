@@ -1,6 +1,4 @@
 class CoinBar extends StatusBar {
-  position_x;
-  position_y;
   IMAGES_COINBAR = [
     "assets/img/Marcadores/Purple/100__1.png",
     "assets/img/Marcadores/Purple/80_ _1.png",
@@ -14,6 +12,9 @@ class CoinBar extends StatusBar {
   position_y = 40;
   coinPercentage = 0;
 
+  /**
+   * Initializes the coin bar by loading the necessary images and setting the initial percentage.
+   */
   constructor() {
     super();
     this.loadImage();
@@ -21,11 +22,19 @@ class CoinBar extends StatusBar {
     this.setCoinPercentage(this.coinPercentage);
   }
 
+  /**
+   * Updates the coin percentage and refreshes the displayed image accordingly.
+   * @param {number} coinPercentage
+   */
   setCoinPercentage(coinPercentage) {
     this.coinPercentage += coinPercentage;
     this.setPercentage(this.getCoinPercentage(), this.IMAGES_COINBAR);
   }
 
+  /**
+   * Returns the current coin percentage.
+   * @returns {number}
+   */
   getCoinPercentage() {
     return this.coinPercentage;
   }

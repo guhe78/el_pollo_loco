@@ -1,6 +1,4 @@
 class PoisonBar extends StatusBar {
-  position_x;
-  position_y;
   IMAGES_POISONBAR = [
     "assets/img/Marcadores/Purple/100_.png",
     "assets/img/Marcadores/Purple/80_.png",

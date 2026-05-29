@@ -201,29 +201,36 @@ class Character extends MovableObject {
    * Handles slap and bubble attack inputs.
    */
   handleCombatActions() {
-    const isSpaceDown = this.world.keyboard.SPACE;
-    if (!isSpaceDown) {
-      this.slapInputLocked = false;
+    this.handleHeldCombatAction(
+      this.world.keyboard.SPACE,
+      "slapInputLocked",
+      () => this.canMove(),
+      () => this.combatController.applySlapAttack(),
+    );
+    this.handleHeldCombatAction(
+      this.world.keyboard.THROW,
+      "throwInputLocked",
+      () => !this.isThrowing && this.canMove(),
+      () => this.combatController.applyBubbleAttack(),
+    );
+  }
+
+  /**
+   * Handles a held input and keeps its lock state in sync.
+   * @param {boolean} isDown
+   * @param {string} lockName
+   * @param {Function} canTrigger
+   * @param {Function} triggerAction
+   */
+  handleHeldCombatAction(isDown, lockName, canTrigger, triggerAction) {
+    if (!isDown) {
+      this[lockName] = false;
+      return;
     }
 
-    if (isSpaceDown && !this.slapInputLocked && this.canMove()) {
-      this.combatController.applySlapAttack();
-      this.slapInputLocked = true;
-    }
-
-    const isThrowDown = this.world.keyboard.THROW;
-    if (!isThrowDown) {
-      this.throwInputLocked = false;
-    }
-
-    if (
-      isThrowDown &&
-      !this.throwInputLocked &&
-      !this.isThrowing &&
-      this.canMove()
-    ) {
-      this.combatController.applyBubbleAttack();
-      this.throwInputLocked = true;
+    if (!this[lockName] && canTrigger()) {
+      triggerAction();
+      this[lockName] = true;
     }
   }
 
@@ -248,40 +255,44 @@ class Character extends MovableObject {
    * @param {*} images
    */
   playAnimation(images) {
-    if (images === this.IMAGES_ATTACK) {
-      const i = Math.min(this.currentImage, images.length - 1);
-      const path = images[i];
-      this.image = this.imageCache[path];
-      if (this.currentImage < images.length - 1) {
-        this.currentImage++;
-      }
-      return;
-    }
-
-    if (images === this.IMAGES_DEAD_ELECTRO) {
-      const i = Math.min(this.currentImage, images.length - 1);
-      const path = images[i];
-      this.image = this.imageCache[path];
-      if (this.currentImage < images.length - 1) {
-        this.currentImage++;
-      }
+    if (images === this.IMAGES_ATTACK || images === this.IMAGES_DEAD_ELECTRO) {
+      this.playOneShotAnimation(images);
       return;
     }
 
     if (images === this.IMAGES_SLEEPING) {
-      const tailLength = Math.min(5, images.length);
-      const tailStart = images.length - tailLength;
-      const i =
-        this.currentImage < images.length
-          ? this.currentImage
-          : tailStart + ((this.currentImage - images.length) % tailLength);
-      const path = images[i];
-      this.image = this.imageCache[path];
-      this.currentImage++;
+      this.playSleepingAnimation(images);
       return;
     }
 
     super.playAnimation(images);
+  }
+
+  /**
+   * Plays a one-shot animation that stops on its last frame.
+   * @param {string[]} images
+   */
+  playOneShotAnimation(images) {
+    const i = Math.min(this.currentImage, images.length - 1);
+    this.image = this.imageCache[images[i]];
+    if (this.currentImage < images.length - 1) {
+      this.currentImage++;
+    }
+  }
+
+  /**
+   * Plays the sleeping animation with a short looping tail.
+   * @param {string[]} images
+   */
+  playSleepingAnimation(images) {
+    const tailLength = Math.min(5, images.length);
+    const tailStart = images.length - tailLength;
+    const i =
+      this.currentImage < images.length
+        ? this.currentImage
+        : tailStart + ((this.currentImage - images.length) % tailLength);
+    this.image = this.imageCache[images[i]];
+    this.currentImage++;
   }
 
   /**

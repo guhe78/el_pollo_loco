@@ -175,19 +175,18 @@ class World {
    */
   updateSection() {
     const x = this.character.position_x;
+    const sections = this.level.sections;
     const previousSection = this.currentSection;
-    const lastSection = this.level.sections[this.level.sections.length - 1];
-    this.level.sections.forEach((section) => {
-      if (x >= section.startX && x < section.endX) {
-        this.currentSection = section;
-      }
-    });
-    if (x >= lastSection.startX) {
-      this.currentSection = lastSection;
-    }
-    const enteredNewSection = previousSection !== this.currentSection;
+    const lastSection = sections[sections.length - 1];
+    const sectionAtX = sections.find(
+      (section) => x >= section.startX && x < section.endX,
+    );
+
+    this.currentSection =
+      x >= lastSection.startX ? lastSection : sectionAtX || this.currentSection;
+
     if (
-      enteredNewSection &&
+      previousSection !== this.currentSection &&
       this.currentSection.endboss &&
       !this.endbossIntroDone
     ) {
