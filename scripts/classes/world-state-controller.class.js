@@ -99,6 +99,7 @@ class WorldStateController {
       if (!audio) return;
       audio.muted = !enabled;
     });
+    this.updateBackgroundMusicPlayback(w.gameState);
   }
 
   /**
@@ -114,7 +115,31 @@ class WorldStateController {
       w.character.blingSound,
       w.character.hitSound,
       w.splashSound,
+      w.backgroundMusic,
     ];
+  }
+
+  /**
+   * Starts or pauses background music depending on game state.
+   * @param {*} state
+   */
+  updateBackgroundMusicPlayback(state) {
+    const w = this.world;
+    const music = w.backgroundMusic;
+    if (!music) return;
+
+    const shouldPlay = w.soundEnabled && state === "running";
+    if (shouldPlay) {
+      if (music.paused) {
+        const playPromise = music.play();
+        if (playPromise && typeof playPromise.catch === "function") {
+          playPromise.catch(() => {});
+        }
+      }
+      return;
+    }
+
+    music.pause();
   }
 
   /**
@@ -124,6 +149,7 @@ class WorldStateController {
   setGameState(state) {
     const w = this.world;
     w.gameState = state;
+    this.updateBackgroundMusicPlayback(state);
     const isInGameState = this.isGameScreenState(state);
     document.body.classList.toggle("game-running", isInGameState);
     if (this.shouldHideOverlay(state)) {

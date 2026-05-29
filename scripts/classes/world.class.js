@@ -14,6 +14,9 @@ class World {
   menuReturnState = "startMenu";
   soundEnabled = true;
   splashSound = new Audio("../../assets/audio/splash.mp3");
+  backgroundMusic = new Audio(
+    "assets/music/moodmode-game-8-bit-on-short-278081.mp3",
+  );
   renderController;
   collisionController;
   endbossIntroController;
@@ -35,6 +38,8 @@ class World {
     this.collisionController = new WorldCollisionController(this);
     this.endbossIntroController = new WorldEndbossIntroController(this);
     this.stateController = new WorldStateController(this);
+    this.backgroundMusic.loop = true;
+    this.backgroundMusic.volume = 0.2;
     this.setWorld();
     this.setGameState("startMenu");
     this.draw();
