@@ -160,6 +160,6 @@ function howToMenuTemplate() {
 function menuActionsTemplate() {
   return `
     <button id="restart-btn" class="button">Neustart</button>
-    <button id="mainmenu-btn" class="button">Hauptmenü</button>
+    <button id="mainmenu-btn" class="button">Spiel beenden</button>
   `;
 }
