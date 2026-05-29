@@ -206,8 +206,14 @@ function applySoundMode() {
  * Wires mobile control buttons to keyboard state.
  */
 function setupMobileControls() {
+  preventMobileContextMenu();
+
   const pauseBtn = document.getElementById("mobile-pause-btn");
   if (pauseBtn) {
+    pauseBtn.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+    });
+
     pauseBtn.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
@@ -232,6 +238,10 @@ function bindHoldControl(buttonId, keyName) {
   const button = document.getElementById(buttonId);
   if (!button) return;
 
+  button.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+  });
+
   const press = (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -249,4 +259,16 @@ function bindHoldControl(buttonId, keyName) {
   button.addEventListener("pointerup", release);
   button.addEventListener("pointercancel", release);
   button.addEventListener("pointerleave", release);
+}
+
+/**
+ * Prevents native context menu on the mobile control overlay.
+ */
+function preventMobileContextMenu() {
+  const controls = document.getElementById("mobile-controls");
+  if (!controls) return;
+
+  controls.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+  });
 }
