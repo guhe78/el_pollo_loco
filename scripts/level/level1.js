@@ -24,11 +24,6 @@ const backgroundsDarkSection = [
 
 const separatorPath = "../../assets/img/Background/Barrier/3.png";
 
-const endboss = new Endboss(
-  endbossSectionStartX + ENDBOSS_SECTION_LENGTH - 420,
-  120,
-);
-
 /**
  * Builds the full level definition.
  * @returns {*} Result value.
@@ -39,6 +34,14 @@ function createLevel() {
     createSecondSection(),
     createEndbossSection(),
   ]);
+}
+
+/**
+ * Creates a fresh endboss instance for the level.
+ * @returns {*} Result value.
+ */
+function createEndboss() {
+  return new Endboss(endbossSectionStartX + ENDBOSS_SECTION_LENGTH - 420, 120);
 }
 
 /**
@@ -92,7 +95,7 @@ function createEndbossSection() {
     ),
     [],
     [],
-    endboss,
+    createEndboss(),
   );
 }
 
