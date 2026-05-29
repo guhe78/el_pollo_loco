@@ -42,7 +42,7 @@ document.addEventListener("click", async (event) => {
   }
 
   if (target.id === "mainmenu-btn") {
-    world.startMenu();
+    world.abortGameToMenu();
     return;
   }
 

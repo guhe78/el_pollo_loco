@@ -109,6 +109,22 @@ class World {
    * Recreates world state for a fresh game run.
    */
   restartGame() {
+    this.resetGameProgress();
+    this.startGame();
+  }
+
+  /**
+   * Aborts current run, resets progress and returns to start menu.
+   */
+  abortGameToMenu() {
+    this.resetGameProgress();
+    this.startMenu();
+  }
+
+  /**
+   * Resets all run-specific state to initial values.
+   */
+  resetGameProgress() {
     this.isEndbossIntroActive = false;
     this.endbossIntroDone = false;
     this.character.stop();
@@ -121,7 +137,6 @@ class World {
     this.currentSection = this.level.sections[0];
     this.setWorld();
     this.setSoundEnabled(this.soundEnabled);
-    this.startGame();
   }
 
   /**
