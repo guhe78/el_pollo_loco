@@ -115,7 +115,7 @@ function settingsHowtoTemplate() {
       <button id="settings-btn" class="button settings-btn">⚙️</button>
       <button id="howto-btn" class="button howto-btn">❓</button>
     </div>
-      <button id="impressum-btn" class="button impressum-btn">impressum</button>
+      <button id="impressum-btn" class="button impressum-btn">impressum&Datenschutz</button>
   </div>
   `;
 }
@@ -219,7 +219,23 @@ function impressumMenuTemplate() {
         Koppoldstr. 1<br>
         86551 Aichach</p>
         <p>Kontakt:<br>
-        E-Mail: g.heldt@web.de</p>
+        E-Mail: mail@guenter-heldt.de</p><br>
+        <h2>Datenschutzerklärung</h2>
+        <h3>Hosting</h3>
+        <p>Diese Website wird bei der manitu GmbH, Welvertstraße 2, 66606 St. Wendel, Deutschland gehostet.</p>
+        <p>Beim Aufruf der Website werden durch den Hosting-Anbieter technische Zugriffsdaten in Server-Logfiles verarbeitet. 
+        Hierzu können insbesondere die IP-Adresse, Datum und Uhrzeit des Zugriffs, aufgerufene Seiten, 
+        Browserinformationen sowie weitere technische Verbindungsdaten gehören.</p>
+        <p>Die Verarbeitung erfolgt zur Gewährleistung des sicheren und stabilen Betriebs der Website auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Weitere Informationen zur Datenverarbeitung durch den Hosting-Anbieter finden Sie in der Datenschutzerklärung von manitu.</p>
+        <h3>Cookies für Spieleinstellungen</h3>
+        <p>Diese Website verwendet technisch erforderliche Cookies, um vom Nutzer gewählte Spieleinstellungen zu speichern. Dazu gehören insbesondere:
+          <ul>
+            <li>Sound-Einstellungen (ein/aus)</li>
+            <li>Vollbild- bzw. Anzeigeeinstellungen</li>
+          </ul>
+          <p>Diese Cookies dienen ausschließlich der Bereitstellung der vom Nutzer gewünschten Funktionen. Eine Nutzung zu Analyse-, Marketing- oder Trackingzwecken erfolgt nicht.</p>
+          <p>Die Speicherung erfolgt auf Grundlage von § 25 Abs. 2 Nr. 2 TDDDG, da die Cookies erforderlich sind, um die ausdrücklich gewünschten Funktionen des Spiels bereitzustellen.</p>
+          <p>Die gespeicherten Cookies können jederzeit über die Einstellungen des Browsers gelöscht werden. In diesem Fall werden die Einstellungen beim nächsten Besuch erneut mit den Standardwerten geladen.</p>
         <button id="back-impressum-btn" class="button">Zurück</button>
       </div>
     </div>

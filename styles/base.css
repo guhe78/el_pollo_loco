@@ -25,6 +25,11 @@
 
   --menu-overlay-top: rgba(0, 0, 128, 0.4);
   --menu-overlay-bottom: rgba(0, 0, 128, 0.3);
+
+  --sea-deep: #0a2a5a;
+  --sea-mid: #0f5e96;
+  --sea-light: #57c6e8;
+  --sea-highlight: rgba(197, 245, 255, 0.55);
 }
 
 /* =========================================================
@@ -65,8 +70,80 @@ body::before {
   position: fixed;
   inset: -10px;
 
-  background-color: lightblue;
+  background:
+    radial-gradient(120% 70% at 50% -10%, var(--sea-highlight) 0%, rgba(197, 245, 255, 0) 60%),
+    linear-gradient(
+      180deg,
+      #86e8ff 0%,
+      var(--sea-light) 30%,
+      var(--sea-mid) 68%,
+      var(--sea-deep) 100%
+    );
+
+  filter: saturate(108%);
+  z-index: -2;
+  animation: sea-pulse 18s ease-in-out infinite alternate;
+}
+
+body::after {
+  content: "";
+
+  position: fixed;
+  inset: -20%;
+
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.14) 0 2px, rgba(255, 255, 255, 0) 3px)
+      0 0 / 140px 140px,
+    radial-gradient(
+        circle at 78% 62%,
+        rgba(255, 255, 255, 0.11) 0 1.5px,
+        rgba(255, 255, 255, 0) 2.5px
+      )
+      0 0 / 120px 120px,
+    repeating-linear-gradient(
+      165deg,
+      rgba(255, 255, 255, 0.12) 0 2px,
+      rgba(255, 255, 255, 0) 2px 14px
+    );
+
+  opacity: 0.4;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
   z-index: -1;
+  animation: sea-drift 28s linear infinite;
+}
+
+@keyframes sea-pulse {
+  0% {
+    transform: scale(1);
+    filter: saturate(105%);
+  }
+
+  100% {
+    transform: scale(1.02);
+    filter: saturate(112%);
+  }
+}
+
+@keyframes sea-drift {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+
+  50% {
+    transform: translate3d(2.5%, -2%, 0) rotate(0.6deg);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after {
+    animation: none;
+  }
 }
 
 /* =========================================================
